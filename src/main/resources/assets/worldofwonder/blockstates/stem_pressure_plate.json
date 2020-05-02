@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "powered=false": { "model": "worldofwonder:block/stem_pressure_plate" },
+        "powered=true": { "model": "worldofwonder:block/stem_pressure_plate_down" }
+    }
+}

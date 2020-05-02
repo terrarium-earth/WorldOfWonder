@@ -1,0 +1,8 @@
+{
+    "parent": "block/inner_stairs",
+    "textures": {
+        "bottom": "worldofwonder:block/stem_planks",
+        "top": "worldofwonder:block/stem_planks",
+        "side": "worldofwonder:block/stem_planks"
+    }
+}

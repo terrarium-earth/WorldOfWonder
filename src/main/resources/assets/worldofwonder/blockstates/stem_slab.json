@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "type=bottom": { "model": "worldofwonder:block/stem_slab" },
+        "type=top": { "model": "worldofwonder:block/stem_slab_top" },
+        "type=double": { "model": "worldofwonder:block/stem_planks" }
+    }
+}

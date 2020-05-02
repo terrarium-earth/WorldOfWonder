@@ -1,0 +1,7 @@
+{
+    "parent": "block/door_top_rh",
+    "textures": {
+        "bottom": "worldofwonder:block/stem_door_bottom",
+        "top": "worldofwonder:block/stem_door_top"
+    }
+}
