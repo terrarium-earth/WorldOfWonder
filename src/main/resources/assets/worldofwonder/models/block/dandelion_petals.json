@@ -1,6 +1,6 @@
 {
     "parent": "block/leaves",
     "textures": {
-        "all": "worldofwonder:block/stem_leaves"
+        "all": "worldofwonder:block/dandelion_petals"
     }
 }
