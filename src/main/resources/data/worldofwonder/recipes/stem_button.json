@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "worldofwonder:stem_planks"
+        }
+    ],
+    "result": {
+        "item": "worldofwonder:stem_button",
+        "count": 1
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        " L "
+    ],
+    "key": {
+        "#": {
+            "item": "worldofwonder:dandelion_fluff"
+        },
+        "L": {
+            "item": "minecraft:leather_helmet"
+        }
+    },
+    "result": {
+        "item": "worldofwonder:dandelion_hat",
+        "count": 1
+    }
+}

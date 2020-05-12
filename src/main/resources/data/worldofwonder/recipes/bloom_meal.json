@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "worldofwonder:stem_log"
+        },
+        {
+            "item": "worldofwonder:dandelion_fluff"
+        },
+        {
+            "item": "worldofwonder:dandelion_petals"
+        },
+        {
+            "item": "minecraft:bone_meal"
+        }
+    ],
+    "result": {
+        "item": "worldofwonder:bloom_meal",
+        "count": 3
+    }
+}

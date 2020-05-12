@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "/W/",
+        "/W/"
+    ],
+    "key": {
+        "/": {
+            "item": "minecraft:stick"
+        },
+        "W": {
+            "item": "worldofwonder:stem_planks"
+        }
+    },
+    "result": {
+        "item": "worldofwonder:stem_gate",
+        "count": 1
+    }
+}
