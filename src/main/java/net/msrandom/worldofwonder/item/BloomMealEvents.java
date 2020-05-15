@@ -14,7 +14,7 @@ import net.msrandom.worldofwonder.world.gen.feature.WonderTree;
 import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = WorldOfWonder.MOD_ID)
-public class ItemBloomMealEvents {
+public class BloomMealEvents {
     private static final WonderTree DANDELION = new DandelionTreeFeature(true);
     private static final WonderTree FLUFF = new DandelionFluffTreeFeature(true);
 

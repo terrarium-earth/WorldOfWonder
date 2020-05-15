@@ -10,6 +10,7 @@ import net.minecraft.item.SignItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.msrandom.worldofwonder.WorldOfWonder;
+import net.msrandom.worldofwonder.item.StemSignItem;
 import net.msrandom.worldofwonder.item.WonderItems;
 
 import java.util.function.BiFunction;
@@ -23,9 +24,9 @@ public class WonderBlocks {
     public static final Block STEM_WOOD = add("stem_wood", new Block(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD)), new Item.Properties().group(ItemGroup.BUILDING_BLOCKS));
     public static final Block DANDELION_PETALS = add("dandelion_petals", new LeavesBlock(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().sound(SoundType.PLANT).tickRandomly()), new Item.Properties().group(ItemGroup.DECORATIONS));
     public static final Block STEM_STAIRS = add("stem_stairs", new StairsBlock(STEM_PLANKS::getDefaultState, Block.Properties.from(STEM_PLANKS)), new Item.Properties().group(ItemGroup.BUILDING_BLOCKS));
-    public static final Block STEM_SIGN = add("stem_sign", new StandingSignBlock(Block.Properties.create(Material.WOOD).doesNotBlockMovement().hardnessAndResistance(1.0F).sound(SoundType.WOOD), WonderWoodType.STEM), new Item.Properties().maxStackSize(16).group(ItemGroup.DECORATIONS), (block, properties) -> new SignItem(properties, block, WonderBlocks.STEM_WALL_SIGN));
+    //public static final Block STEM_SIGN = add("stem_sign", new StemStandingSignBlock(Block.Properties.create(Material.WOOD).doesNotBlockMovement().hardnessAndResistance(1.0F).sound(SoundType.WOOD)), new Item.Properties().maxStackSize(16).group(ItemGroup.DECORATIONS), (block, properties) -> new StemSignItem(properties, block, WonderBlocks.STEM_WALL_SIGN));
     public static final Block STEM_DOOR = add("stem_door", new WonderDoorBlock(Block.Properties.create(Material.WOOD, STEM_PLANKS_COLOR).hardnessAndResistance(3.0F).sound(SoundType.WOOD).tickRandomly()), new Item.Properties().group(ItemGroup.REDSTONE));
-    public static final Block STEM_WALL_SIGN = add("stem_wall_sign", new WallSignBlock(Block.Properties.create(Material.WOOD).doesNotBlockMovement().hardnessAndResistance(1.0F).sound(SoundType.WOOD).lootFrom(STEM_SIGN), WonderWoodType.STEM));
+    //public static final Block STEM_WALL_SIGN = add("stem_wall_sign", new StemWallSignBlock(Block.Properties.create(Material.WOOD).doesNotBlockMovement().hardnessAndResistance(1.0F).sound(SoundType.WOOD).lootFrom(STEM_SIGN)));
     public static final Block STEM_PRESSURE_PLATE = add("stem_pressure_plate", new WonderPressurePlateBlock(Block.Properties.create(Material.WOOD, STEM_PLANKS_COLOR).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD)), new Item.Properties().group(ItemGroup.REDSTONE));
     public static final Block STEM_FENCE = add("stem_fence", new FenceBlock(Block.Properties.create(Material.WOOD, STEM_PLANKS_COLOR).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), new Item.Properties().group(ItemGroup.DECORATIONS));
     public static final Block STEM_TRAPDOOR = add("stem_trapdoor", new WonderTrapDoorBlock(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(3.0F).sound(SoundType.WOOD).tickRandomly()), new Item.Properties().group(ItemGroup.REDSTONE));
