@@ -9,8 +9,11 @@ import net.minecraft.item.Items;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import net.msrandom.worldofwonder.block.WonderBlocks;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -33,8 +36,8 @@ public class DandeLionEntity extends TameableEntity {
     public boolean processInteract(PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
         if (!world.isRemote && !isSheared() && stack.getItem() == Items.SHEARS) {
-            setSheared(true);
-            shearedTicks = 12000;
+            shear();
+            entityDropItem(new ItemStack(WonderBlocks.DANDELION_FLUFF, rand.nextInt(2) + 1));
         }
         return super.processInteract(player, hand);
     }
@@ -47,18 +50,43 @@ public class DandeLionEntity extends TameableEntity {
         }
     }
 
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return super.getAmbientSound();
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getDeathSound() {
+        return super.getDeathSound();
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return super.getHurtSound(damageSourceIn);
+    }
+
     public boolean isSheared() {
         return this.dataManager.get(SHEARED);
     }
 
-    public void setSheared(boolean sheared) {
+    private void setSheared(boolean sheared) {
         this.dataManager.set(SHEARED, sheared);
+    }
+
+    public void shear() {
+        if (!world.isRemote) {
+            shearedTicks = 12000;
+            setSheared(true);
+        }
     }
 
     @Nullable
     @Override
     public AgeableEntity createChild(AgeableEntity ageable) {
-        DandeLionEntity entity = WonderEntities.DANDELION.create(this.world);
+        DandeLionEntity entity = WonderEntities.DANDE_LION.create(this.world);
         UUID uuid = this.getOwnerId();
         if (uuid != null && entity != null) {
             entity.setOwnerId(uuid);

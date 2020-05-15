@@ -15,15 +15,15 @@ public class StemBoatModel extends SegmentedModel<StemBoatEntity> {
 
    public StemBoatModel() {
       ModelRenderer[] amodelrenderer = new ModelRenderer[]{(new ModelRenderer(this, 0, 0)).setTextureSize(128, 64), (new ModelRenderer(this, 0, 19)).setTextureSize(128, 64), (new ModelRenderer(this, 0, 27)).setTextureSize(128, 64), (new ModelRenderer(this, 0, 35)).setTextureSize(128, 64), (new ModelRenderer(this, 0, 43)).setTextureSize(128, 64)};
-      amodelrenderer[0].func_228301_a_(-14.0F, -9.0F, -3.0F, 28.0F, 16.0F, 3.0F, 0.0F);
+      amodelrenderer[0].addBox(-14.0F, -9.0F, -3.0F, 28.0F, 16.0F, 3.0F, 0.0F);
       amodelrenderer[0].setRotationPoint(0.0F, 3.0F, 1.0F);
-      amodelrenderer[1].func_228301_a_(-13.0F, -7.0F, -1.0F, 18.0F, 6.0F, 2.0F, 0.0F);
+      amodelrenderer[1].addBox(-13.0F, -7.0F, -1.0F, 18.0F, 6.0F, 2.0F, 0.0F);
       amodelrenderer[1].setRotationPoint(-15.0F, 4.0F, 4.0F);
-      amodelrenderer[2].func_228301_a_(-8.0F, -7.0F, -1.0F, 16.0F, 6.0F, 2.0F, 0.0F);
+      amodelrenderer[2].addBox(-8.0F, -7.0F, -1.0F, 16.0F, 6.0F, 2.0F, 0.0F);
       amodelrenderer[2].setRotationPoint(15.0F, 4.0F, 0.0F);
-      amodelrenderer[3].func_228301_a_(-14.0F, -7.0F, -1.0F, 28.0F, 6.0F, 2.0F, 0.0F);
+      amodelrenderer[3].addBox(-14.0F, -7.0F, -1.0F, 28.0F, 6.0F, 2.0F, 0.0F);
       amodelrenderer[3].setRotationPoint(0.0F, 4.0F, -9.0F);
-      amodelrenderer[4].func_228301_a_(-14.0F, -7.0F, -1.0F, 28.0F, 6.0F, 2.0F, 0.0F);
+      amodelrenderer[4].addBox(-14.0F, -7.0F, -1.0F, 28.0F, 6.0F, 2.0F, 0.0F);
       amodelrenderer[4].setRotationPoint(0.0F, 4.0F, 9.0F);
       amodelrenderer[0].rotateAngleX = ((float)Math.PI / 2F);
       amodelrenderer[1].rotateAngleY = ((float)Math.PI * 1.5F);
@@ -37,7 +37,7 @@ public class StemBoatModel extends SegmentedModel<StemBoatEntity> {
       this.paddles[0].rotateAngleZ = 0.19634955F;
       this.paddles[1].rotateAngleZ = 0.19634955F;
       this.noWater = (new ModelRenderer(this, 0, 0)).setTextureSize(128, 64);
-      this.noWater.func_228301_a_(-14.0F, -9.0F, -3.0F, 28.0F, 16.0F, 3.0F, 0.0F);
+      this.noWater.addBox(-14.0F, -9.0F, -3.0F, 28.0F, 16.0F, 3.0F, 0.0F);
       this.noWater.setRotationPoint(0.0F, -3.0F, 1.0F);
       this.noWater.rotateAngleX = ((float)Math.PI / 2F);
       ImmutableList.Builder<ModelRenderer> builder = ImmutableList.builder();
@@ -46,13 +46,15 @@ public class StemBoatModel extends SegmentedModel<StemBoatEntity> {
       this.parts = builder.build();
    }
 
-   public void func_225597_a_(StemBoatEntity entity, float limbSwing, float limbSwingAmount, float age, float p_225597_5_, float p_225597_6_) {
+   @Override
+   public void setRotationAngles(StemBoatEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
       this.setRotations(entity, 0, limbSwing);
       this.setRotations(entity, 1, limbSwing);
    }
 
-   public ImmutableList<ModelRenderer> func_225601_a_() {
-      return this.parts;
+   @Override
+   public ImmutableList<ModelRenderer> getParts() {
+      return parts;
    }
 
    public ModelRenderer getNoWater() {
@@ -61,8 +63,8 @@ public class StemBoatModel extends SegmentedModel<StemBoatEntity> {
 
    protected ModelRenderer makePaddle(boolean left) {
       ModelRenderer modelrenderer = (new ModelRenderer(this, 62, left ? 0 : 20)).setTextureSize(128, 64);
-      modelrenderer.func_228300_a_(-1.0F, 0.0F, -5.0F, 2.0F, 2.0F, 18.0F);
-      modelrenderer.func_228300_a_(left ? -1.001F : 0.001F, -3.0F, 8.0F, 1.0F, 6.0F, 7.0F);
+      modelrenderer.addBox(-1.0F, 0.0F, -5.0F, 2.0F, 2.0F, 18.0F);
+      modelrenderer.addBox(left ? -1.001F : 0.001F, -3.0F, 8.0F, 1.0F, 6.0F, 7.0F);
       return modelrenderer;
    }
 

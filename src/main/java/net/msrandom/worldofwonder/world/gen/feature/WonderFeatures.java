@@ -9,8 +9,8 @@ import net.msrandom.worldofwonder.WorldOfWonder;
 
 public class WonderFeatures {
     public static final DeferredRegister<Feature<?>> REGISTRY = new DeferredRegister<>(ForgeRegistries.FEATURES, WorldOfWonder.MOD_ID);
-    public static final AbstractTreeFeature<BaseTreeFeatureConfig> DANDELION_TREE = add("dandelion_tree", new DandelionTreeFeature());
-    public static final AbstractTreeFeature<BaseTreeFeatureConfig> FLUFF_TREE = add("fluff_tree", new DandelionFluffTreeFeature());
+    public static final WonderTree DANDELION_TREE = add("dandelion_tree", new DandelionTreeFeature(false));
+    public static final WonderTree FLUFF_TREE = add("fluff_tree", new DandelionFluffTreeFeature(false));
 
     private static <T extends Feature<?>> T add(String name, T feature) {
         REGISTRY.register(name, () -> feature);

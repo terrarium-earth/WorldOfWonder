@@ -30,7 +30,7 @@ public class StemBoatItem extends Item {
       ItemStack stack = playerIn.getHeldItem(handIn);
       RayTraceResult raytraceresult = rayTrace(worldIn, playerIn, RayTraceContext.FluidMode.ANY);
       if (raytraceresult.getType() == RayTraceResult.Type.MISS) {
-         return ActionResult.func_226250_c_(stack);
+         return ActionResult.resultPass(stack);
       } else {
          Vec3d vec3d = playerIn.getLook(1.0F);
          double size = 5;
@@ -41,7 +41,7 @@ public class StemBoatItem extends Item {
             for(Entity entity : list) {
                AxisAlignedBB axisalignedbb = entity.getBoundingBox().grow(entity.getCollisionBorderSize());
                if (axisalignedbb.contains(vec3d1)) {
-                  return ActionResult.func_226250_c_(stack);
+                  return ActionResult.resultPass(stack);
                }
             }
          }
@@ -49,8 +49,8 @@ public class StemBoatItem extends Item {
          if (raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
             StemBoatEntity boatentity = new StemBoatEntity(worldIn, raytraceresult.getHitVec().x, raytraceresult.getHitVec().y, raytraceresult.getHitVec().z);
             boatentity.rotationYaw = playerIn.rotationYaw;
-            if (!worldIn.func_226665_a__(boatentity, boatentity.getBoundingBox().grow(-0.1D))) {
-               return ActionResult.func_226251_d_(stack);
+            if (!worldIn.hasNoCollisions(boatentity, boatentity.getBoundingBox().grow(-0.1D))) {
+               return ActionResult.resultFail(stack);
             } else {
                if (!worldIn.isRemote) {
                   worldIn.addEntity(boatentity);
@@ -60,10 +60,10 @@ public class StemBoatItem extends Item {
                }
 
                playerIn.addStat(Stats.ITEM_USED.get(this));
-               return ActionResult.func_226248_a_(stack);
+               return ActionResult.resultSuccess(stack);
             }
          } else {
-            return ActionResult.func_226250_c_(stack);
+            return ActionResult.resultPass(stack);
          }
       }
    }

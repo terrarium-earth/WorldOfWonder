@@ -84,7 +84,7 @@ public class StemBoatEntity extends Entity {
         this.prevPosZ = z;
     }
 
-    protected boolean func_225502_at_() {
+    protected boolean canTriggerWalking() {
         return false;
     }
 
@@ -151,9 +151,9 @@ public class StemBoatEntity extends Entity {
             }
         }
 
-        this.world.addParticle(ParticleTypes.SPLASH, this.func_226277_ct_() + this.rand.nextDouble(), this.func_226278_cu_() + 0.7D, this.func_226281_cx_() + this.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+        this.world.addParticle(ParticleTypes.SPLASH, this.getPosX() + this.rand.nextDouble(), this.getPosY() + 0.7D, this.getPosZ() + this.rand.nextDouble(), 0.0D, 0.0D, 0.0D);
         if (this.rand.nextInt(20) == 0) {
-            this.world.playSound(this.func_226277_ct_(), this.func_226278_cu_(), this.func_226281_cx_(), this.getSplashSound(), this.getSoundCategory(), 1.0F, 0.8F + 0.4F * this.rand.nextFloat(), false);
+            this.world.playSound(this.getPosX(), this.getPosY(), this.getPosZ(), this.getSplashSound(), this.getSoundCategory(), 1.0F, 0.8F + 0.4F * this.rand.nextFloat(), false);
         }
 
     }
@@ -176,7 +176,7 @@ public class StemBoatEntity extends Entity {
     }
 
     public boolean canBeCollidedWith() {
-        return !this.removed;
+        return isAlive();
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -242,7 +242,7 @@ public class StemBoatEntity extends Entity {
                         Vec3d vec3d = this.getLook(1.0F);
                         double d0 = i == 1 ? -vec3d.z : vec3d.z;
                         double d1 = i == 1 ? vec3d.x : -vec3d.x;
-                        this.world.playSound(null, this.func_226277_ct_() + d0, this.func_226278_cu_(), this.func_226281_cx_() + d1, soundevent, this.getSoundCategory(), 1.0F, 0.8F + 0.4F * this.rand.nextFloat());
+                        this.world.playSound(null, this.getPosX() + d0, this.getPosY(), this.getPosZ() + d1, soundevent, this.getSoundCategory(), 1.0F, 0.8F + 0.4F * this.rand.nextFloat());
                     }
                 }
 
@@ -326,13 +326,13 @@ public class StemBoatEntity extends Entity {
     private void tickLerp() {
         if (this.canPassengerSteer()) {
             this.lerpSteps = 0;
-            this.func_213312_b(this.func_226277_ct_(), this.func_226278_cu_(), this.func_226281_cx_());
+            this.setPacketCoordinates(this.getPosX(), this.getPosY(), this.getPosZ());
         }
 
         if (this.lerpSteps > 0) {
-            double d0 = this.func_226277_ct_() + (this.lerpX - this.func_226277_ct_()) / (double)this.lerpSteps;
-            double d1 = this.func_226278_cu_() + (this.lerpY - this.func_226278_cu_()) / (double)this.lerpSteps;
-            double d2 = this.func_226281_cx_() + (this.lerpZ - this.func_226281_cx_()) / (double)this.lerpSteps;
+            double d0 = this.getPosX() + (this.lerpX - this.getPosX()) / (double)this.lerpSteps;
+            double d1 = this.getPosY() + (this.lerpY - this.getPosY()) / (double)this.lerpSteps;
+            double d2 = this.getPosZ() + (this.lerpZ - this.getPosZ()) / (double)this.lerpSteps;
             double d3 = MathHelper.wrapDegrees(this.lerpYaw - (double)this.rotationYaw);
             this.rotationYaw = (float)((double)this.rotationYaw + d3 / (double)this.lerpSteps);
             this.rotationPitch = (float)((double)this.rotationPitch + (this.lerpPitch - (double)this.rotationPitch) / (double)this.lerpSteps);
@@ -389,7 +389,7 @@ public class StemBoatEntity extends Entity {
                         pos.setPos(l1, k1, i2);
                         IFluidState ifluidstate = this.world.getFluidState(pos);
                         if (ifluidstate.isTagged(FluidTags.WATER)) {
-                            f = Math.max(f, ifluidstate.func_215679_a(this.world, pos));
+                            f = Math.max(f, ifluidstate.getActualHeight(this.world, pos));
                         }
 
                         if (f >= 1.0F) {
@@ -461,7 +461,7 @@ public class StemBoatEntity extends Entity {
                         blockpos$pooledmutable.setPos(k1, l1, i2);
                         IFluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutable);
                         if (ifluidstate.isTagged(FluidTags.WATER)) {
-                            float f = (float)l1 + ifluidstate.func_215679_a(this.world, blockpos$pooledmutable);
+                            float f = (float)l1 + ifluidstate.getActualHeight(this.world, blockpos$pooledmutable);
                             this.waterLevel = Math.max(f, this.waterLevel);
                             flag |= axisalignedbb.minY < (double)f;
                         }
@@ -491,7 +491,7 @@ public class StemBoatEntity extends Entity {
                     for(int i2 = i1; i2 < j1; ++i2) {
                         blockpos$pooledmutable.setPos(k1, l1, i2);
                         IFluidState ifluidstate = this.world.getFluidState(blockpos$pooledmutable);
-                        if (ifluidstate.isTagged(FluidTags.WATER) && d0 < (double)((float)blockpos$pooledmutable.getY() + ifluidstate.func_215679_a(this.world, blockpos$pooledmutable))) {
+                        if (ifluidstate.isTagged(FluidTags.WATER) && d0 < (double)((float)blockpos$pooledmutable.getY() + ifluidstate.getActualHeight(this.world, blockpos$pooledmutable))) {
                             if (!ifluidstate.isSource()) {
                                 return BoatEntity.Status.UNDER_FLOWING_WATER;
                             }
@@ -507,19 +507,19 @@ public class StemBoatEntity extends Entity {
     }
 
     private void updateMotion() {
-        double d0 = (double)-0.04F;
-        double d1 = this.hasNoGravity() ? 0.0D : (double)-0.04F;
+        double d0 = -0.04;
+        double d1 = this.hasNoGravity() ? 0 : d0;
         double d2 = 0.0D;
         float momentum = 0.05F;
         if (this.previousStatus == BoatEntity.Status.IN_AIR && this.status != BoatEntity.Status.IN_AIR && this.status != BoatEntity.Status.ON_LAND) {
-            this.waterLevel = this.func_226283_e_(1.0D);
-            this.setPosition(this.func_226277_ct_(), (double)(this.getWaterLevelAbove() - this.getHeight()) + 0.101D, this.func_226281_cx_());
+            this.waterLevel = this.getPosYHeight(1.0D);
+            this.setPosition(this.getPosX(), (double)(this.getWaterLevelAbove() - this.getHeight()) + 0.101D, this.getPosZ());
             this.setMotion(this.getMotion().mul(1.0D, 0.0D, 1.0D));
             this.lastYd = 0.0D;
             this.status = BoatEntity.Status.IN_WATER;
         } else {
             if (this.status == BoatEntity.Status.IN_WATER) {
-                d2 = (this.waterLevel - this.func_226278_cu_()) / (double)this.getHeight();
+                d2 = (this.waterLevel - this.getPosY()) / (double)this.getHeight();
                 momentum = 0.9F;
             } else if (this.status == BoatEntity.Status.UNDER_FLOWING_WATER) {
                 d1 = -7.0E-4D;
@@ -594,7 +594,7 @@ public class StemBoatEntity extends Entity {
             }
 
             Vec3d vec3d = (new Vec3d(f, 0.0D, 0.0D)).rotateYaw((float) (Math.toRadians(-this.rotationYaw) - (Math.PI / 2F)));
-            passenger.setPosition(this.func_226277_ct_() + vec3d.x, this.func_226278_cu_() + (double)f1, this.func_226281_cx_() + vec3d.z);
+            passenger.setPosition(this.getPosX() + vec3d.x, this.getPosY() + (double)f1, this.getPosZ() + vec3d.z);
             passenger.rotationYaw += this.deltaRotation;
             passenger.setRotationYawHead(passenger.getRotationYawHead() + this.deltaRotation);
             this.applyYawToEntity(passenger);
@@ -645,7 +645,7 @@ public class StemBoatEntity extends Entity {
                         return;
                     }
 
-                    this.func_225503_b_(this.fallDistance, 1.0F);
+                    this.onLivingFall(this.fallDistance, 1.0F);
                     if (!this.world.isRemote && isAlive()) {
                         this.remove();
                         if (this.world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
