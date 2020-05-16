@@ -1,4 +1,4 @@
-package net.msrandom.worldofwonder.client.renderer.tileentity.model;
+package net.msrandom.worldofwonder.client.renderer.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -25,7 +25,7 @@ import java.util.List;
 
 public class StemSignTileEntityRenderer extends TileEntityRenderer<StemSignTileEntity> {
    private final SignTileEntityRenderer.SignModel model = new SignTileEntityRenderer.SignModel();
-   private final Material material = new Material(Atlases.SIGN_ATLAS, new ResourceLocation(WorldOfWonder.MOD_ID, "entity/stem_sign.png"));
+   private final Material material = new Material(Atlases.SIGN_ATLAS, new ResourceLocation(WorldOfWonder.MOD_ID, "textures/entity/stem_sign.png"));
 
    public StemSignTileEntityRenderer(TileEntityRendererDispatcher rendererDispatcherIn) {
       super(rendererDispatcherIn);
@@ -49,20 +49,20 @@ public class StemSignTileEntityRenderer extends TileEntityRenderer<StemSignTileE
       }
 
       matrixStackIn.push();
-      matrixStackIn.scale(0.6666667F, -0.6666667F, -0.6666667F);
+      matrixStackIn.scale(f, -f, -f);
       IVertexBuilder ivertexbuilder = material.getBuffer(bufferIn, this.model::getRenderType);
       this.model.signBoard.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn);
       this.model.signStick.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn);
       matrixStackIn.pop();
       FontRenderer fontrenderer = this.renderDispatcher.getFontRenderer();
       float f2 = 0.010416667F;
-      matrixStackIn.translate(0.0D, (double) 0.33333334F, (double) 0.046666667F);
-      matrixStackIn.scale(0.010416667F, -0.010416667F, 0.010416667F);
+      matrixStackIn.translate(0.0D, 0.33333334F, 0.046666667F);
+      matrixStackIn.scale(f2, -f2, f2);
       int i = tileEntityIn.getTextColor().getTextColor();
       double d0 = 0.4D;
-      int j = (int) ((double) NativeImage.getRed(i) * 0.4D);
-      int k = (int) ((double) NativeImage.getGreen(i) * 0.4D);
-      int l = (int) ((double) NativeImage.getBlue(i) * 0.4D);
+      int j = (int) ((double) NativeImage.getRed(i) * d0);
+      int k = (int) ((double) NativeImage.getGreen(i) * d0);
+      int l = (int) ((double) NativeImage.getBlue(i) * d0);
       int i1 = NativeImage.getCombined(0, l, k, j);
 
       for (int j1 = 0; j1 < 4; ++j1) {

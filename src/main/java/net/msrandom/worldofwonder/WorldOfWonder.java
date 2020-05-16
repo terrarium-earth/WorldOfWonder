@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.msrandom.worldofwonder.block.WonderBlocks;
 import net.msrandom.worldofwonder.client.renderer.entity.DandeLionRenderer;
-import net.msrandom.worldofwonder.client.renderer.tileentity.model.StemSignTileEntityRenderer;
+import net.msrandom.worldofwonder.client.renderer.tileentity.StemSignTileEntityRenderer;
 import net.msrandom.worldofwonder.entity.WonderEntities;
 import net.msrandom.worldofwonder.item.WonderItems;
 import net.msrandom.worldofwonder.tileentity.WonderTileEntities;

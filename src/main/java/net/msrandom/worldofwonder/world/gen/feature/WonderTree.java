@@ -30,8 +30,8 @@ public abstract class WonderTree extends AbstractTreeFeature<BaseTreeFeatureConf
     }
 
     @Override
-    protected final boolean func_225557_a_(IWorldGenerationReader generationReader, Random rand, BlockPos p_225557_3_, Set<BlockPos> p_225557_4_, Set<BlockPos> p_225557_5_, MutableBoundingBox p_225557_6_, BaseTreeFeatureConfig p_225557_7_) {
-        return generationReader instanceof IBlockReader && ((IBlockReader) generationReader).getBlockState(p_225557_3_.down()).getBlock() == Blocks.GRASS_BLOCK && place(generationReader, p_225557_3_, rand);
+    protected final boolean place(IWorldGenerationReader generationReader, Random rand, BlockPos pos, Set<BlockPos> p_225557_4_, Set<BlockPos> p_225557_5_, MutableBoundingBox p_225557_6_, BaseTreeFeatureConfig p_225557_7_) {
+        return generationReader instanceof IBlockReader && ((IBlockReader) generationReader).getBlockState(pos.down()).getBlock() == Blocks.GRASS_BLOCK && place(generationReader, pos, rand);
     }
 
     public abstract boolean place(IWorldGenerationReader world, BlockPos pos, Random rand);

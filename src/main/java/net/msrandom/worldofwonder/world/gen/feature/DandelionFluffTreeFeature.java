@@ -16,14 +16,14 @@ public class DandelionFluffTreeFeature extends WonderTree {
 
     @Override
     public boolean place(IWorldGenerationReader world, BlockPos pos, Random rand) {
-        if (!sapling && world instanceof World) {
+/*        if (!sapling && world instanceof World) {
             BlockPos entityPos = pos.add(rand.nextInt(16) - 8, 0, rand.nextInt(16) - 8);
             DandeLionEntity entity = WonderEntities.DANDE_LION.create((World) world);
             if (entity != null) {
                 entity.setPosition(entityPos.getX(), entityPos.getY(), entityPos.getZ());
                 world.addEntity(entity);
             }
-        }
+        }*/
 
         int height = rand.nextInt(3) + 6;
         int flags = sapling ? 18 : 3;
