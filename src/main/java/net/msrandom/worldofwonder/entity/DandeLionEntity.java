@@ -13,6 +13,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import net.msrandom.worldofwonder.WonderSounds;
 import net.msrandom.worldofwonder.block.WonderBlocks;
 
 import javax.annotation.Nullable;
@@ -50,22 +51,28 @@ public class DandeLionEntity extends TameableEntity {
         }
     }
 
+    @Override
+    protected void dropSpecialItems(DamageSource source, int looting, boolean recentlyHitIn) {
+        super.dropSpecialItems(source, looting, recentlyHitIn);
+        entityDropItem(new ItemStack(isSheared() ? WonderBlocks.DANDELION_PETALS : WonderBlocks.DANDELION_FLUFF, rand.nextInt(2) + 1));
+    }
+
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return super.getAmbientSound();
+        return WonderSounds.DANDE_LION_AMBIENT;
     }
 
     @Nullable
     @Override
     protected SoundEvent getDeathSound() {
-        return super.getDeathSound();
+        return WonderSounds.DANDE_LION_DEATH;
     }
 
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return super.getHurtSound(damageSourceIn);
+        return WonderSounds.DANDE_LION_HURT;
     }
 
     public boolean isSheared() {

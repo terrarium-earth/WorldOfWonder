@@ -1,0 +1,17 @@
+{
+  "dande_lion.ambient": {
+    "sounds": [
+      "worldofwonder:dande_lion/ambient"
+    ]
+  },
+  "dande_lion.death": {
+    "sounds": [
+      "worldofwonder:dande_lion/death"
+    ]
+  },
+  "dande_lion.hurt": {
+    "sounds": [
+      "worldofwonder:dande_lion/hurt"
+    ]
+  }
+}

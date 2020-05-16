@@ -1,12 +1,15 @@
 package net.msrandom.worldofwonder.client.renderer.entity.model;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.entity.model.AgeableModel;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import net.msrandom.worldofwonder.entity.DandeLionEntity;
 
-public class DandeLionModel extends SegmentedModel<DandeLionEntity> {
+import java.util.Collections;
+
+public class DandeLionModel extends AgeableModel<DandeLionEntity> {
     public ModelRenderer body;
     public ModelRenderer head;
     public ModelRenderer armLeft;
@@ -61,7 +64,12 @@ public class DandeLionModel extends SegmentedModel<DandeLionEntity> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    protected Iterable<ModelRenderer> getHeadParts() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected Iterable<ModelRenderer> getBodyParts() {
         return ImmutableList.of(body);
     }
 
