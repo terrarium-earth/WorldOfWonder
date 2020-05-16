@@ -1,3 +1,24 @@
 {
+  "language.name": "English",
+  "language.region": "United States",
+  "language.code": "en_us",
+
+  "itemGroup.worldofwonder": "World of Wonder",
+
+  "block.worldofwonder.dandelion_fluff": "Dandelion Fluff",
+  "block.worldofwonder.dandelion_petals": "Dandelion Petals",
+  "block.worldofwonder.stem_wood": "Dandelion Stem",
+  "block.worldofwonder.stripped_stem_wood": "Stripped Dandelion Stem",
+  "block.worldofwonder.stem_planks": "Stem Planks",
+  "block.worldofwonder.stem_door": "Stem Door",
+  "block.worldofwonder.stem_trapdoor": "Stem Trapdoor",
+  "block.worldofwonder.stem_fence": "Stem Fence",
+  "block.worldofwonder.stem_button": "Stem Button",
+  "block.worldofwonder.stem_slab": "Stem Slab",
+  "block.worldofwonder.stem_fence_gate": "Stem Fence Gate",
+  "block.worldofwonder.stem_pressure_plate": "Stem Pressure Plate",
+  "block.worldofwonder.stem_stairs": "Stem Stairs",
+  "item.worldofwonder.bloom_meal": "Bloom Meal",
+  "item.worldofwonder.dandelion_hat": "Dandelion Hat"
 
 }

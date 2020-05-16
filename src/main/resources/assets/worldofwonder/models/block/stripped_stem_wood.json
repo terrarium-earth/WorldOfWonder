@@ -1,6 +1,8 @@
+
 {
-    "parent": "block/cube_all",
+    "parent": "block/cube_column",
     "textures": {
-        "all": "worldofwonder:block/stripped_stem_wood"
+        "end": "worldofwonder:block/stem_top",
+        "side": "worldofwonder:block/stripped_stem_wood"
     }
 }
