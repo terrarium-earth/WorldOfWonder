@@ -1,5 +1,8 @@
 package net.msrandom.worldofwonder;
 
+import net.minecraft.entity.EntitySpawnPlacementRegistry;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -28,6 +31,7 @@ public class WorldOfWonder {
         WonderEntities.REGISTRY.register(bus);
         WonderFeatures.REGISTRY.register(bus);
         bus.addListener(WonderBiomes::registerTypes);
+        EntitySpawnPlacementRegistry.register(WonderEntities.DANDE_LION, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, AnimalEntity::canAnimalSpawn);
         SIDED_EXECUTOR.registerClient();
     }
 

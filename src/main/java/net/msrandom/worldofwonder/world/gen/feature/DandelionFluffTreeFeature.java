@@ -1,11 +1,8 @@
 package net.msrandom.worldofwonder.world.gen.feature;
 
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import net.msrandom.worldofwonder.block.WonderBlocks;
-import net.msrandom.worldofwonder.entity.DandeLionEntity;
-import net.msrandom.worldofwonder.entity.WonderEntities;
 
 import java.util.Random;
 
@@ -84,7 +81,7 @@ public class DandelionFluffTreeFeature extends WonderTree {
     }
 
     private void setLeaves(IWorldGenerationReader world, BlockPos pos, Random rand, int flags) {
-        if (rand.nextInt(4) != 0) {
+        if (rand.nextInt(6) != 0) {
             world.setBlockState(pos, leaves, flags);
         }
     }

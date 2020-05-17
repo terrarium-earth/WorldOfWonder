@@ -1,34 +1,14 @@
 package net.msrandom.worldofwonder.entity;
 
-import java.util.UUID;
-import java.util.function.Predicate;
-
-import javax.annotation.Nullable;
-
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.BreedGoal;
-import net.minecraft.entity.ai.goal.FollowOwnerGoal;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.LeapAtTargetGoal;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
-import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
-import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
-import net.minecraft.entity.ai.goal.SitGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.merchant.villager.VillagerEntity;
+import net.minecraft.block.Block;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -41,16 +21,16 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.msrandom.worldofwonder.WonderSounds;
 import net.msrandom.worldofwonder.block.WonderBlocks;
+
+import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class DandeLionEntity extends TameableEntity {
     private static final DataParameter<Boolean> SHEARED = EntityDataManager.createKey(DandeLionEntity.class, DataSerializers.BOOLEAN);
     private int shearedTicks;
-    public static final Predicate<LivingEntity> TARGET_ENTITIES = (entitytype) -> {
-        //EntityType<?> entitytype = p_213440_0_.getType();
-        return entitytype instanceof AgeableEntity && !(entitytype instanceof DandeLionEntity) && !(entitytype instanceof VillagerEntity);
-     };
 
     public DandeLionEntity(EntityType<? extends DandeLionEntity> type, World worldIn) {
         super(type, worldIn);
@@ -71,17 +51,17 @@ public class DandeLionEntity extends TameableEntity {
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setCallsForHelp());
-        this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, AgeableEntity.class, false, TARGET_ENTITIES));
+        this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, AnimalEntity.class, false, entity -> !(entity instanceof DandeLionEntity)));
         
      }
     
     @Override
     protected void registerAttributes() {
         super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double)0.25F);
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK).setBaseValue(0.2D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30);
+        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK).setBaseValue(0.2);
      }
 
     @Override
@@ -97,23 +77,124 @@ public class DandeLionEntity extends TameableEntity {
     }
 
     @Override
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putBoolean("Angry", this.isAngry());
+    }
+
+    @Override
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        this.setAngry(compound.getBoolean("Angry"));
+    }
+
+    @Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
-        if (!world.isRemote && !isSheared() && stack.getItem() == Items.SHEARS) {
-            shear();
-            this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, getSoundVolume(), 1);
-            entityDropItem(new ItemStack(WonderBlocks.DANDELION_FLUFF, rand.nextInt(2) + 1));
-        } else if (this.world.isRemote) {
-        	return this.isOwner(player) || stack.getTag().equals(BlockTags.SMALL_FLOWERS);
+        if (!world.isRemote) {
+            if (stack.getItem() instanceof SpawnEggItem) {
+                return super.processInteract(player, hand);
+            } else {
+
+                if (!isSheared() && stack.getItem() == Items.SHEARS) {
+                    shear();
+                    this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, getSoundVolume(), 1);
+                    entityDropItem(new ItemStack(WonderBlocks.DANDELION_FLUFF, rand.nextInt(2) + 1));
+                    return true;
+                }
+
+                if (this.isTamed()) {
+                    if (stack.getItem() == Items.BONE_MEAL) {
+                        if (!player.abilities.isCreativeMode) {
+                            stack.shrink(1);
+                        }
+
+                        this.heal(4);
+                        if (shearedTicks > 0) {
+                            shearedTicks -= 3000;
+                            if (shearedTicks < 0) {
+                                shearedTicks = 0;
+                                setSheared(false);
+                            }
+                        }
+                        return true;
+                    }
+
+                    if (this.isOwner(player) && !this.isBreedingItem(stack)) {
+                        this.sitGoal.setSitting(!this.isSitting());
+                        this.isJumping = false;
+                        this.navigator.clearPath();
+                        this.setAttackTarget(null);
+                    }
+                } else if (BlockTags.SMALL_FLOWERS.contains(Block.getBlockFromItem(stack.getItem())) && !this.isAngry()) {
+                    if (!player.abilities.isCreativeMode) {
+                        stack.shrink(1);
+                    }
+
+                    if (this.rand.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player)) {
+                        this.setTamedBy(player);
+                        this.navigator.clearPath();
+                        this.setAttackTarget(null);
+                        this.sitGoal.setSitting(true);
+                        this.world.setEntityState(this, (byte) 7);
+                    } else {
+                        this.world.setEntityState(this, (byte) 6);
+                    }
+
+                    return true;
+                }
+            }
         }
         return super.processInteract(player, hand);
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (!world.isRemote && shearedTicks > 0 && --shearedTicks == 0) {
-            setSheared(false);
+    public boolean isBreedingItem(ItemStack stack) {
+        return BlockTags.TALL_FLOWERS.contains(Block.getBlockFromItem(stack.getItem()));
+    }
+
+    @Override
+    public boolean canMateWith(AnimalEntity otherAnimal) {
+        if (otherAnimal != this && this.isTamed() && otherAnimal instanceof DandeLionEntity) {
+            DandeLionEntity dandeLion = (DandeLionEntity) otherAnimal;
+            return dandeLion.isTamed() && !dandeLion.isSitting() && this.isInLove() && dandeLion.isInLove();
+        }
+        return false;
+    }
+
+    public boolean isAngry() {
+        return (this.dataManager.get(TAMED) & 2) != 0;
+    }
+
+    public void setAngry(boolean angry) {
+        byte b0 = this.dataManager.get(TAMED);
+        if (angry) {
+            this.dataManager.set(TAMED, (byte) (b0 | 2));
+        } else {
+            this.dataManager.set(TAMED, (byte) (b0 & -3));
+        }
+    }
+
+    @Override
+    public void setAttackTarget(@Nullable LivingEntity entitylivingbaseIn) {
+        super.setAttackTarget(entitylivingbaseIn);
+        if (entitylivingbaseIn == null) {
+            this.setAngry(false);
+        } else if (!this.isTamed()) {
+            this.setAngry(true);
+        }
+    }
+
+    @Override
+    public void livingTick() {
+        super.livingTick();
+        if (!this.world.isRemote) {
+            if (this.getAttackTarget() == null && this.isAngry()){
+                this.setAngry(false);
+            }
+            if (shearedTicks > 0 && --shearedTicks == 0) {
+                setSheared(false);
+            }
         }
     }
 
@@ -154,6 +235,10 @@ public class DandeLionEntity extends TameableEntity {
             shearedTicks = 12000;
             setSheared(true);
         }
+    }
+
+    public boolean canBeLeashedTo(PlayerEntity player) {
+        return !this.isAngry() && super.canBeLeashedTo(player);
     }
 
     @Nullable
