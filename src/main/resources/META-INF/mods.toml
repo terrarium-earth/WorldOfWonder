@@ -4,9 +4,9 @@ loaderVersion="[31,)"
 modId="worldofwonder"
 version="${file.jarVersion}"
 displayName="World of Wonder"
-credits=""
-authors=""
+credits="Ms. Random (Code), Coda (Art), Cosmos (Ideas, Code), Kenzie (Code), Mr. Esuoh (Sounds)"
 description='''
+World of Wonder is a mod that was made for MMD's ModJam. It contians a new biome, the Dandelion Fields.
 '''
 [[dependencies.worldofwonder]]
     modId="forge"

@@ -1,3 +1,4 @@
+/*
 package net.msrandom.worldofwonder.client.renderer.entity.model;
 
 import com.google.common.collect.ImmutableList;
@@ -78,3 +79,4 @@ public class StemBoatModel extends SegmentedModel<StemBoatEntity> {
       }
    }
 }
+*/

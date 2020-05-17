@@ -6,11 +6,9 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.msrandom.worldofwonder.tileentity.StemSignTileEntity;
 import net.msrandom.worldofwonder.block.WonderBlocks;
 import net.msrandom.worldofwonder.client.renderer.entity.DandeLionRenderer;
-import net.msrandom.worldofwonder.client.renderer.entity.StemBoatRenderer;
-import net.msrandom.worldofwonder.client.renderer.tileentity.model.StemSignTileEntityRenderer;
+import net.msrandom.worldofwonder.client.renderer.tileentity.StemSignTileEntityRenderer;
 import net.msrandom.worldofwonder.entity.WonderEntities;
 import net.msrandom.worldofwonder.item.WonderItems;
 import net.msrandom.worldofwonder.tileentity.WonderTileEntities;
@@ -40,9 +38,9 @@ public class WorldOfWonder {
                 super.registerClient();
 
                 //This is only called on the client, register client sided renders and stuff here
-                RenderingRegistry.registerEntityRenderingHandler(WonderEntities.STEM_BOAT, StemBoatRenderer::new);
+                //RenderingRegistry.registerEntityRenderingHandler(WonderEntities.STEM_BOAT, StemBoatRenderer::new);
                 RenderingRegistry.registerEntityRenderingHandler(WonderEntities.DANDE_LION, DandeLionRenderer::new);
-                //ClientRegistry.bindTileEntityRenderer(WonderTileEntities.STEM_SIGN, StemSignTileEntityRenderer::new);
+                ClientRegistry.bindTileEntityRenderer(WonderTileEntities.STEM_SIGN, StemSignTileEntityRenderer::new);
             }
         }, () -> SidedExecutor::new);
     }

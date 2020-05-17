@@ -19,7 +19,7 @@ archivesBaseName = 'WorldOfWonder'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200501-1.15.1'
+    mappings channel: 'snapshot', version: '20200516-1.15.1'
 
     runs {
         client {
@@ -47,7 +47,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.15.2-31.1.0'
+    minecraft 'net.minecraftforge:forge:1.15.2-31.2.0'
 }
 
 jar {

@@ -1,5 +1,6 @@
 package net.msrandom.worldofwonder.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -13,6 +14,11 @@ public class DandeLionRenderer extends MobRenderer<DandeLionEntity, DandeLionMod
 
     public DandeLionRenderer(EntityRendererManager manager) {
         super(manager, new DandeLionModel(), 0.4f);
+    }
+
+    @Override
+    protected void preRenderCallback(DandeLionEntity entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
+        super.preRenderCallback(entitylivingbaseIn, matrixStackIn, partialTickTime);
     }
 
     @Override

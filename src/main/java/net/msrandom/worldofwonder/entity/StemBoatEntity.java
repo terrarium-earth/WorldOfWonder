@@ -1,3 +1,4 @@
+/*
 package net.msrandom.worldofwonder.entity;
 
 import net.minecraft.block.BlockState;
@@ -672,30 +673,38 @@ public class StemBoatEntity extends Entity {
         return this.dataManager.<Boolean>get(side == 0 ? LEFT_PADDLE : RIGHT_PADDLE) && this.getControllingPassenger() != null;
     }
 
-    /**
+    */
+/**
      * Sets the damage taken from the last hit.
-     */
+     *//*
+
     public void setDamageTaken(float damageTaken) {
         this.dataManager.set(DAMAGE_TAKEN, damageTaken);
     }
 
-    /**
+    */
+/**
      * Gets the damage taken from the last hit.
-     */
+     *//*
+
     public float getDamageTaken() {
         return this.dataManager.get(DAMAGE_TAKEN);
     }
 
-    /**
+    */
+/**
      * Sets the time to count down from since the last time entity was hit.
-     */
+     *//*
+
     public void setTimeSinceHit(int timeSinceHit) {
         this.dataManager.set(TIME_SINCE_HIT, timeSinceHit);
     }
 
-    /**
+    */
+/**
      * Gets the time since the last hit.
-     */
+     *//*
+
     public int getTimeSinceHit() {
         return this.dataManager.get(TIME_SINCE_HIT);
     }
@@ -752,3 +761,4 @@ public class StemBoatEntity extends Entity {
         }
     }
 }
+*/

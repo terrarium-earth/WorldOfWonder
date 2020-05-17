@@ -1,3 +1,4 @@
+/*
 package net.msrandom.worldofwonder.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -59,3 +60,4 @@ public class StemBoatRenderer extends EntityRenderer<StemBoatEntity> {
         return TEXTURE;
     }
 }
+*/

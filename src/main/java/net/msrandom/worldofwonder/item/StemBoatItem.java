@@ -1,3 +1,4 @@
+/*
 package net.msrandom.worldofwonder.item;
 
 import net.minecraft.entity.Entity;
@@ -68,3 +69,4 @@ public class StemBoatItem extends Item {
       }
    }
 }
+*/

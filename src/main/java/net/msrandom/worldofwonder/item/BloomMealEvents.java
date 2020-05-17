@@ -25,6 +25,7 @@ public class BloomMealEvents {
             BlockPos pos = event.getPos();
             if (event.getItemStack().getItem() == WonderItems.BLOOM_MEAL && world.getBlockState(pos).getBlock() == Blocks.DANDELION) {
                 Random rand = event.getWorld().rand;
+                world.playEvent(2005, pos, 0);
                 if (rand.nextInt(3) == 0) {
                     (rand.nextInt(4) == 0 ? FLUFF : DANDELION).place(world, pos, rand);
                 }
