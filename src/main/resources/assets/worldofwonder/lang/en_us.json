@@ -21,6 +21,7 @@
   "item.worldofwonder.bloom_meal": "Bloom Meal",
   "item.worldofwonder.dande_lion_spawn_egg": "Dande-lion Spawn Egg",
   "entity.worldofwonder.DANDE_LION": "Dande-lion",
-  "item.worldofwonder.dandelion_hat": "Dandelion Hat"
+  "item.worldofwonder.dandelion_hat": "Dandelion Hat",
+  "biome.worldofwonder.DandelionFieldsBiome": "Dandelion Fields"
 
 }
