@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:adventure/root",
+  "display": {
+    "icon": {
+      "item": "worldofwonder:dandelion_hat"
+    },
+    "title": {
+      "translate": "Riding on the Spring Breeze"
+    },
+    "description": {
+      "translate": "Craft a Dandelion Hat to gently float to the ground!"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "hat": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "worldofwonder:dandelion_hat"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "hat"
+    ]
+  ]
+}
