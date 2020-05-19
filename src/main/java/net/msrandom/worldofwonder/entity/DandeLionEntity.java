@@ -35,10 +35,10 @@ public class DandeLionEntity extends TameableEntity {
     public DandeLionEntity(EntityType<? extends DandeLionEntity> type, World worldIn) {
         super(type, worldIn);
     }
-    
+
     @Override
     protected void registerGoals() {
-    	this.sitGoal = new SitGoal(this);
+        this.sitGoal = new SitGoal(this);
         this.goalSelector.addGoal(1, new SwimGoal(this));
         this.goalSelector.addGoal(2, this.sitGoal);
         this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
@@ -52,9 +52,9 @@ public class DandeLionEntity extends TameableEntity {
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setCallsForHelp());
         this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, AnimalEntity.class, false, entity -> !(entity instanceof DandeLionEntity)));
-        
-     }
-    
+
+    }
+
     @Override
     protected void registerAttributes() {
         super.registerAttributes();
@@ -62,7 +62,7 @@ public class DandeLionEntity extends TameableEntity {
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30);
         this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6);
         this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK).setBaseValue(0.2);
-     }
+    }
 
     @Override
     protected void registerData() {
@@ -189,7 +189,7 @@ public class DandeLionEntity extends TameableEntity {
     public void livingTick() {
         super.livingTick();
         if (!this.world.isRemote) {
-            if (this.getAttackTarget() == null && this.isAngry()){
+            if (this.getAttackTarget() == null && this.isAngry()) {
                 this.setAngry(false);
             }
             if (shearedTicks > 0 && --shearedTicks == 0) {
