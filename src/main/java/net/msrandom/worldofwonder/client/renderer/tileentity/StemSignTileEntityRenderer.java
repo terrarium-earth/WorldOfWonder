@@ -18,14 +18,14 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.msrandom.worldofwonder.WorldOfWonder;
-import net.msrandom.worldofwonder.tileentity.StemSignTileEntity;
 import net.msrandom.worldofwonder.block.StemStandingSignBlock;
+import net.msrandom.worldofwonder.tileentity.StemSignTileEntity;
 
 import java.util.List;
 
 public class StemSignTileEntityRenderer extends TileEntityRenderer<StemSignTileEntity> {
    private final SignTileEntityRenderer.SignModel model = new SignTileEntityRenderer.SignModel();
-   private final Material material = new Material(Atlases.SIGN_ATLAS, new ResourceLocation(WorldOfWonder.MOD_ID, "textures/entity/stem_sign.png"));
+   private final Material material = new Material(Atlases.SIGN_ATLAS, new ResourceLocation(WorldOfWonder.MOD_ID, "textures/entity/stem/sign.png"));
 
    public StemSignTileEntityRenderer(TileEntityRendererDispatcher rendererDispatcherIn) {
       super(rendererDispatcherIn);

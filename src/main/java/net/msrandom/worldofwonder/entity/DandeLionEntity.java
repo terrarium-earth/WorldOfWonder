@@ -207,7 +207,7 @@ public class DandeLionEntity extends TameableEntity {
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return WonderSounds.DANDE_LION_AMBIENT;
+        return isTamed() ? WonderSounds.DANDE_LION_PUR : WonderSounds.DANDE_LION_AMBIENT;
     }
 
     @Nullable

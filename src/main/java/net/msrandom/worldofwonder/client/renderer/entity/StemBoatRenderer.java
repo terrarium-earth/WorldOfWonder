@@ -17,7 +17,7 @@ import net.msrandom.worldofwonder.client.renderer.entity.model.StemBoatModel;
 import net.msrandom.worldofwonder.entity.StemBoatEntity;
 
 public class StemBoatRenderer extends EntityRenderer<StemBoatEntity> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(WorldOfWonder.MOD_ID, "textures/entity/stem_boat.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(WorldOfWonder.MOD_ID, "textures/entity/stem/boat.png");
     protected final StemBoatModel model = new StemBoatModel();
 
     public StemBoatRenderer(EntityRendererManager renderManagerIn) {
