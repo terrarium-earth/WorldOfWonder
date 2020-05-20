@@ -83,12 +83,12 @@ public class DandeLionModel extends AgeableModel<DandeLionEntity> {
             this.tail.rotationPointZ = 6;
             this.tail.rotateAngleX = 1.92f;
             this.armRight.rotationPointY = 2;
-            this.armRight.rotationPointZ = -5;
+            this.armRight.rotationPointZ = -3;
             this.armRight.rotateAngleX = 0.785f;
             this.armRight.rotateAngleY = -0.087f;
             this.armRight.rotateAngleZ = -0.087f;
             this.armLeft.rotationPointY = 2;
-            this.armLeft.rotationPointZ = -5;
+            this.armLeft.rotationPointZ = -3;
             this.armLeft.rotateAngleX = 0.785f;
             this.armLeft.rotateAngleY = 0.087f;
             this.armLeft.rotateAngleZ = 0.087f;
