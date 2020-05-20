@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class DandelionTreeFeature extends WonderTree {
     public DandelionTreeFeature(boolean sapling) {
-        super(sapling, WonderBlocks.STEM_WOOD, WonderBlocks.DANDELION_PETALS);
+        super(sapling, WonderBlocks.STEM_LOG, WonderBlocks.DANDELION_PETALS);
     }
 
     @Override

@@ -7,8 +7,10 @@
 
   "block.worldofwonder.dandelion_fluff": "Dandelion Fluff",
   "block.worldofwonder.dandelion_petals": "Dandelion Petals",
-  "block.worldofwonder.stem_wood": "Dandelion Stem",
-  "block.worldofwonder.stripped_stem_wood": "Stripped Dandelion Stem",
+  "block.worldofwonder.stem_log": "Dandelion Stem",
+  "block.worldofwonder.stripped_stem_log": "Stripped Dandelion Stem",
+  "block.worldofwonder.stem_wood": "Dandelion Wood",
+  "block.worldofwonder.stripped_stem_wood": "Stripped Dandelion Wood",
   "block.worldofwonder.stem_planks": "Stem Planks",
   "block.worldofwonder.stem_door": "Stem Door",
   "block.worldofwonder.stem_trapdoor": "Stem Trapdoor",
@@ -18,9 +20,12 @@
   "block.worldofwonder.stem_fence_gate": "Stem Fence Gate",
   "block.worldofwonder.stem_pressure_plate": "Stem Pressure Plate",
   "block.worldofwonder.stem_stairs": "Stem Stairs",
+
   "item.worldofwonder.bloom_meal": "Bloom Meal",
   "item.worldofwonder.dande_lion_spawn_egg": "Dande-lion Spawn Egg",
-  "entity.worldofwonder.dande_lion": "Dande-lion",
   "item.worldofwonder.dandelion_hat": "Dandelion Hat",
+
+  "entity.worldofwonder.dande_lion": "Dande-lion",
+
   "biome.worldofwonder.dandelion_fields": "Dandelion Fields"
 }

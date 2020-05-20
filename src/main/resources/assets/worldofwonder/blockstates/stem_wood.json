@@ -1,5 +1,7 @@
 {
     "variants": {
-        "": { "model": "worldofwonder:block/stem_wood" }
+        "axis=y": { "model": "worldofwonder:block/stem_wood" },
+        "axis=z": { "model": "worldofwonder:block/stem_wood", "x": 90 },
+        "axis=x": { "model": "worldofwonder:block/stem_wood", "x": 90, "y": 90 }
     }
 }
