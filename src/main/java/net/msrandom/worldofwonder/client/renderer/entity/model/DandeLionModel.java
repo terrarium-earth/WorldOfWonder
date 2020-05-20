@@ -2,7 +2,6 @@ package net.msrandom.worldofwonder.client.renderer.entity.model;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.entity.model.AgeableModel;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import net.msrandom.worldofwonder.entity.DandeLionEntity;
@@ -75,10 +74,59 @@ public class DandeLionModel extends AgeableModel<DandeLionEntity> {
 
     @Override
     public void setRotationAngles(DandeLionEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.legRight.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-        this.legLeft.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-        this.armRight.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-        this.armLeft.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-        this.tail.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.2F * limbSwingAmount + 0.17453292519943295F;
+        if (entityIn.isSitting()) {
+            this.head.rotationPointY = -2;
+            this.head.rotationPointZ = -7;
+            this.head.rotateAngleX = 0.785f;
+            this.body.rotateAngleX = -0.785f;
+            this.tail.rotationPointY = -3;
+            this.tail.rotationPointZ = 6;
+            this.tail.rotateAngleX = 1.92f;
+            this.armRight.rotationPointY = 2;
+            this.armRight.rotationPointZ = -5;
+            this.armRight.rotateAngleX = 0.785f;
+            this.armRight.rotateAngleY = -0.087f;
+            this.armRight.rotateAngleZ = -0.087f;
+            this.armLeft.rotationPointY = 2;
+            this.armLeft.rotationPointZ = -5;
+            this.armLeft.rotateAngleX = 0.785f;
+            this.armLeft.rotateAngleY = 0.087f;
+            this.armLeft.rotateAngleZ = 0.087f;
+            this.legRight.rotationPointY = 3;
+            this.legRight.rotateAngleX = -0.785f;
+            this.legRight.rotateAngleY = 0.349f;
+            this.legRight.rotateAngleZ = 0.262f;
+            this.legLeft.rotationPointY = 3;
+            this.legLeft.rotateAngleX = -0.785f;
+            this.legLeft.rotateAngleY = -0.349f;
+            this.legLeft.rotateAngleZ = -0.262f;
+        } else {
+            this.head.rotationPointY = -3;
+            this.head.rotationPointZ = -6;
+            this.head.rotateAngleX = 0;
+            this.body.rotateAngleX = 0;
+            this.tail.rotationPointY = -4;
+            this.tail.rotationPointZ = 7;
+            this.armRight.rotationPointY = 3;
+            this.armRight.rotationPointZ = -4;
+            this.armRight.rotateAngleY = 0;
+            this.armRight.rotateAngleZ = 0;
+            this.armLeft.rotationPointY = 3;
+            this.armLeft.rotationPointZ = -4;
+            this.armLeft.rotateAngleY = 0;
+            this.armLeft.rotateAngleZ = 0;
+            this.legRight.rotationPointY = 4;
+            this.legRight.rotateAngleY = 0;
+            this.legRight.rotateAngleZ = 0;
+            this.legLeft.rotationPointY = 4;
+            this.legLeft.rotateAngleY = 0;
+            this.legLeft.rotateAngleZ = 0;
+
+            this.legRight.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+            this.legLeft.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+            this.armRight.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+            this.armLeft.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+            this.tail.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 0.2F * limbSwingAmount + 0.17453292519943295F;
+        }
     }
 }
