@@ -1,6 +1,5 @@
 package net.msrandom.worldofwonder.item;
 
-import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -24,9 +23,6 @@ public class ItemDandelionHat extends ArmorItem {
     public static final IArmorMaterial MATERIAL = new WonderArmorMaterial(WorldOfWonder.MOD_ID + ":dandelion", 1, new int[]{1, 2, 3, 1}, 3, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, () -> Ingredient.fromTag(ItemTags.getCollection().getOrCreate(new ResourceLocation("dandelion"))));
     private static final AttributeModifier SLOW_FALLING = new AttributeModifier(UUID.fromString("A5B6CF2A-2F7C-31EF-9022-7C3E7D5E6ABA"), "Slow falling acceleration reduction", -0.07, AttributeModifier.Operation.ADDITION).setSaved(false);
 
-    @OnlyIn(Dist.CLIENT)
-    private final BipedModel<?> model = new DandelionHatModel();
-
     public ItemDandelionHat() {
         super(MATERIAL, EquipmentSlotType.HEAD, new Item.Properties().group(ItemGroup.COMBAT));
     }
@@ -43,11 +39,11 @@ public class ItemDandelionHat extends ArmorItem {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Nullable
     @Override
     @OnlyIn(Dist.CLIENT)
-    @SuppressWarnings("unchecked")
-    public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
-        return (A) model;
+    public <A extends net.minecraft.client.renderer.entity.model.BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
+        return (A) DandelionHatModel.INSTANCE;
     }
 }

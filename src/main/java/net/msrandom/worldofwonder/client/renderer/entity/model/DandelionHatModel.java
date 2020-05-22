@@ -3,8 +3,13 @@ package net.msrandom.worldofwonder.client.renderer.entity.model;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.LivingEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class DandelionHatModel extends BipedModel<LivingEntity> {
+    public static final DandelionHatModel INSTANCE = new DandelionHatModel();
+
     public ModelRenderer hat;
     public ModelRenderer fluff1;
     public ModelRenderer fluff2;
