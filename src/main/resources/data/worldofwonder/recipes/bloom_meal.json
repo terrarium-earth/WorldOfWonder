@@ -2,13 +2,13 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
         {
-            "item": "worldofwonder:stem_wood"
+            "item": "worldofwonder:dandelion_fluff"
         },
         {
             "item": "worldofwonder:dandelion_fluff"
         },
         {
-            "item": "worldofwonder:dandelion_petals"
+            "item": "worldofwonder:dandelion_fluff"
         },
         {
             "item": "minecraft:bone_meal"
