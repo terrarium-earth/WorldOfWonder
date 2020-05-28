@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "worldofwonder:stem_wood",
-    "worldofwonder:stripped_stem_wood"
+    "worldofwonder:stripped_stem_wood",
+    "worldofwonder:stem_log",
+    "worldofwonder:stripped_stem_log"
   ]
 }
