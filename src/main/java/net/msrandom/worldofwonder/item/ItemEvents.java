@@ -35,15 +35,15 @@ public class ItemEvents {
     @SubscribeEvent
     public static void interact(PlayerInteractEvent.RightClickBlock event) {
         World world = event.getWorld();
-        if (!world.isRemote) {
-            ItemStack stack = event.getItemStack();
-            Item item = stack.getItem();
-            BlockPos pos = event.getPos();
-            BlockState state = world.getBlockState(pos);
-            Block block = state.getBlock();
-            if (item instanceof AxeItem) {
-                PlayerEntity playerentity = event.getPlayer();
-                world.playSound(playerentity, pos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        ItemStack stack = event.getItemStack();
+        Item item = stack.getItem();
+        BlockPos pos = event.getPos();
+        BlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+        if (item instanceof AxeItem) {
+            PlayerEntity playerentity = event.getPlayer();
+            world.playSound(playerentity, pos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            if (!world.isRemote) {
                 Block stripped = BLOCK_STRIPPING_MAP.get(block);
                 if (stripped != null) {
                     world.setBlockState(pos, stripped.getDefaultState().with(RotatedPillarBlock.AXIS, state.get(RotatedPillarBlock.AXIS)), 11);
@@ -53,7 +53,8 @@ public class ItemEvents {
                     event.setUseItem(Event.Result.DENY);
                 }
             }
-            else if (item == WonderItems.BLOOM_MEAL && block == Blocks.DANDELION) {
+        } else if (item == WonderItems.BLOOM_MEAL && block == Blocks.DANDELION) {
+            if (!world.isRemote) {
                 Random rand = event.getWorld().rand;
                 world.playEvent(2005, pos, 0);
                 if (rand.nextInt(3) == 0) {
