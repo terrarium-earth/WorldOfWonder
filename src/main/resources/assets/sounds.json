@@ -4,6 +4,11 @@
       "worldofwonder:dande_lion/ambient"
     ]
   },
+  "dande_lion.pur": {
+    "sounds": [
+      "worldofwonder:dande_lion/pur"
+    ]
+  },
   "dande_lion.death": {
     "sounds": [
       "worldofwonder:dande_lion/death"

@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 
 public class BlockDandelionFluff extends Block {
     public BlockDandelionFluff() {
-        super(Block.Properties.create(Material.WOOL).hardnessAndResistance(0.8f).sound(SoundType.CLOTH));
+        super(Block.Properties.create(Material.WOOL).hardnessAndResistance(0.2f).sound(SoundType.CLOTH));
     }
 
     public void onFallenUpon(World worldIn, BlockPos pos, Entity entityIn, float fallDistance) {
