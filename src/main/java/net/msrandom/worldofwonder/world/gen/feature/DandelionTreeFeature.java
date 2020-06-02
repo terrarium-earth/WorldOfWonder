@@ -47,7 +47,6 @@ public class DandelionTreeFeature extends WonderTree {
                 }
             }
 
-
             for (int i = -1; i <= 1; i++) setBlock(world, pos.add(2, 0, i), leaves, flags);
             for (int i = -1; i <= 1; i++) setBlock(world, pos.add(-2, 0, i), leaves, flags);
             for (int i = -1; i <= 1; i++) setBlock(world, pos.add(i, 0, 2), leaves, flags);
