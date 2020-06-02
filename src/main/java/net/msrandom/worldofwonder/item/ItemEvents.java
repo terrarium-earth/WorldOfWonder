@@ -57,6 +57,7 @@ public class ItemEvents {
             if (!world.isRemote) {
                 Random rand = event.getWorld().rand;
                 world.playEvent(2005, pos, 0);
+                if (!event.getPlayer().abilities.isCreativeMode) stack.shrink(1);
                 if (rand.nextInt(3) == 0) {
                     (rand.nextInt(4) == 0 ? FLUFF_TREE : DANDELION_TREE).place(world, pos, rand);
                 }
