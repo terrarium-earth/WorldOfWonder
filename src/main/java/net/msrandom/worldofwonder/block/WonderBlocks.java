@@ -35,7 +35,7 @@ public class WonderBlocks {
     public static final Block STEM_FENCE_GATE = add("stem_fence_gate", new FenceGateBlock(Block.Properties.create(Material.WOOD, STEM_PLANKS_COLOR).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), new Item.Properties().group(ItemGroup.REDSTONE));
     public static final Block STEM_BUTTON = add("stem_button", new WonderWoodButtonBlock(Block.Properties.create(Material.MISCELLANEOUS).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD)), new Item.Properties().group(ItemGroup.REDSTONE));
     public static final Block STEM_SLAB = add("stem_slab", new SlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), new Item.Properties().group(ItemGroup.BUILDING_BLOCKS));
-
+    public static final Block STEM_VERTICAL_SLAB = add("stem_vertical_slab", new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), new Item.Properties().group(ItemGroup.BUILDING_BLOCKS));
     //Register a block without an item, add("name", new Block(...))
     private static <T extends Block> T add(String name, T block) {
         return add(name, block, null);

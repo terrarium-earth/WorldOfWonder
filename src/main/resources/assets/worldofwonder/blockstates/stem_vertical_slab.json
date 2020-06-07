@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "type=north": { "model": "worldofwonder:block/stem_vertical_slab", "y": 0, "uvlock": true },
+        "type=south": { "model": "worldofwonder:block/stem_vertical_slab", "y": 180, "uvlock": true },
+        "type=east": { "model": "worldofwonder:block/stem_vertical_slab", "y": 90, "uvlock": true },
+        "type=west": { "model": "worldofwonder:block/stem_vertical_slab", "y": 270, "uvlock": true },
+        "type=double": { "model": "worldofwonder:block/stem_planks" }
+    }
+}
