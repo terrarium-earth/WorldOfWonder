@@ -41,11 +41,11 @@ public class ItemEvents {
         BlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
         if (item instanceof AxeItem) {
-            PlayerEntity playerentity = event.getPlayer();
-            world.playSound(playerentity, pos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
-            if (!world.isRemote) {
-                Block stripped = BLOCK_STRIPPING_MAP.get(block);
-                if (stripped != null) {
+            Block stripped = BLOCK_STRIPPING_MAP.get(block);
+            if (stripped != null) {
+                world.playSound(playerentity, pos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                if (!world.isRemote) {
+                    PlayerEntity playerentity = event.getPlayer();
                     world.setBlockState(pos, stripped.getDefaultState().with(RotatedPillarBlock.AXIS, state.get(RotatedPillarBlock.AXIS)), 11);
                     if (playerentity != null) {
                         stack.damageItem(1, playerentity, player -> player.sendBreakAnimation(event.getHand()));
