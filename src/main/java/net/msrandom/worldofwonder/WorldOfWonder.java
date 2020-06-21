@@ -4,19 +4,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.dispenser.OptionalDispenseBehavior;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
-import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -26,7 +19,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.msrandom.worldofwonder.block.WonderBlocks;
 import net.msrandom.worldofwonder.client.renderer.entity.DandeLionRenderer;
-import net.msrandom.worldofwonder.client.renderer.entity.StemBoatRenderer;
 import net.msrandom.worldofwonder.client.renderer.tileentity.StemSignTileEntityRenderer;
 import net.msrandom.worldofwonder.entity.WonderEntities;
 import net.msrandom.worldofwonder.item.ItemEvents;
@@ -48,22 +40,7 @@ public class WorldOfWonder {
         WonderEntities.REGISTRY.register(bus);
         WonderFeatures.REGISTRY.register(bus);
         bus.addListener(this::registerExtras);
-        DispenserBlock.registerDispenseBehavior(WonderItems.BLOOM_MEAL, new OptionalDispenseBehavior() {
-            protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-                this.successful = true;
-                World world = source.getWorld();
-                BlockPos blockpos = source.getBlockPos().offset(source.getBlockState().get(DispenserBlock.FACING));
-                if (!world.isRemote) {
-                    if (!ItemEvents.handleBloomMeal(world, stack, blockpos, FakePlayerFactory.getMinecraft((ServerWorld) world))) {
-                        this.successful = false;
-                    } else {
-                        world.playEvent(2005, blockpos, 0);
-                    }
-                }
-
-                return stack;
-            }
-        });
+        DispenserBlock.registerDispenseBehavior(WonderItems.BLOOM_MEAL, ItemEvents.BLOOM_MEAL_DISPENSE);
         EntitySpawnPlacementRegistry.register(WonderEntities.DANDE_LION, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, AnimalEntity::canAnimalSpawn);
     }
 
@@ -85,7 +62,7 @@ public class WorldOfWonder {
                 super.registerClient();
 
                 //This is only called on the client, register client sided renders and stuff here
-                RenderingRegistry.registerEntityRenderingHandler(WonderEntities.STEM_BOAT, StemBoatRenderer::new);
+                //RenderingRegistry.registerEntityRenderingHandler(WonderEntities.STEM_BOAT, StemBoatRenderer::new);
                 RenderingRegistry.registerEntityRenderingHandler(WonderEntities.DANDE_LION, DandeLionRenderer::new);
                 ClientRegistry.bindTileEntityRenderer(WonderTileEntities.STEM_SIGN, StemSignTileEntityRenderer::new);
                 RenderTypeLookup.setRenderLayer(WonderBlocks.STEM_DOOR, RenderType.getCutout());

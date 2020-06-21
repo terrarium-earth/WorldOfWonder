@@ -1,10 +1,10 @@
 package net.msrandom.worldofwonder.item;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.RotatedPillarBlock;
+import net.minecraft.block.*;
+import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.dispenser.IDispenseItemBehavior;
+import net.minecraft.dispenser.OptionalDispenseBehavior;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
@@ -12,6 +12,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -27,6 +29,7 @@ import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = WorldOfWonder.MOD_ID)
 public class ItemEvents {
+    public static final IDispenseItemBehavior BLOOM_MEAL_DISPENSE = new BloomMealDispenseBehavior();
     private static final WonderTree DANDELION_TREE = new DandelionTreeFeature(true);
     private static final WonderTree FLUFF_TREE = new DandelionFluffTreeFeature(true);
     private static final Map<Block, Block> BLOCK_STRIPPING_MAP = new ImmutableMap.Builder<Block, Block>().put(WonderBlocks.STEM_LOG, WonderBlocks.STRIPPED_STEM_LOG).put(WonderBlocks.STEM_WOOD, WonderBlocks.STRIPPED_STEM_WOOD).build();
@@ -66,5 +69,22 @@ public class ItemEvents {
             }
         }
         return false;
+    }
+
+    private static class BloomMealDispenseBehavior extends OptionalDispenseBehavior {
+        protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
+            this.successful = true;
+            World world = source.getWorld();
+            BlockPos blockpos = source.getBlockPos().offset(source.getBlockState().get(DispenserBlock.FACING));
+            if (!world.isRemote) {
+                if (!handleBloomMeal(world, stack, blockpos, FakePlayerFactory.getMinecraft((ServerWorld) world))) {
+                    this.successful = false;
+                } else {
+                    world.playEvent(2005, blockpos, 0);
+                }
+            }
+
+            return stack;
+        }
     }
 }
