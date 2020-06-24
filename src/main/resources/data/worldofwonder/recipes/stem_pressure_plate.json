@@ -3,11 +3,11 @@
 	    "pattern": [
         "pp"
     ],
-    "key": [
+    "key": {
         "p": {
             "item": "worldofwonder:stem_planks"
         }
-    ],
+    },
     "result": {
         "item": "worldofwonder:stem_pressure_plate",
         "count": 1
