@@ -64,6 +64,6 @@ public class WorldOfWonder {
         DispenserBlock.registerDispenseBehavior(WonderItems.BLOOM_MEAL, ItemEvents.BLOOM_MEAL_DISPENSE);
         EntitySpawnPlacementRegistry.register(WonderEntities.DANDE_LION, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, AnimalEntity::canAnimalSpawn);
 
-        WonderVanillaCompat.setupWonderVanillaCompat();
+        WonderVanillaCompat.init();
     }
 }

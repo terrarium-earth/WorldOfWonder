@@ -9,7 +9,7 @@ import net.msrandom.worldofwonder.block.WonderBlocks;
 
 public class WonderVanillaCompat {
 
-    public static void setupWonderVanillaCompat() {
+    public static void init() {
         registerCompostable(WonderBlocks.DANDELION_PETALS.asItem(), 0.3F);
         registerCompostable(WonderBlocks.DANDELION_FLUFF.asItem(), 0.3F);
 
