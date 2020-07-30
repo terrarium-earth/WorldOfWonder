@@ -1,0 +1,16 @@
+{
+  "textures": {
+    "flower": "worldofwonder:block/dande_lion_sprout",
+    "particle": "worldofwonder:block/dande_lion_sprout"
+  },
+  "elements": [
+    {   "from": [ 0.8, 0, 8 ],
+      "to": [ 15.2, 16, 8 ],
+      "shade": false,
+      "faces": {
+        "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#flower" },
+        "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#flower" }
+      }
+    }
+  ]
+}

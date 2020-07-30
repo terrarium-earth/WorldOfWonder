@@ -1,11 +1,15 @@
 package net.msrandom.worldofwonder.entity;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.SpawnEggItem;
@@ -13,12 +17,15 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -26,10 +33,10 @@ import net.msrandom.worldofwonder.WonderSounds;
 import net.msrandom.worldofwonder.block.WonderBlocks;
 
 import javax.annotation.Nullable;
-import java.util.UUID;
 
 public class DandeLionEntity extends TameableEntity {
     private static final DataParameter<Boolean> SHEARED = EntityDataManager.createKey(DandeLionEntity.class, DataSerializers.BOOLEAN);
+    private boolean madeChild;
     private int shearedTicks;
 
     public DandeLionEntity(EntityType<? extends DandeLionEntity> type, World worldIn) {
@@ -95,7 +102,6 @@ public class DandeLionEntity extends TameableEntity {
             if (stack.getItem() instanceof SpawnEggItem) {
                 return super.processInteract(player, hand);
             } else {
-
                 if (!isSheared() && stack.getItem() == Items.SHEARS) {
                     shear();
                     this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, getSoundVolume(), 1);
@@ -126,7 +132,7 @@ public class DandeLionEntity extends TameableEntity {
                         this.navigator.clearPath();
                         this.setAttackTarget(null);
                     }
-                } else if (BlockTags.SMALL_FLOWERS.contains(Block.getBlockFromItem(stack.getItem())) && !this.isAngry()) {
+                } else if (Block.getBlockFromItem(stack.getItem()).isIn(BlockTags.SMALL_FLOWERS) && !this.isAngry()) {
                     if (!player.abilities.isCreativeMode) {
                         stack.shrink(1);
                     }
@@ -150,7 +156,7 @@ public class DandeLionEntity extends TameableEntity {
 
     @Override
     public boolean isBreedingItem(ItemStack stack) {
-        return BlockTags.TALL_FLOWERS.contains(Block.getBlockFromItem(stack.getItem()));
+        return Block.getBlockFromItem(stack.getItem()).isIn(BlockTags.TALL_FLOWERS);
     }
 
     @Override
@@ -183,6 +189,12 @@ public class DandeLionEntity extends TameableEntity {
         } else if (!this.isTamed()) {
             this.setAngry(true);
         }
+    }
+
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        this.setSitting(false);
+        return super.attackEntityFrom(source, amount);
     }
 
     @Override
@@ -244,12 +256,59 @@ public class DandeLionEntity extends TameableEntity {
     @Nullable
     @Override
     public AgeableEntity createChild(AgeableEntity ageable) {
-        DandeLionEntity entity = WonderEntities.DANDE_LION.create(this.world);
-        UUID uuid = this.getOwnerId();
-        if (uuid != null && entity != null) {
-            entity.setOwnerId(uuid);
-            entity.setTamed(true);
+        if (ageable instanceof DandeLionEntity && flowersAround()) {
+            if (((DandeLionEntity) ageable).madeChild) ((DandeLionEntity) ageable).madeChild = false;
+            else {
+                madeChild = true;
+                for (int i = 0; i < rand.nextInt(2) + 3; i++) {
+                    DandeLionSeedEntity seed = WonderEntities.DANDE_LION_SEED.create(world);
+                    if (seed != null) {
+                        double rotation = Math.toRadians(rand.nextInt(360));
+                        seed.setPosition(getPosX(), getPosY(), getPosZ());
+                        seed.setTarget(getPosX() + Math.sin(rotation) * 16.0, getPosZ() + Math.cos(-rotation) * 16.0);
+                        world.addEntity(seed);
+                    }
+                }
+
+                ServerPlayerEntity serverplayerentity = getLoveCause();
+                if (serverplayerentity == null) {
+                    serverplayerentity = ((DandeLionEntity) ageable).getLoveCause();
+                }
+
+                if (serverplayerentity != null) {
+                    serverplayerentity.addStat(Stats.ANIMALS_BRED);
+                    CriteriaTriggers.BRED_ANIMALS.trigger(serverplayerentity, this, (AnimalEntity) ageable, null);
+                }
+
+                setGrowingAge(6000);
+                ageable.setGrowingAge(6000);
+                resetInLove();
+                ((AnimalEntity) ageable).resetInLove();
+
+                this.world.setEntityState(this, (byte)18);
+                this.world.setEntityState(ageable, (byte)18);
+                if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
+                    this.world.addEntity(new ExperienceOrbEntity(this.world, getPosX(), getPosY(), getPosZ(), rand.nextInt(7) + 1));
+                }
+            }
         }
-        return entity;
+        return null;
+    }
+
+    private boolean flowersAround() {
+        BlockPos p = getPosition();
+        int flowers = 0;
+        for (int i = -16; i <= 16; i++) {
+            for (int j = -16; j <= 16; j++) {
+                BlockPos pos = p.add(i, 0, j);
+                BlockState current = world.getBlockState(pos);
+                BlockState down = world.getBlockState(pos.down());
+                if (!down.isSolid()) current = down;
+                if (current.isIn(BlockTags.FLOWERS) && ++flowers >= 6) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

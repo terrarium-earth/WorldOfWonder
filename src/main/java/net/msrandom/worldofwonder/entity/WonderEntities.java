@@ -14,7 +14,8 @@ import net.msrandom.worldofwonder.item.WonderItems;
 public class WonderEntities {
     public static final DeferredRegister<EntityType<?>> REGISTRY = new DeferredRegister<>(ForgeRegistries.ENTITIES, WorldOfWonder.MOD_ID);
     public static final EntityType<DandeLionEntity> DANDE_LION = add("dande_lion", DandeLionEntity::new, EntityClassification.CREATURE, 0.8f, 1.1f, 0x79ae45, 0xf2db26);
-    //public static final EntityType<StemBoatEntity> STEM_BOAT = add("stem_boat", StemBoatEntity::new, EntityClassification.MISC, 1.375f, 0.5625f);
+    public static final EntityType<StemBoatEntity> STEM_BOAT = add("stem_boat", StemBoatEntity::new, EntityClassification.MISC, 1.375f, 0.5625f);
+    public static final EntityType<DandeLionSeedEntity> DANDE_LION_SEED = add("dande_lion_seed", DandeLionSeedEntity::new, EntityClassification.MISC, 1f, 1f);
 
     private static <T extends Entity> EntityType<T> add(String name, EntityType.IFactory<T> factory, EntityClassification classification, float width, float height, int eggPrimary, int eggSecondary) {
         EntityType<T> type = add(name, factory, classification, width, height);

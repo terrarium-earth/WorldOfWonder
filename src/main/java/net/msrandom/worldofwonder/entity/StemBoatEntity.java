@@ -1,4 +1,4 @@
-/*
+
 package net.msrandom.worldofwonder.entity;
 
 import net.minecraft.block.BlockState;
@@ -19,7 +19,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.play.client.CSteerBoatPacket;
-import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
@@ -34,6 +33,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.msrandom.worldofwonder.block.WonderBlocks;
 import net.msrandom.worldofwonder.item.WonderItems;
 
@@ -77,7 +77,7 @@ public class StemBoatEntity extends Entity {
     }
 
     public StemBoatEntity(World worldIn, double x, double y, double z) {
-        this(WonderEntities.STEM_BOAT, worldIn);
+        this(/*WonderEntities.STEM_BOAT*/ null, worldIn);
         this.setPosition(x, y, z);
         this.setMotion(Vec3d.ZERO);
         this.prevPosX = x;
@@ -629,7 +629,7 @@ public class StemBoatEntity extends Entity {
     }
 
     public boolean processInitialInteract(PlayerEntity player, Hand hand) {
-        if (player.func_226563_dT_()) {
+        if (player.isSecondaryUseActive()) {
             return false;
         } else {
             return (!this.world.isRemote && this.outOfControlTicks < 60.0F) && player.startRiding(this);
@@ -670,40 +670,22 @@ public class StemBoatEntity extends Entity {
     }
 
     public boolean getPaddleState(int side) {
-        return this.dataManager.<Boolean>get(side == 0 ? LEFT_PADDLE : RIGHT_PADDLE) && this.getControllingPassenger() != null;
+        return this.dataManager.get(side == 0 ? LEFT_PADDLE : RIGHT_PADDLE) && this.getControllingPassenger() != null;
     }
 
-    */
-/**
-     * Sets the damage taken from the last hit.
-     *//*
 
     public void setDamageTaken(float damageTaken) {
         this.dataManager.set(DAMAGE_TAKEN, damageTaken);
     }
 
-    */
-/**
-     * Gets the damage taken from the last hit.
-     *//*
 
     public float getDamageTaken() {
         return this.dataManager.get(DAMAGE_TAKEN);
     }
 
-    */
-/**
-     * Sets the time to count down from since the last time entity was hit.
-     *//*
-
     public void setTimeSinceHit(int timeSinceHit) {
         this.dataManager.set(TIME_SINCE_HIT, timeSinceHit);
     }
-
-    */
-/**
-     * Gets the time since the last hit.
-     *//*
 
     public int getTimeSinceHit() {
         return this.dataManager.get(TIME_SINCE_HIT);
@@ -749,7 +731,7 @@ public class StemBoatEntity extends Entity {
     }
 
     public IPacket<?> createSpawnPacket() {
-        return new SSpawnObjectPacket(this);
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
@@ -761,4 +743,3 @@ public class StemBoatEntity extends Entity {
         }
     }
 }
-*/
