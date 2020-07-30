@@ -14,6 +14,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.msrandom.worldofwonder.block.WonderBlocks;
 import net.msrandom.worldofwonder.client.renderer.entity.DandeLionRenderer;
@@ -39,11 +40,10 @@ public class WorldOfWonder {
         WonderEntities.REGISTRY.register(bus);
         WonderTileEntities.REGISTRY.register(bus);
         WonderFeatures.REGISTRY.register(bus);
+
         bus.addListener(WonderBiomes::registerTypes);
         bus.addListener(this::registerClient);
-        ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(new ResourceLocation(MOD_ID, "dande_lion_sprout"), () -> WonderBlocks.POTTED_DANDE_LION_SPROUT);
-        DispenserBlock.registerDispenseBehavior(WonderItems.BLOOM_MEAL, ItemEvents.BLOOM_MEAL_DISPENSE);
-        EntitySpawnPlacementRegistry.register(WonderEntities.DANDE_LION, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, AnimalEntity::canAnimalSpawn);
+        bus.addListener(this::commonSetup);
     }
 
     private void registerClient(FMLClientSetupEvent event) {
@@ -51,10 +51,19 @@ public class WorldOfWonder {
         RenderingRegistry.registerEntityRenderingHandler(WonderEntities.DANDE_LION, DandeLionRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(WonderEntities.DANDE_LION_SEED, DandeLionSeedRenderer::new);
         ClientRegistry.bindTileEntityRenderer(WonderTileEntities.STEM_SIGN, StemSignTileEntityRenderer::new);
+
         RenderTypeLookup.setRenderLayer(WonderBlocks.STEM_DOOR, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(WonderBlocks.STEM_TRAPDOOR, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(WonderBlocks.STEM_LADDER, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(WonderBlocks.DANDE_LION_SPROUT, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(WonderBlocks.POTTED_DANDE_LION_SPROUT, RenderType.getCutout());
+    }
+
+    private void commonSetup(FMLCommonSetupEvent event) {
+        ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(new ResourceLocation(MOD_ID, "dande_lion_sprout"), () -> WonderBlocks.POTTED_DANDE_LION_SPROUT);
+        DispenserBlock.registerDispenseBehavior(WonderItems.BLOOM_MEAL, ItemEvents.BLOOM_MEAL_DISPENSE);
+        EntitySpawnPlacementRegistry.register(WonderEntities.DANDE_LION, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, AnimalEntity::canAnimalSpawn);
+
+        WonderVanillaCompat.setupWonderVanillaCompat();
     }
 }
