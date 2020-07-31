@@ -14,7 +14,7 @@ public class WonderBiomes {
 
     public static void registerTypes(RegistryEvent.Register<Biome> event) {
         if (event.getRegistry().getRegistrySuperType() == Biome.class) {
-            BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(WonderBiomes.DANDELION_FIELDS, 5));
+            BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(WonderBiomes.DANDELION_FIELDS, 3));
             BiomeManager.addSpawnBiome(WonderBiomes.DANDELION_FIELDS);
             BiomeDictionary.addTypes(WonderBiomes.DANDELION_FIELDS, BiomeDictionary.Type.PLAINS, BiomeDictionary.Type.OVERWORLD);
         }
