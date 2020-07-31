@@ -23,7 +23,7 @@
   "block.worldofwonder.stem_stairs": "Stem Stairs",
   "block.worldofwonder.stem_bookshelf": "Stem Bookshelf",
   "block.worldofwonder.stem_ladder": "Stem Ladder",
-  "block.worldofwonder.dande_lion_sprout": "Dande-Lion Sprout",
+  "block.worldofwonder.dande_lion_sprout": "Dande-lion Sprout",
   "block.worldofwonder.stem_sign": "Stem Sign",
 
   "item.worldofwonder.bloom_meal": "Bloom Meal",
@@ -32,7 +32,6 @@
   "item.worldofwonder.stem_boat": "Stem Boat",
 
   "entity.worldofwonder.dande_lion": "Dande-lion",
-  "entity.worldofwonder.dande_lion.no_flowers": "Not enough flowers for breeding",
 
   "biome.worldofwonder.dandelion_fields": "Dandelion Fields"
 }

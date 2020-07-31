@@ -18,6 +18,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
@@ -25,16 +26,12 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.msrandom.worldofwonder.WonderSounds;
-import net.msrandom.worldofwonder.WorldOfWonder;
 import net.msrandom.worldofwonder.block.WonderBlocks;
 
 import javax.annotation.Nullable;
@@ -185,7 +182,7 @@ public class DandeLionEntity extends TameableEntity {
                         this.setInLove(player);
                         player.swing(hand, true);
                     } else {
-                        player.sendStatusMessage(new TranslationTextComponent("entity." + WorldOfWonder.MOD_ID + ".dande_lion.no_flowers").setStyle(new Style().setColor(TextFormatting.RED)), true);
+                        world.setEntityState(this, (byte) 5);
                     }
                     return true;
                 }
@@ -198,6 +195,20 @@ public class DandeLionEntity extends TameableEntity {
             }
         }
         return false;
+    }
+
+    @Override
+    public void handleStatusUpdate(byte id) {
+        if (id == 5) {
+            for(int i = 0; i < 7; ++i) {
+                double d0 = this.rand.nextGaussian() * 0.02D;
+                double d1 = this.rand.nextGaussian() * 0.02D;
+                double d2 = this.rand.nextGaussian() * 0.02D;
+                this.world.addParticle(ParticleTypes.ANGRY_VILLAGER, this.getPosXRandom(1.0D), this.getPosYRandom() + 0.5D, this.getPosZRandom(1.0D), d0, d1, d2);
+            }
+        } else{
+            super.handleStatusUpdate(id);
+        }
     }
 
     @Override
