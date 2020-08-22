@@ -1,5 +1,6 @@
 {
-    "variants": {
-        "": { "model": "worldofwonder:block/dande_lion_sprout" }
-    }
+  "variants": {
+    "axis=x":  { "model": "worldofwonder:block/dande_lion_sprout", "y": 90 },
+    "axis=z": { "model": "worldofwonder:block/dande_lion_sprout" }
+  }
 }

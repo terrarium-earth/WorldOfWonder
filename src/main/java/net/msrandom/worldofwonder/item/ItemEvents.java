@@ -8,6 +8,9 @@ import net.minecraft.dispenser.OptionalDispenseBehavior;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.stats.Stats;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -52,8 +55,16 @@ public class ItemEvents {
                     event.setUseItem(Event.Result.DENY);
                 }
             }
-        }
-        else handleBloomMeal(world, stack, pos, event.getPlayer());
+        } else if (state.getBlock() == Blocks.FLOWER_POT && stack.getItem() == WonderBlocks.DANDE_LION_SPROUT.asItem()) {
+            world.setBlockState(pos, WonderBlocks.POTTED_DANDE_LION_SPROUT.getDefaultState().with(BlockStateProperties.HORIZONTAL_AXIS, event.getPlayer().getHorizontalFacing().getOpposite().getAxis()), 3);
+            event.getPlayer().addStat(Stats.POT_FLOWER);
+            if (!event.getPlayer().abilities.isCreativeMode) {
+                stack.shrink(1);
+            }
+            event.setUseBlock(Event.Result.DENY);
+            event.setCancellationResult(ActionResultType.SUCCESS);
+            event.setCanceled(true);
+        } else handleBloomMeal(world, stack, pos, event.getPlayer());
     }
 
     public static boolean handleBloomMeal(World world, ItemStack stack, BlockPos pos, PlayerEntity player) {
