@@ -7,10 +7,8 @@ import net.minecraft.block.StandingSignBlock;
 import net.minecraft.block.WallSignBlock;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.RenderComponentsUtil;
-import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Vector3f;
-import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
@@ -24,8 +22,8 @@ import net.msrandom.worldofwonder.tileentity.StemSignTileEntity;
 import java.util.List;
 
 public class StemSignTileEntityRenderer extends TileEntityRenderer<StemSignTileEntity> {
-   private final SignTileEntityRenderer.SignModel model = new SignTileEntityRenderer.SignModel();
-   private final Material material = new Material(Atlases.SIGN_ATLAS, new ResourceLocation(WorldOfWonder.MOD_ID, "textures/entity/stem/sign.png"));
+    public static final ResourceLocation TEXTURE = new ResourceLocation(WorldOfWonder.MOD_ID, "textures/entity/stem/sign.png");
+    private final SignTileEntityRenderer.SignModel model = new SignTileEntityRenderer.SignModel();
 
    public StemSignTileEntityRenderer(TileEntityRendererDispatcher rendererDispatcherIn) {
       super(rendererDispatcherIn);
@@ -34,7 +32,7 @@ public class StemSignTileEntityRenderer extends TileEntityRenderer<StemSignTileE
    public void render(StemSignTileEntity tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
       BlockState blockstate = tileEntityIn.getBlockState();
       matrixStackIn.push();
-      float f = 0.6666667F;
+      float f = 2f / 3f;
       if (blockstate.getBlock() instanceof StemStandingSignBlock) {
          matrixStackIn.translate(0.5D, 0.5D, 0.5D);
          float f1 = -((float) (blockstate.get(StandingSignBlock.ROTATION) * 360) / 16.0F);
@@ -50,7 +48,7 @@ public class StemSignTileEntityRenderer extends TileEntityRenderer<StemSignTileE
 
       matrixStackIn.push();
       matrixStackIn.scale(f, -f, -f);
-      IVertexBuilder ivertexbuilder = material.getBuffer(bufferIn, this.model::getRenderType);
+      IVertexBuilder ivertexbuilder = bufferIn.getBuffer(this.model.getRenderType(TEXTURE));
       this.model.signBoard.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn);
       this.model.signStick.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn);
       matrixStackIn.pop();

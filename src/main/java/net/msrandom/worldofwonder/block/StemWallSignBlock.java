@@ -2,10 +2,8 @@ package net.msrandom.worldofwonder.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import java.util.Map;
-import javax.annotation.Nullable;
-
 import net.minecraft.block.*;
+import net.minecraft.block.material.Material;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
@@ -21,12 +19,15 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 
+import javax.annotation.Nullable;
+import java.util.Map;
+
 public class StemWallSignBlock extends AbstractStemSignBlock {
    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
    private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(Direction.NORTH, Block.makeCuboidShape(0.0D, 4.5D, 14.0D, 16.0D, 12.5D, 16.0D), Direction.SOUTH, Block.makeCuboidShape(0.0D, 4.5D, 0.0D, 16.0D, 12.5D, 2.0D), Direction.EAST, Block.makeCuboidShape(0.0D, 4.5D, 0.0D, 2.0D, 12.5D, 16.0D), Direction.WEST, Block.makeCuboidShape(14.0D, 4.5D, 0.0D, 16.0D, 12.5D, 16.0D)));
 
-   public StemWallSignBlock(Block.Properties p_i225766_1_) {
-      super(p_i225766_1_);
+   public StemWallSignBlock() {
+      super(Block.Properties.create(Material.WOOD).doesNotBlockMovement().hardnessAndResistance(1.0F).sound(SoundType.WOOD).lootFrom(WonderBlocks.STEM_SIGN));
       this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(WATERLOGGED, Boolean.FALSE));
    }
 

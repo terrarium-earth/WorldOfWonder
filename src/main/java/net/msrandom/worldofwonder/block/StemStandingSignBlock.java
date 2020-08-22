@@ -3,6 +3,8 @@ package net.msrandom.worldofwonder.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
@@ -20,8 +22,8 @@ import net.minecraft.world.IWorldReader;
 public class StemStandingSignBlock extends AbstractStemSignBlock {
    public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_0_15;
 
-   public StemStandingSignBlock(Block.Properties p_i225764_1_) {
-      super(p_i225764_1_);
+   public StemStandingSignBlock() {
+      super(Block.Properties.create(Material.WOOD).doesNotBlockMovement().hardnessAndResistance(1.0F).sound(SoundType.WOOD));
       this.setDefaultState(this.stateContainer.getBaseState().with(ROTATION, 0).with(WATERLOGGED, Boolean.FALSE));
    }
 

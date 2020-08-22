@@ -9,7 +9,6 @@ import net.minecraft.item.DyeColor;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
@@ -20,7 +19,6 @@ import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.msrandom.worldofwonder.block.WonderBlocks;
 
 import javax.annotation.Nullable;
 import java.util.function.Function;
@@ -37,7 +35,6 @@ public class StemSignTileEntity extends TileEntity {
     }
 
     public CompoundNBT write(CompoundNBT compound) {
-
         for(int i = 0; i < 4; ++i) {
             String s = ITextComponent.Serializer.toJson(this.signText[i]);
             compound.putString("Text" + (i + 1), s);
@@ -67,7 +64,6 @@ public class StemSignTileEntity extends TileEntity {
 
             this.renderText[i] = null;
         }
-
     }
 
     @OnlyIn(Dist.CLIENT)

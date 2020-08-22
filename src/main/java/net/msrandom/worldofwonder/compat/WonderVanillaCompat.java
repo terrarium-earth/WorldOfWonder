@@ -1,15 +1,24 @@
-package net.msrandom.worldofwonder;
+package net.msrandom.worldofwonder.compat;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ComposterBlock;
-import net.minecraft.block.FireBlock;
+import net.minecraft.block.*;
+import net.minecraft.entity.EntitySpawnPlacementRegistry;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.util.IItemProvider;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.gen.Heightmap;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.msrandom.worldofwonder.WorldOfWonder;
 import net.msrandom.worldofwonder.block.WonderBlocks;
+import net.msrandom.worldofwonder.entity.WonderEntities;
+import net.msrandom.worldofwonder.item.ItemEvents;
+import net.msrandom.worldofwonder.item.WonderItems;
 
 public class WonderVanillaCompat {
+    public static void init(@SuppressWarnings("unused") FMLCommonSetupEvent event) {
+        ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(new ResourceLocation(WorldOfWonder.MOD_ID, "dande_lion_sprout"), () -> WonderBlocks.POTTED_DANDE_LION_SPROUT);
+        DispenserBlock.registerDispenseBehavior(WonderItems.BLOOM_MEAL, ItemEvents.BLOOM_MEAL_DISPENSE);
+        EntitySpawnPlacementRegistry.register(WonderEntities.DANDE_LION, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, AnimalEntity::canAnimalSpawn);
 
-    public static void init() {
         registerCompostable(WonderBlocks.DANDELION_PETALS.asItem(), 0.3F);
         registerCompostable(WonderBlocks.DANDELION_FLUFF.asItem(), 0.3F);
 
@@ -23,8 +32,6 @@ public class WonderVanillaCompat {
         registerFlammable(WonderBlocks.STEM_SLAB, 5, 20);
         registerFlammable(WonderBlocks.STEM_FENCE, 5, 20);
         registerFlammable(WonderBlocks.STEM_FENCE_GATE, 5, 20);
-        registerFlammable(WonderBlocks.STEM_VERTICAL_SLAB, 5, 20);
-        registerFlammable(WonderBlocks.STEM_BOOKSHELF, 30, 20);
 
         registerFlammable(WonderBlocks.DANDELION_FLUFF, 30, 60);
         registerFlammable(WonderBlocks.DANDELION_PETALS, 30, 60);

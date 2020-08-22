@@ -200,7 +200,7 @@ public class DandeLionEntity extends TameableEntity {
     @Override
     public void handleStatusUpdate(byte id) {
         if (id == 5) {
-            for(int i = 0; i < 7; ++i) {
+            for(int i = 0; i <= 6; ++i) {
                 double d0 = this.rand.nextGaussian() * 0.02D;
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 double d2 = this.rand.nextGaussian() * 0.02D;
