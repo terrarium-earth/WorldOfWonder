@@ -6,8 +6,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.ExperienceOrbEntity;
+import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.monster.GhastEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
@@ -60,7 +63,7 @@ public class DandeLionEntity extends TameableEntity {
         this.goalSelector.addGoal(10, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setCallsForHelp());
+        this.targetSelector.addGoal(3, new HurtByTargetGoal(this).setCallsForHelp());
         this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, AnimalEntity.class, false, entity -> !(entity instanceof DandeLionEntity)));
 
     }
@@ -363,5 +366,23 @@ public class DandeLionEntity extends TameableEntity {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean shouldAttackEntity(LivingEntity target, LivingEntity owner) {
+        if (target instanceof CreeperEntity || target instanceof GhastEntity) {
+            return false;
+        } else {
+            if (target instanceof DandeLionEntity) {
+                DandeLionEntity dandeLion = (DandeLionEntity)target;
+                return !dandeLion.isTamed() || dandeLion.getOwner() != owner;
+            } else if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).canAttackPlayer((PlayerEntity)target)) {
+                return false;
+            } else if (target instanceof AbstractHorseEntity && ((AbstractHorseEntity)target).isTame()) {
+                return false;
+            } else {
+                return !(target instanceof TameableEntity) || !((TameableEntity)target).isTamed();
+            }
+        }
     }
 }

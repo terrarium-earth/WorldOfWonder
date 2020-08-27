@@ -1,5 +1,6 @@
 package net.msrandom.worldofwonder.network;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
@@ -13,5 +14,5 @@ public interface INetworkPacket {
 
     void read(PacketBuffer buffer);
     void write(PacketBuffer buffer);
-    void handle();
+    void handle(PlayerEntity player);
 }

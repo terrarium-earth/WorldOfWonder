@@ -1,15 +1,22 @@
 package net.msrandom.worldofwonder;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.msrandom.worldofwonder.block.WonderBlocks;
 import net.msrandom.worldofwonder.client.renderer.entity.DandeLionRenderer;
@@ -23,16 +30,17 @@ import net.msrandom.worldofwonder.entity.WonderEntities;
 import net.msrandom.worldofwonder.item.WonderItems;
 import net.msrandom.worldofwonder.network.INetworkPacket;
 import net.msrandom.worldofwonder.network.OpenStemSignPacket;
+import net.msrandom.worldofwonder.network.UpdateSignPacket;
 import net.msrandom.worldofwonder.tileentity.WonderTileEntities;
 import net.msrandom.worldofwonder.world.biome.WonderBiomes;
 import net.msrandom.worldofwonder.world.gen.feature.WonderFeatures;
 
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Mod(WorldOfWonder.MOD_ID)
 public class WorldOfWonder {
-    private static final String NETWORK_VERSION = "1";
     public static final String MOD_ID = "worldofwonder";
     public static final SimpleChannel NETWORK = INetworkPacket.makeChannel("network", "1");
     private static boolean quarkLoaded;
@@ -55,7 +63,8 @@ public class WorldOfWonder {
 
         bus.addListener(this::registerClient);
 
-        registerMessage(OpenStemSignPacket.class, OpenStemSignPacket::new);
+        registerMessage(OpenStemSignPacket.class, OpenStemSignPacket::new, LogicalSide.CLIENT);
+        registerMessage(UpdateSignPacket.class, UpdateSignPacket::new, LogicalSide.SERVER);
     }
 
     private void registerClient(FMLClientSetupEvent event) {
@@ -77,14 +86,20 @@ public class WorldOfWonder {
         }
     }
 
-    private <T extends INetworkPacket> void registerMessage(Class<T> message, Supplier<T> supplier) {
+    private <T extends INetworkPacket> void registerMessage(Class<T> message, Supplier<T> supplier, LogicalSide side) {
         NETWORK.registerMessage(currentNetworkId++, message, INetworkPacket::write, buffer -> {
             T msg = supplier.get();
             msg.read(buffer);
             return msg;
-        }, (msg, ctx) -> {
-            ctx.get().enqueueWork(msg::handle);
-            ctx.get().setPacketHandled(true);
-        });
+        }, (msg, contextSupplier) -> {
+            NetworkEvent.Context context = contextSupplier.get();
+            context.enqueueWork(() -> msg.handle(context.getDirection() == NetworkDirection.PLAY_TO_CLIENT ? getClientPlayer() : context.getSender()));
+            context.setPacketHandled(true);
+        }, Optional.of(side.isClient() ? NetworkDirection.PLAY_TO_CLIENT : NetworkDirection.PLAY_TO_SERVER));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private static PlayerEntity getClientPlayer() {
+        return Minecraft.getInstance().player;
     }
 }

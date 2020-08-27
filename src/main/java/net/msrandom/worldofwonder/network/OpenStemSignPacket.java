@@ -1,6 +1,7 @@
 package net.msrandom.worldofwonder.network;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
@@ -28,7 +29,7 @@ public class OpenStemSignPacket implements INetworkPacket {
     }
 
     @Override
-    public void handle() {
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().displayGuiScreen(new EditStemSignScreen((StemSignTileEntity) Minecraft.getInstance().world.getTileEntity(pos))));
+    public void handle(PlayerEntity player) {
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().displayGuiScreen(new EditStemSignScreen((StemSignTileEntity) player.world.getTileEntity(pos))));
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.Vec2f;
@@ -24,7 +25,7 @@ import javax.annotation.Nullable;
 import java.util.function.Function;
 
 public class StemSignTileEntity extends TileEntity {
-    public final ITextComponent[] signText = new ITextComponent[]{new StringTextComponent(""), new StringTextComponent(""), new StringTextComponent(""), new StringTextComponent("")};
+    public final ITextComponent[] signText = new ITextComponent[] {new StringTextComponent(""), new StringTextComponent(""), new StringTextComponent(""), new StringTextComponent("")};
     private boolean isEditable = true;
     private PlayerEntity player;
     private final String[] renderText = new String[4];
@@ -41,7 +42,7 @@ public class StemSignTileEntity extends TileEntity {
         }
 
         compound.putString("Color", this.textColor.getTranslationKey());
-        return compound;
+        return super.write(compound);
     }
 
     public void read(CompoundNBT compound) {
@@ -88,18 +89,23 @@ public class StemSignTileEntity extends TileEntity {
 
     @Nullable
     public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.pos, 9, this.getUpdateTag());
+        return new SUpdateTileEntityPacket(this.pos, -1, this.getUpdateTag());
     }
 
     public CompoundNBT getUpdateTag() {
         return this.write(new CompoundNBT());
     }
 
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        read(pkt.getNbtCompound());
+    }
+
     public boolean onlyOpsCanSetNbt() {
         return true;
     }
 
-    public boolean getIsEditable() {
+    public boolean isEditable() {
         return this.isEditable;
     }
 
@@ -109,7 +115,6 @@ public class StemSignTileEntity extends TileEntity {
         if (!isEditableIn) {
             this.player = null;
         }
-
     }
 
     public void setPlayer(PlayerEntity playerIn) {

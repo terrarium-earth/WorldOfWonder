@@ -9,20 +9,20 @@ import net.minecraft.client.gui.RenderComponentsUtil;
 import net.minecraft.client.gui.fonts.TextInputUtil;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.network.play.ClientPlayNetHandler;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.network.play.client.CUpdateSignPacket;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.msrandom.worldofwonder.WorldOfWonder;
 import net.msrandom.worldofwonder.block.StemStandingSignBlock;
 import net.msrandom.worldofwonder.client.renderer.tileentity.StemSignTileEntityRenderer;
+import net.msrandom.worldofwonder.network.UpdateSignPacket;
 import net.msrandom.worldofwonder.tileentity.StemSignTileEntity;
 
 import java.util.List;
@@ -49,11 +49,7 @@ public class EditStemSignScreen extends Screen {
 
     public void removed() {
         this.minecraft.keyboardListener.enableRepeatEvents(false);
-        ClientPlayNetHandler clientplaynethandler = this.minecraft.getConnection();
-        if (clientplaynethandler != null) {
-            clientplaynethandler.sendPacket(new CUpdateSignPacket(this.tileSign.getPos(), this.tileSign.getText(0), this.tileSign.getText(1), this.tileSign.getText(2), this.tileSign.getText(3)));
-        }
-
+        WorldOfWonder.NETWORK.sendToServer(new UpdateSignPacket(this.tileSign.getPos(), this.tileSign.signText));
         this.tileSign.setEditable(true);
     }
 
@@ -101,7 +97,7 @@ public class EditStemSignScreen extends Screen {
         matrixstack.push();
         matrixstack.translate((this.width / 2.0), 0.0D, 50.0D);
         float f = 93.75F;
-        matrixstack.scale(93.75F, -93.75F, 93.75F);
+        matrixstack.scale(f, -f, f);
         matrixstack.translate(0.0D, -1.3125D, 0.0D);
         BlockState blockstate = this.tileSign.getBlockState();
         boolean flag = blockstate.getBlock() instanceof StemStandingSignBlock;
@@ -146,7 +142,7 @@ public class EditStemSignScreen extends Screen {
                 float f3 = (float) (-this.minecraft.fontRenderer.getStringWidth(s) / 2);
                 this.minecraft.fontRenderer.renderString(s, f3, (float) (k1 * 10 - this.tileSign.signText.length * 5), i, false, matrix4f, irendertypebuffer$impl, false, 0, 15728880);
                 if (k1 == this.editLine && k >= 0 && flag1) {
-                    int l1 = this.minecraft.fontRenderer.getStringWidth(s.substring(0, Math.max(Math.min(k, s.length()), 0)));
+                    int l1 = this.minecraft.fontRenderer.getStringWidth(s.substring(0, Math.min(k, s.length())));
                     int i2 = (l1 - this.minecraft.fontRenderer.getStringWidth(s) / 2) * i1;
                     if (k >= s.length()) {
                         this.minecraft.fontRenderer.renderString("_", (float) i2, (float) j1, i, false, matrix4f, irendertypebuffer$impl, false, 0, 15728880);
@@ -160,7 +156,7 @@ public class EditStemSignScreen extends Screen {
         for (int k3 = 0; k3 < astring.length; ++k3) {
             String s1 = astring[k3];
             if (s1 != null && k3 == this.editLine && k >= 0) {
-                int l3 = this.minecraft.fontRenderer.getStringWidth(s1.substring(0, Math.max(Math.min(k, s1.length()), 0)));
+                int l3 = this.minecraft.fontRenderer.getStringWidth(s1.substring(0, Math.min(k, s1.length())));
                 int i4 = (l3 - this.minecraft.fontRenderer.getStringWidth(s1) / 2) * i1;
                 if (flag1 && k < s1.length()) {
                     fill(matrix4f, i4, j1 - 1, i4 + 1, j1 + 9, -16777216 | i);

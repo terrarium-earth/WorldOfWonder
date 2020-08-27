@@ -19,7 +19,7 @@ public class WonderQuarkCompat {
     public static final Block STEM_VERTICAL_SLAB = WonderBlocks.add("stem_vertical_slab", new VerticalSlabBlock(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD)), new Item.Properties().group(ItemGroup.BUILDING_BLOCKS));
 
     public static final Block STEM_CHEST_BLOCK = WonderBlocks.add("stem_chest", new StemChestBlock(), new Item.Properties().group(ItemGroup.DECORATIONS).setISTER(() -> () -> new WonderItemRenderer(WonderQuarkCompat.STEM_CHEST_ENTITY)));
-    public static final Block STEM_TRAPPED_CHEST_BLOCK = WonderBlocks.add("stem_trapped_chest", new StemTrappedChestBlock(), new Item.Properties().group(ItemGroup.DECORATIONS).setISTER(() -> () -> new WonderItemRenderer(WonderQuarkCompat.STEM_TRAPPED_CHEST_ENTITY)));
+    public static final Block STEM_TRAPPED_CHEST_BLOCK = WonderBlocks.add("stem_trapped_chest", new StemTrappedChestBlock(), new Item.Properties().group(ItemGroup.REDSTONE).setISTER(() -> () -> new WonderItemRenderer(WonderQuarkCompat.STEM_TRAPPED_CHEST_ENTITY)));
     public static final TileEntityType<StemChestTileEntity> STEM_CHEST_ENTITY = WonderTileEntities.add("stem_chest", StemChestTileEntity::new, STEM_CHEST_BLOCK);
     public static final TileEntityType<StemTrappedChestTileEntity> STEM_TRAPPED_CHEST_ENTITY = WonderTileEntities.add("stem_trapped_chest", StemTrappedChestTileEntity::new, STEM_TRAPPED_CHEST_BLOCK);
 
