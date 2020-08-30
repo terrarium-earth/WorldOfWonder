@@ -1,13 +1,11 @@
 package net.msrandom.worldofwonder.network;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
-import net.msrandom.worldofwonder.client.gui.screen.EditStemSignScreen;
-import net.msrandom.worldofwonder.tileentity.StemSignTileEntity;
+import net.msrandom.worldofwonder.client.WonderClientHandler;
 
 public class OpenStemSignPacket implements INetworkPacket {
     private BlockPos pos;
@@ -30,6 +28,6 @@ public class OpenStemSignPacket implements INetworkPacket {
 
     @Override
     public void handle(PlayerEntity player) {
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().displayGuiScreen(new EditStemSignScreen((StemSignTileEntity) player.world.getTileEntity(pos))));
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> WonderClientHandler.openSignEditScreen(player, pos));
     }
 }
