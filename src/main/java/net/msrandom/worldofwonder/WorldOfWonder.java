@@ -6,6 +6,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -35,7 +36,7 @@ public class WorldOfWonder {
     private static int currentNetworkId;
 
     public WorldOfWonder() {
-        quarkLoaded = true;//ModList.get().isLoaded("quark");;
+        quarkLoaded = ModList.get().isLoaded("quark");;
         if (quarkLoaded) WonderQuarkCompat.init();
 
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
