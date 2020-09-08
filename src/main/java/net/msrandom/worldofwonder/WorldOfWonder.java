@@ -36,8 +36,7 @@ public class WorldOfWonder {
     private static int currentNetworkId;
 
     public WorldOfWonder() {
-        quarkLoaded = ModList.get().isLoaded("quark");;
-        if (quarkLoaded) WonderQuarkCompat.init();
+        if (quarkLoaded = ModList.get().isLoaded("quark")) WonderQuarkCompat.init();
 
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         WonderBlocks.REGISTRY.register(bus);
