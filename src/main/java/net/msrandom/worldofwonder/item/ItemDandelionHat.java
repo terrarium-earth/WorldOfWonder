@@ -1,5 +1,6 @@
 package net.msrandom.worldofwonder.item;
 
+import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -26,9 +27,8 @@ public class ItemDandelionHat extends ArmorItem {
     }
 
     @Override
-    public void onArmorTick(ItemStack stack, World world, PlayerEntity player)
-    {
-        if (player.isLiving() &&  player.onGround  ) {
+    public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
+        if (player.isAlive() && player.onGround) {
             player.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 130, 0, false, false, true));
         }
     }
@@ -38,7 +38,7 @@ public class ItemDandelionHat extends ArmorItem {
     @Nullable
     @Override
     @OnlyIn(Dist.CLIENT)
-    public <A extends net.minecraft.client.renderer.entity.model.BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
+    public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
         return (A) DandelionHatModel.INSTANCE;
     }
 }

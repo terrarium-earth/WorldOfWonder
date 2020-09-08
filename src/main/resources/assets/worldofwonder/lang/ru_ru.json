@@ -1,0 +1,39 @@
+{
+  "language.name": "Russian",
+  "language.region": "Russia",
+  "language.code": "ru_ru",
+
+  "itemGroup.worldofwonder": "Мир чудес",
+
+  "block.worldofwonder.dandelion_fluff": "Одуванчик",
+  "block.worldofwonder.dandelion_petals": "Лепестки одуванчика",
+  "block.worldofwonder.stem_log": "Стебель одуванчика",
+  "block.worldofwonder.stripped_stem_log": "Обрезанный стебель одуванчика",
+  "block.worldofwonder.stem_wood": "Одуванчик",
+  "block.worldofwonder.stripped_stem_wood": "Обрезанное дерево одуванчика",
+  "block.worldofwonder.stem_planks": "Стволовые доски",
+  "block.worldofwonder.stem_door": "Стволовые доски",
+  "block.worldofwonder.stem_trapdoor": "Стволовая нажимная люк",
+  "block.worldofwonder.stem_fence": "Стволовый забор",
+  "block.worldofwonder.stem_button": "Стволовая кнопка",
+  "block.worldofwonder.stem_slab": "Стволовый полублок",
+  "block.worldofwonder.stem_vertical_slab": "Стволовая вертикальная нажимная плита",
+  "block.worldofwonder.stem_fence_gate": "Стволовая калитка",
+  "block.worldofwonder.stem_pressure_plate": "Прижимная пластина штока",
+  "block.worldofwonder.stem_stairs": "Стволовая лестница",
+  "block.worldofwonder.stem_bookshelf": "Стволовая книжная полка",
+  "block.worldofwonder.stem_ladder": "Стволовая лестница",
+  "block.worldofwonder.dande_lion_sprout": "Росток одуванчика-льва",
+  "block.worldofwonder.stem_sign": "Стебель Знак",
+  "block.worldofwonder.stem_chest": "Стволовой сундук",
+  "block.worldofwonder.stem_trapped_chest": "Стволовый сундук-ловушка",
+
+  "item.worldofwonder.bloom_meal": "Bloom Meal",
+  "item.worldofwonder.dande_lion_spawn_egg": "Яйцо призыва льва-одуванчика",
+  "item.worldofwonder.dandelion_hat": "Шляпа одуванчика",
+  "item.worldofwonder.stem_boat": "Стволовая лодка",
+
+  "entity.worldofwonder.dande_lion": "Дандэ-лев",
+
+  "biome.worldofwonder.dandelion_fields": "Поля одуванчиков"
+}
