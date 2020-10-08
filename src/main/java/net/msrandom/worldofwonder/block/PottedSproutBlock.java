@@ -14,7 +14,7 @@ public class PottedSproutBlock extends FlowerPotBlock {
     private static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
 
     public PottedSproutBlock() {
-        super(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> WonderBlocks.POTTED_DANDE_LION_SPROUT, Block.Properties.create(Material.MISCELLANEOUS).notSolid());
+        super(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> WonderBlocks.DANDE_LION_SPROUT, Block.Properties.create(Material.MISCELLANEOUS).notSolid());
         setDefaultState(getDefaultState().with(AXIS, Direction.Axis.X));
     }
 
