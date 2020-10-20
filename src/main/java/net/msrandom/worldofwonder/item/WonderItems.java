@@ -7,7 +7,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.msrandom.worldofwonder.WorldOfWonder;
 
 public class WonderItems {
-    public static final DeferredRegister<Item> REGISTRY = new DeferredRegister<>(ForgeRegistries.ITEMS, WorldOfWonder.MOD_ID);
+    public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, WorldOfWonder.MOD_ID);
     //public static final Item STEM_BOAT = add("stem_boat", new StemBoatItem());
     public static final Item DANDELION_HAT = add("dandelion_hat", new ItemDandelionHat());
     public static final Item BLOOM_MEAL = add("bloom_meal", new Item(new Item.Properties().group(ItemGroup.MATERIALS)));

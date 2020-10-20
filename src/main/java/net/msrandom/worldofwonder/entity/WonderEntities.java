@@ -3,6 +3,7 @@ package net.msrandom.worldofwonder.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SpawnEggItem;
@@ -12,7 +13,7 @@ import net.msrandom.worldofwonder.WorldOfWonder;
 import net.msrandom.worldofwonder.item.WonderItems;
 
 public class WonderEntities {
-    public static final DeferredRegister<EntityType<?>> REGISTRY = new DeferredRegister<>(ForgeRegistries.ENTITIES, WorldOfWonder.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITIES, WorldOfWonder.MOD_ID);
     public static final EntityType<DandeLionEntity> DANDE_LION = add("dande_lion", DandeLionEntity::new, EntityClassification.CREATURE, 0.8f, 1.1f, 0x79ae45, 0xf2db26);
     public static final EntityType<StemBoatEntity> STEM_BOAT = add("stem_boat", StemBoatEntity::new, EntityClassification.MISC, 1.375f, 0.5625f);
     public static final EntityType<DandeLionSeedEntity> DANDE_LION_SEED = add("dande_lion_seed", DandeLionSeedEntity::new, EntityClassification.MISC, 1f, 1f);
@@ -27,5 +28,9 @@ public class WonderEntities {
         EntityType<T> type = EntityType.Builder.create(factory, classification).size(width, height).build(name);
         REGISTRY.register(name, () -> type);
         return type;
+    }
+
+    static {
+        GlobalEntityTypeAttributes.put(DANDE_LION, DandeLionEntity.registerAttributes().create());
     }
 }

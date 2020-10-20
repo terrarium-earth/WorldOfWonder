@@ -1,14 +1,12 @@
 package net.msrandom.worldofwonder.block;
 
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
@@ -19,13 +17,15 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class VerticalSlabBlock extends Block implements IWaterLoggable {
     public static final EnumProperty<VerticalSlabType> TYPE = EnumProperty.create("type", VerticalSlabType.class);
@@ -68,7 +68,7 @@ public class VerticalSlabBlock extends Block implements IWaterLoggable {
         if(face.getAxis() != Direction.Axis.Y) {
             return face;
         }
-        Vec3d difference = context.getHitVec().subtract(new Vec3d(context.getPos())).subtract(0.5, 0, 0.5);
+        Vector3d difference = context.getHitVec().subtract(Vector3d.copyCentered(context.getPos())).subtract(0.5, 0, 0.5);
         return Direction.fromAngle(-Math.toDegrees(Math.atan2(difference.getX(), difference.getZ()))).getOpposite();
     }
 
@@ -79,12 +79,12 @@ public class VerticalSlabBlock extends Block implements IWaterLoggable {
     }
 
     @Override
-    public IFluidState getFluidState(BlockState state) {
+    public FluidState getFluidState(BlockState state) {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : Fluids.EMPTY.getDefaultState();
     }
 
     @Override
-    public boolean receiveFluid(IWorld worldIn, BlockPos pos, BlockState state, IFluidState fluidStateIn) {
+    public boolean receiveFluid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn) {
         return state.get(TYPE) != VerticalSlabType.DOUBLE && IWaterLoggable.super.receiveFluid(worldIn, pos, state, fluidStateIn);
     }
 
@@ -106,7 +106,17 @@ public class VerticalSlabBlock extends Block implements IWaterLoggable {
         return type == PathType.WATER && worldIn.getFluidState(pos).isTagged(FluidTags.WATER);
     }
 
-    public static enum VerticalSlabType implements IStringSerializable {
+    @Override
+    public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+        return 5;
+    }
+
+    @Override
+    public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+        return 20;
+    }
+
+    public enum VerticalSlabType implements IStringSerializable {
         NORTH(Direction.NORTH),
         SOUTH(Direction.SOUTH),
         WEST(Direction.WEST),
@@ -141,11 +151,11 @@ public class VerticalSlabBlock extends Block implements IWaterLoggable {
 
         @Override
         public String toString() {
-            return this.slabDirection != null ? this.slabDirection.getName() : "double";
+            return this.slabDirection != null ? this.slabDirection.getString() : "double";
         }
 
         @Override
-        public String getName() {
+        public String getString() {
             return this.toString();
         }
     }

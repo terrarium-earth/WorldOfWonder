@@ -2,6 +2,7 @@ package net.msrandom.worldofwonder.item;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.*;
+import net.minecraft.block.trees.Tree;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IDispenseItemBehavior;
 import net.minecraft.dispenser.OptionalDispenseBehavior;
@@ -23,9 +24,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.msrandom.worldofwonder.WorldOfWonder;
 import net.msrandom.worldofwonder.block.WonderBlocks;
-import net.msrandom.worldofwonder.world.gen.feature.DandelionFluffTreeFeature;
-import net.msrandom.worldofwonder.world.gen.feature.DandelionTreeFeature;
-import net.msrandom.worldofwonder.world.gen.feature.WonderTree;
+import net.msrandom.worldofwonder.block.trees.DandelionFluffTree;
+import net.msrandom.worldofwonder.block.trees.DandelionTree;
 
 import java.util.Map;
 import java.util.Random;
@@ -33,8 +33,8 @@ import java.util.Random;
 @Mod.EventBusSubscriber(modid = WorldOfWonder.MOD_ID)
 public class ItemEvents {
     public static final IDispenseItemBehavior BLOOM_MEAL_DISPENSE = new BloomMealDispenseBehavior();
-    private static final WonderTree DANDELION_TREE = new DandelionTreeFeature(true);
-    private static final WonderTree FLUFF_TREE = new DandelionFluffTreeFeature(true);
+    private static final Tree DANDELION_TREE = new DandelionTree();
+    private static final Tree FLUFF_TREE = new DandelionFluffTree();
     private static final Map<Block, Block> BLOCK_STRIPPING_MAP = new ImmutableMap.Builder<Block, Block>().put(WonderBlocks.STEM_LOG, WonderBlocks.STRIPPED_STEM_LOG).put(WonderBlocks.STEM_WOOD, WonderBlocks.STRIPPED_STEM_WOOD).build();
 
     @SubscribeEvent
@@ -68,13 +68,14 @@ public class ItemEvents {
     }
 
     public static boolean handleBloomMeal(World world, ItemStack stack, BlockPos pos, PlayerEntity player) {
-        if (stack.getItem() == WonderItems.BLOOM_MEAL && world.getBlockState(pos).getBlock() == Blocks.DANDELION) {
+        BlockState state = world.getBlockState(pos);
+        if (stack.getItem() == WonderItems.BLOOM_MEAL && state.getBlock() == Blocks.DANDELION) {
             if (!world.isRemote) {
                 Random rand = world.rand;
                 world.playEvent(2005, pos, 0);
                 if (!player.abilities.isCreativeMode) stack.shrink(1);
                 if (rand.nextInt(3) == 0) {
-                    (rand.nextInt(4) == 0 ? FLUFF_TREE : DANDELION_TREE).place(world, pos, rand);
+                    (rand.nextInt(4) == 0 ? FLUFF_TREE : DANDELION_TREE).attemptGrowTree((ServerWorld) world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), pos, state, rand);
                 }
                 return true;
             }
@@ -84,12 +85,12 @@ public class ItemEvents {
 
     private static class BloomMealDispenseBehavior extends OptionalDispenseBehavior {
         protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-            this.successful = true;
+            this.setSuccessful(true);
             World world = source.getWorld();
             BlockPos blockpos = source.getBlockPos().offset(source.getBlockState().get(DispenserBlock.FACING));
             if (!world.isRemote) {
                 if (!handleBloomMeal(world, stack, blockpos, FakePlayerFactory.getMinecraft((ServerWorld) world))) {
-                    this.successful = false;
+                    this.setSuccessful(false);
                 } else {
                     world.playEvent(2005, blockpos, 0);
                 }

@@ -11,7 +11,7 @@ import net.msrandom.worldofwonder.block.WonderBlocks;
 import java.util.function.Supplier;
 
 public class WonderTileEntities {
-    public static final DeferredRegister<TileEntityType<?>> REGISTRY = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, WorldOfWonder.MOD_ID);
+    public static final DeferredRegister<TileEntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, WorldOfWonder.MOD_ID);
     public static final TileEntityType<StemSignTileEntity> STEM_SIGN = add("stem_sign", StemSignTileEntity::new, WonderBlocks.STEM_SIGN, WonderBlocks.STEM_WALL_SIGN);
     public static final TileEntityType<DandeLionSproutTileEntity> DANDE_LION_SPROUT = add("dande_lion_sprout", DandeLionSproutTileEntity::new, WonderBlocks.DANDE_LION_SPROUT, WonderBlocks.POTTED_DANDE_LION_SPROUT);
 

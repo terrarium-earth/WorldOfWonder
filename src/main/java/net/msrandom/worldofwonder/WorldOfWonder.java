@@ -23,7 +23,7 @@ import net.msrandom.worldofwonder.network.OpenStemSignPacket;
 import net.msrandom.worldofwonder.network.UpdateSignPacket;
 import net.msrandom.worldofwonder.tileentity.WonderTileEntities;
 import net.msrandom.worldofwonder.world.biome.WonderBiomes;
-import net.msrandom.worldofwonder.world.gen.feature.WonderFeatures;
+import net.msrandom.worldofwonder.world.gen.foliageplacer.WonderFoliagePlacers;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -36,19 +36,17 @@ public class WorldOfWonder {
     private static int currentNetworkId;
 
     public WorldOfWonder() {
-        if (quarkLoaded = ModList.get().isLoaded("quark")) WonderQuarkCompat.init();
-
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        if (quarkLoaded = ModList.get().isLoaded("quark")) WonderQuarkCompat.REGISTRY.register(bus);
         WonderBlocks.REGISTRY.register(bus);
         WonderItems.REGISTRY.register(bus);
         WonderBiomes.REGISTRY.register(bus);
         WonderEntities.REGISTRY.register(bus);
         WonderTileEntities.REGISTRY.register(bus);
-        WonderFeatures.REGISTRY.register(bus);
+        WonderFoliagePlacers.REGISTRY.register(bus);
 
-        bus.addListener(WonderBiomes::registerTypes);
+        bus.addListener(WonderBiomes::init);
         bus.addListener(WonderVanillaCompat::init);
-
         bus.addListener(WonderClientHandler::init);
 
         registerMessage(OpenStemSignPacket.class, OpenStemSignPacket::new, LogicalSide.CLIENT);

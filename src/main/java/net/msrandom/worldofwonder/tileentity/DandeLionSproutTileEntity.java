@@ -1,5 +1,6 @@
 package net.msrandom.worldofwonder.tileentity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -17,9 +18,9 @@ public class DandeLionSproutTileEntity extends TileEntity implements ITickableTi
     }
 
     @Override
-    public void read(CompoundNBT compound) {
+    public void read(BlockState state, CompoundNBT compound) {
         age = compound.getInt("Age");
-        super.read(compound);
+        super.read(state, compound);
     }
 
     @Override

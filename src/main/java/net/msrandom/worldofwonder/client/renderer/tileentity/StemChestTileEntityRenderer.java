@@ -5,17 +5,16 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.*;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.client.renderer.tileentity.DualBrightnessCallback;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.state.properties.ChestType;
 import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.tileentity.IChestLid;
 import net.minecraft.tileentity.TileEntityMerger;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 import net.msrandom.worldofwonder.WorldOfWonder;
 import net.msrandom.worldofwonder.tileentity.StemChestTileEntity;
@@ -84,7 +83,7 @@ public class StemChestTileEntityRenderer extends TileEntityRenderer<StemChestTil
         World world = tileEntityIn.getWorld();
         boolean flag = world != null;
         BlockState blockstate = flag ? tileEntityIn.getBlockState() : Blocks.CHEST.getDefaultState().with(ChestBlock.FACING, Direction.SOUTH);
-        ChestType chesttype = blockstate.has(ChestBlock.TYPE) ? blockstate.get(ChestBlock.TYPE) : ChestType.SINGLE;
+        ChestType chesttype = blockstate.hasProperty(ChestBlock.TYPE) ? blockstate.get(ChestBlock.TYPE) : ChestType.SINGLE;
         Block block = blockstate.getBlock();
         if (block instanceof AbstractChestBlock) {
             AbstractChestBlock<?> abstractchestblock = (AbstractChestBlock<?>)block;
@@ -96,12 +95,12 @@ public class StemChestTileEntityRenderer extends TileEntityRenderer<StemChestTil
             matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
             TileEntityMerger.ICallbackWrapper<? extends ChestTileEntity> icallbackwrapper;
             if (flag) {
-                icallbackwrapper = abstractchestblock.func_225536_a_(blockstate, world, tileEntityIn.getPos(), true);
+                icallbackwrapper = abstractchestblock.combine(blockstate, world, tileEntityIn.getPos(), true);
             } else {
                 icallbackwrapper = TileEntityMerger.ICallback::func_225537_b_;
             }
 
-            float f1 = icallbackwrapper.apply(ChestBlock.func_226917_a_((IChestLid)tileEntityIn)).get(partialTicks);
+            float f1 = icallbackwrapper.apply(ChestBlock.getLidRotationCallback(tileEntityIn)).get(partialTicks);
             f1 = 1.0F - f1;
             f1 = 1.0F - f1 * f1 * f1;
             int i = icallbackwrapper.apply(new DualBrightnessCallback<>()).applyAsInt(combinedLightIn);

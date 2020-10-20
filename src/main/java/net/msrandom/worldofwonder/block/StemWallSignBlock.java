@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
@@ -46,7 +46,7 @@ public class StemWallSignBlock extends AbstractStemSignBlock {
    @Nullable
    public BlockState getStateForPlacement(BlockItemUseContext context) {
       BlockState blockstate = this.getDefaultState();
-      IFluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
+      FluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
       IWorldReader iworldreader = context.getWorld();
       BlockPos blockpos = context.getPos();
       Direction[] adirection = context.getNearestLookingDirections();

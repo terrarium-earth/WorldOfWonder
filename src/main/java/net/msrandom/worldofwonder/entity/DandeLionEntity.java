@@ -4,6 +4,8 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.monster.CreeperEntity;
@@ -24,15 +26,13 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.GameRules;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.msrandom.worldofwonder.WonderSounds;
 import net.msrandom.worldofwonder.block.WonderBlocks;
@@ -51,9 +51,8 @@ public class DandeLionEntity extends TameableEntity {
 
     @Override
     protected void registerGoals() {
-        this.sitGoal = new SitGoal(this);
         this.goalSelector.addGoal(1, new SwimGoal(this));
-        this.goalSelector.addGoal(2, this.sitGoal);
+        this.goalSelector.addGoal(2, new SitGoal(this));
         this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
@@ -68,13 +67,12 @@ public class DandeLionEntity extends TameableEntity {
 
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25);
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30);
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK).setBaseValue(0.2);
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
+        return func_233666_p_()
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25)
+                .createMutableAttribute(Attributes.MAX_HEALTH, 30)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 6)
+                .createMutableAttribute(Attributes.ATTACK_KNOCKBACK, 0.2);
     }
 
     @Override
@@ -84,7 +82,7 @@ public class DandeLionEntity extends TameableEntity {
     }
 
     @Override
-    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         if (rand.nextBoolean()) shear();
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
@@ -102,7 +100,7 @@ public class DandeLionEntity extends TameableEntity {
     }
 
     @Override
-    public boolean processInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         if (!world.isRemote) {
             ItemStack stack = player.getHeldItem(hand);
             Item item = stack.getItem();
@@ -128,14 +126,14 @@ public class DandeLionEntity extends TameableEntity {
                     }
                 }
 
-                return true;
+                return ActionResultType.SUCCESS;
             }
 
             if (!isSheared() && item == Items.SHEARS) {
                 shear();
                 this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, getSoundVolume(), 1);
                 entityDropItem(new ItemStack(WonderBlocks.DANDELION_FLUFF, rand.nextInt(2) + 1));
-                return true;
+                return ActionResultType.SUCCESS;
             }
 
             if (this.isTamed()) {
@@ -152,11 +150,11 @@ public class DandeLionEntity extends TameableEntity {
                             setSheared(false);
                         }
                     }
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
 
                 if (this.isOwner(player) && !this.isBreedingItem(stack)) {
-                    this.sitGoal.setSitting(!this.isSitting());
+                    this.func_233687_w_(!this.isSitting());
                     this.isJumping = false;
                     this.navigator.clearPath();
                     this.setAttackTarget(null);
@@ -170,13 +168,13 @@ public class DandeLionEntity extends TameableEntity {
                     this.setTamedBy(player);
                     this.navigator.clearPath();
                     this.setAttackTarget(null);
-                    this.sitGoal.setSitting(true);
+                    this.func_233687_w_(true);
                     this.world.setEntityState(this, (byte) 7);
                 } else {
                     this.world.setEntityState(this, (byte) 6);
                 }
 
-                return true;
+                return ActionResultType.SUCCESS;
             }
             if (this.isBreedingItem(stack)) {
                 if (this.getGrowingAge() == 0 && this.canBreed()) {
@@ -187,17 +185,17 @@ public class DandeLionEntity extends TameableEntity {
                     } else {
                         world.setEntityState(this, (byte) 5);
                     }
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
 
                 if (this.isChild()) {
                     this.consumeItemFromStack(player, stack);
                     this.ageUp((int) (this.getGrowingAge() / -20.0 * 0.1), true);
-                    return true;
+                    return ActionResultType.SUCCESS;
                 }
             }
         }
-        return false;
+        return ActionResultType.PASS;
     }
 
     @Override
@@ -249,7 +247,7 @@ public class DandeLionEntity extends TameableEntity {
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        this.setSitting(false);
+        this.func_233687_w_(false);
         return super.attackEntityFrom(source, amount);
     }
 
@@ -311,7 +309,7 @@ public class DandeLionEntity extends TameableEntity {
 
     @Nullable
     @Override
-    public AgeableEntity createChild(AgeableEntity ageable) {
+    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
         if (ageable instanceof DandeLionEntity) {
             if (((DandeLionEntity) ageable).madeChild) ((DandeLionEntity) ageable).madeChild = false;
             else {

@@ -6,7 +6,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class WonderSounds {
-    public static final DeferredRegister<SoundEvent> REGISTRY = new DeferredRegister<>(ForgeRegistries.SOUND_EVENTS, WorldOfWonder.MOD_ID);
+    public static final DeferredRegister<SoundEvent> REGISTRY = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, WorldOfWonder.MOD_ID);
     public static final SoundEvent DANDE_LION_AMBIENT = add("dande_lion.ambient");
     public static final SoundEvent DANDE_LION_PUR = add("dande_lion.pur");
     public static final SoundEvent DANDE_LION_HURT = add("dande_lion.hurt");

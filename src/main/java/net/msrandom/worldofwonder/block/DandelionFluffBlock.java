@@ -7,8 +7,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockDandelionFluff extends Block {
-    public BlockDandelionFluff() {
+public class DandelionFluffBlock extends DandelionBlock {
+    public DandelionFluffBlock() {
         super(Block.Properties.create(Material.WOOL).hardnessAndResistance(0.2f).sound(SoundType.CLOTH));
     }
 

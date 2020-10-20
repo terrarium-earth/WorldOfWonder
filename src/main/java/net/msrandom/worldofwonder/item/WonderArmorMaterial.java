@@ -17,19 +17,21 @@ public class WonderArmorMaterial implements IArmorMaterial {
     private final int enchantability;
     private final SoundEvent soundEvent;
     private final float toughness;
+    private final float knockbackResistance;
     private final Supplier<Ingredient> repairMaterial;
 
-    public WonderArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, SoundEvent equipSoundIn, float toughness) {
-        this(nameIn, maxDamageFactorIn, damageReductionAmountsIn, enchantabilityIn, equipSoundIn, toughness, () -> Ingredient.EMPTY);
+    public WonderArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, SoundEvent equipSoundIn, float toughness, float knockbackResistance) {
+        this(nameIn, maxDamageFactorIn, damageReductionAmountsIn, enchantabilityIn, equipSoundIn, toughness, knockbackResistance, () -> Ingredient.EMPTY);
     }
 
-    public WonderArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, SoundEvent equipSoundIn, float toughness, Supplier<Ingredient> repairMaterialSupplier) {
+    public WonderArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountsIn, int enchantabilityIn, SoundEvent equipSoundIn, float toughness, float knockbackResistance, Supplier<Ingredient> repairMaterialSupplier) {
         this.name = nameIn;
         this.maxDamageFactor = maxDamageFactorIn;
         this.damageReductionAmountArray = damageReductionAmountsIn;
         this.enchantability = enchantabilityIn;
         this.soundEvent = equipSoundIn;
         this.toughness = toughness;
+        this.knockbackResistance = knockbackResistance;
         this.repairMaterial = repairMaterialSupplier;
     }
 
@@ -60,5 +62,10 @@ public class WonderArmorMaterial implements IArmorMaterial {
 
     public float getToughness() {
         return this.toughness;
+    }
+
+    @Override
+    public float getKnockbackResistance() {
+        return knockbackResistance;
     }
 }

@@ -5,8 +5,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
@@ -32,7 +32,7 @@ public class StemStandingSignBlock extends AbstractStemSignBlock {
    }
 
    public BlockState getStateForPlacement(BlockItemUseContext context) {
-      IFluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
+      FluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
       return this.getDefaultState().with(ROTATION, MathHelper.floor((double) ((180.0F + context.getPlacementYaw()) * 16.0F / 360.0F) + 0.5D) & 15).with(WATERLOGGED, ifluidstate.getFluid() == Fluids.WATER);
    }
 

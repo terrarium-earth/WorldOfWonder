@@ -1,17 +1,18 @@
 package net.msrandom.worldofwonder.tileentity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.block.BlockState;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.Vec2f;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.IReorderingProcessor;
+import net.minecraft.util.math.vector.Vector2f;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
@@ -28,13 +29,14 @@ public class StemSignTileEntity extends TileEntity {
     public final ITextComponent[] signText = new ITextComponent[] {new StringTextComponent(""), new StringTextComponent(""), new StringTextComponent(""), new StringTextComponent("")};
     private boolean isEditable = true;
     private PlayerEntity player;
-    private final String[] renderText = new String[4];
+    private final IReorderingProcessor[] renderText = new IReorderingProcessor[4];
     private DyeColor textColor = DyeColor.BLACK;
 
     public StemSignTileEntity() {
         super(WonderTileEntities.STEM_SIGN);
     }
 
+    @Override
     public CompoundNBT write(CompoundNBT compound) {
         for(int i = 0; i < 4; ++i) {
             String s = ITextComponent.Serializer.toJson(this.signText[i]);
@@ -45,17 +47,18 @@ public class StemSignTileEntity extends TileEntity {
         return super.write(compound);
     }
 
-    public void read(CompoundNBT compound) {
+    @Override
+    public void read(BlockState state, CompoundNBT compound) {
         this.isEditable = false;
-        super.read(compound);
+        super.read(state, compound);
         this.textColor = DyeColor.byTranslationKey(compound.getString("Color"), DyeColor.BLACK);
 
         for(int i = 0; i < 4; ++i) {
             String s = compound.getString("Text" + (i + 1));
-            ITextComponent itextcomponent = ITextComponent.Serializer.fromJson(s.isEmpty() ? "\"\"" : s);
+            ITextComponent itextcomponent = ITextComponent.Serializer.getComponentFromJson(s.isEmpty() ? "\"\"" : s);
             if (this.world instanceof ServerWorld) {
                 try {
-                    this.signText[i] = TextComponentUtils.updateForEntity(this.getCommandSource(null), itextcomponent, null, 0);
+                    this.signText[i] = TextComponentUtils.func_240645_a_(this.getCommandSource(null), itextcomponent, null, 0);
                 } catch (CommandSyntaxException var6) {
                     this.signText[i] = itextcomponent;
                 }
@@ -79,7 +82,7 @@ public class StemSignTileEntity extends TileEntity {
 
     @Nullable
     @OnlyIn(Dist.CLIENT)
-    public String getRenderText(int line, Function<ITextComponent, String> p_212364_2_) {
+    public IReorderingProcessor getRenderText(int line, Function<ITextComponent, IReorderingProcessor> p_212364_2_) {
         if (this.renderText[line] == null && this.signText[line] != null) {
             this.renderText[line] = p_212364_2_.apply(this.signText[line]);
         }
@@ -92,15 +95,12 @@ public class StemSignTileEntity extends TileEntity {
         return new SUpdateTileEntityPacket(this.pos, -1, this.getUpdateTag());
     }
 
+    @Override
     public CompoundNBT getUpdateTag() {
         return this.write(new CompoundNBT());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        read(pkt.getNbtCompound());
-    }
-
     public boolean onlyOpsCanSetNbt() {
         return true;
     }
@@ -142,7 +142,7 @@ public class StemSignTileEntity extends TileEntity {
     public CommandSource getCommandSource(@Nullable ServerPlayerEntity playerIn) {
         String s = playerIn == null ? "Sign" : playerIn.getName().getString();
         ITextComponent itextcomponent = playerIn == null ? new StringTextComponent("Sign") : playerIn.getDisplayName();
-        return new CommandSource(ICommandSource.DUMMY, new Vec3d((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D), Vec2f.ZERO, (ServerWorld)this.world, 2, s, itextcomponent, this.world.getServer(), playerIn);
+        return new CommandSource(ICommandSource.DUMMY, new Vector3d((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D), Vector2f.ZERO, (ServerWorld)this.world, 2, s, itextcomponent, this.world.getServer(), playerIn);
     }
 
     public DyeColor getTextColor() {
