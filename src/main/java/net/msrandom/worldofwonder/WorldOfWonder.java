@@ -1,7 +1,9 @@
 package net.msrandom.worldofwonder;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -45,7 +47,8 @@ public class WorldOfWonder {
         WonderTileEntities.REGISTRY.register(bus);
         WonderFoliagePlacers.REGISTRY.register(bus);
 
-        bus.addListener(WonderBiomes::init);
+        bus.addGenericListener(Biome.class, WonderBiomes::init);
+        bus.addGenericListener(EntityType.class, WonderEntities::init);
         bus.addListener(WonderVanillaCompat::init);
         bus.addListener(WonderClientHandler::init);
 
@@ -60,7 +63,7 @@ public class WorldOfWonder {
             return msg;
         }, (msg, contextSupplier) -> {
             NetworkEvent.Context context = contextSupplier.get();
-            context.enqueueWork(() -> msg.handle(context.getDirection() == NetworkDirection.PLAY_TO_CLIENT ? getClientPlayer() : context.getSender()));
+            context.enqueueWork(() -> msg.handle(context.getDirection().getOriginationSide().isServer() ? getClientPlayer() : context.getSender()));
             context.setPacketHandled(true);
         }, Optional.of(side.isClient() ? NetworkDirection.PLAY_TO_CLIENT : NetworkDirection.PLAY_TO_SERVER));
     }

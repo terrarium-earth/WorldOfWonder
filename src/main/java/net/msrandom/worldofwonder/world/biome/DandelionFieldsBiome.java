@@ -27,10 +27,8 @@ public class DandelionFieldsBiome {
         DefaultBiomeFeatures.withStrongholdAndMineshaft(generationSettings);
         DefaultBiomeFeatures.withCavesAndCanyons(generationSettings);
         DefaultBiomeFeatures.withCommonOverworldBlocks(generationSettings);
-        DefaultBiomeFeatures.withLavaAndWaterLakes(generationSettings);
         DefaultBiomeFeatures.withMonsterRoom(generationSettings);
         DefaultBiomeFeatures.withTallGrass(generationSettings);
-        DefaultBiomeFeatures.withForestRocks(generationSettings);
         DefaultBiomeFeatures.withOverworldOres(generationSettings);
         DefaultBiomeFeatures.withDisks(generationSettings);
         DefaultBiomeFeatures.withDefaultFlowers(generationSettings);
@@ -38,6 +36,7 @@ public class DandelionFieldsBiome {
         DefaultBiomeFeatures.withSugarCaneAndPumpkins(generationSettings);
         DefaultBiomeFeatures.withLavaAndWaterSprings(generationSettings);
         DefaultBiomeFeatures.withFrozenTopLayer(generationSettings);
+        mobInfo.isValidSpawnBiomeForPlayer();
         mobInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.SHEEP, 12, 4, 4));
         mobInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.PIG, 10, 4, 4));
         mobInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.CHICKEN, 10, 4, 4));
@@ -53,6 +52,6 @@ public class DandelionFieldsBiome {
         mobInfo.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.SLIME, 100, 4, 4));
         mobInfo.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.ENDERMAN, 10, 1, 4));
         mobInfo.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.WITCH, 5, 1, 1));
-        return new Biome.Builder().precipitation(Biome.RainType.RAIN).category(Biome.Category.PLAINS).depth(0.1F).scale(0.4F).temperature(0.7F).downfall(0.8F).setEffects(new BiomeAmbience.Builder().setWaterColor(4159204).setWaterFogColor(329011).build()).build();
+        return new Biome.Builder().withGenerationSettings(generationSettings.build()).withMobSpawnSettings(mobInfo.copy()).precipitation(Biome.RainType.RAIN).category(Biome.Category.PLAINS).depth(0.1F).scale(0.4F).temperature(0.7F).downfall(0.8F).setEffects(new BiomeAmbience.Builder().setWaterColor(4159204).setWaterFogColor(329011).setFogColor(12638463).withSkyColor(7907327).setMoodSound(MoodSoundAmbience.DEFAULT_CAVE).build()).build();
     }
 }

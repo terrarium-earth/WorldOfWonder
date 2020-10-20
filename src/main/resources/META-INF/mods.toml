@@ -1,5 +1,6 @@
 modLoader="javafml"
 loaderVersion="[31,)"
+license="LGPL v3"
 [[mods]]
 modId="worldofwonder"
 version="${file.jarVersion}"

@@ -7,6 +7,7 @@ import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SpawnEggItem;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.msrandom.worldofwonder.WorldOfWonder;
@@ -18,6 +19,10 @@ public class WonderEntities {
     public static final EntityType<StemBoatEntity> STEM_BOAT = add("stem_boat", StemBoatEntity::new, EntityClassification.MISC, 1.375f, 0.5625f);
     public static final EntityType<DandeLionSeedEntity> DANDE_LION_SEED = add("dande_lion_seed", DandeLionSeedEntity::new, EntityClassification.MISC, 1f, 1f);
 
+    public static void init(RegistryEvent.Register<EntityType<?>> event) {
+        GlobalEntityTypeAttributes.put(DANDE_LION, DandeLionEntity.registerAttributes().create());
+    }
+
     private static <T extends Entity> EntityType<T> add(String name, EntityType.IFactory<T> factory, EntityClassification classification, float width, float height, int eggPrimary, int eggSecondary) {
         EntityType<T> type = add(name, factory, classification, width, height);
         WonderItems.REGISTRY.register(name + "_spawn_egg", () -> new SpawnEggItem(type, eggPrimary, eggSecondary, new Item.Properties().group(ItemGroup.MISC)));
@@ -28,9 +33,5 @@ public class WonderEntities {
         EntityType<T> type = EntityType.Builder.create(factory, classification).size(width, height).build(name);
         REGISTRY.register(name, () -> type);
         return type;
-    }
-
-    static {
-        GlobalEntityTypeAttributes.put(DANDE_LION, DandeLionEntity.registerAttributes().create());
     }
 }
