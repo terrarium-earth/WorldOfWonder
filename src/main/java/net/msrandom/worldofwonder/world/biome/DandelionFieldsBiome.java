@@ -20,10 +20,10 @@ public class DandelionFieldsBiome {
     public static Biome make() {
         MobSpawnInfo.Builder mobInfo = new MobSpawnInfo.Builder();
         BiomeGenerationSettings.Builder generationSettings = new BiomeGenerationSettings.Builder().withSurfaceBuilder(ConfiguredSurfaceBuilders.field_244178_j);
-        generationSettings.withStructure(StructureFeatures.field_244154_t).withStructure(StructureFeatures.field_244135_a);
-        generationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, WonderFeatures.DANDELION.withPlacement(Placement.field_242902_f.configure(new AtSurfaceWithExtraConfig(1, 0.05F, 1))));
-        generationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, WonderFeatures.DANDELION_FLUFF.withPlacement(Placement.field_242902_f.configure(new AtSurfaceWithExtraConfig(1, 0.01F, 1))));
-        generationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.FLOWER.withConfiguration(new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(Blocks.DANDELION.getDefaultState()), new SimpleBlockPlacer()).build()).withPlacement(Placement.field_242902_f.configure(new AtSurfaceWithExtraConfig(1, 0.5F, 3))));
+        generationSettings.withStructure(StructureFeatures.VILLAGE_PLAINS).withStructure(StructureFeatures.PILLAGER_OUTPOST);
+        generationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, WonderFeatures.DANDELION.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(1, 0.05F, 1))));
+        generationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, WonderFeatures.DANDELION_FLUFF.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(1, 0.01F, 1))));
+        generationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.FLOWER.withConfiguration(new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(Blocks.DANDELION.getDefaultState()), new SimpleBlockPlacer()).build()).withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(1, 0.5F, 3))));
         DefaultBiomeFeatures.withStrongholdAndMineshaft(generationSettings);
         DefaultBiomeFeatures.withCavesAndCanyons(generationSettings);
         DefaultBiomeFeatures.withCommonOverworldBlocks(generationSettings);

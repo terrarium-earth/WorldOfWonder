@@ -8,8 +8,6 @@ import net.minecraft.item.*;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -20,8 +18,7 @@ import net.msrandom.worldofwonder.client.renderer.entity.model.DandelionHatModel
 import javax.annotation.Nullable;
 
 public class ItemDandelionHat extends ArmorItem {
-    //TODO the tag thing here won't work
-    public static final IArmorMaterial MATERIAL = new WonderArmorMaterial(WorldOfWonder.MOD_ID + ":dandelion", 1, new int[]{1, 2, 3, 1}, 3, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0, () -> Ingredient.fromTag(ItemTags.getCollection().get(new ResourceLocation("dandelion"))));
+    public static final IArmorMaterial MATERIAL = new WonderArmorMaterial(WorldOfWonder.MOD_ID + ":dandelion", 1, new int[]{1, 2, 3, 1}, 3, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0, () -> Ingredient.fromTag(WorldOfWonder.DANDELION));
 
     public ItemDandelionHat() {
         super(MATERIAL, EquipmentSlotType.HEAD, new Item.Properties().group(ItemGroup.COMBAT));

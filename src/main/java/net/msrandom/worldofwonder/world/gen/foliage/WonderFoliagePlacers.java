@@ -1,4 +1,4 @@
-package net.msrandom.worldofwonder.world.gen.foliageplacer;
+package net.msrandom.worldofwonder.world.gen.foliage;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
