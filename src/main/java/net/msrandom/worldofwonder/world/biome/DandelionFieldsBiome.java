@@ -42,7 +42,7 @@ public class DandelionFieldsBiome {
         mobInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.CHICKEN, 10, 4, 4));
         mobInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.COW, 8, 4, 4));
         mobInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.RABBIT, 4, 2, 3));
-        mobInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(WonderEntities.DANDE_LION, 50, 2, 3));
+        mobInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(WonderEntities.DANDE_LION, 30, 2, 3));
         mobInfo.withSpawner(EntityClassification.AMBIENT, new MobSpawnInfo.Spawners(EntityType.BAT, 10, 8, 8));
         mobInfo.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.SPIDER, 100, 4, 4));
         mobInfo.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.ZOMBIE, 95, 4, 4));
