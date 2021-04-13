@@ -19,8 +19,7 @@ public class DandeLionRenderer extends MobRenderer<DandeLionEntity, DandeLionMod
     @Override
     protected void preRenderCallback(DandeLionEntity entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
         super.preRenderCallback(entitylivingbaseIn, matrixStackIn, partialTickTime);
-        matrixStackIn.translate(0, 0.13, 0);
-        if (entitylivingbaseIn.isSitting()) matrixStackIn.translate(0, entitylivingbaseIn.isChild() ? 0.15 : 0.3, 0);
+        if (entitylivingbaseIn.isEntitySleeping()) matrixStackIn.translate(0, entitylivingbaseIn.isChild() ? 0.175 : 0.35, 0);
     }
 
     @Override

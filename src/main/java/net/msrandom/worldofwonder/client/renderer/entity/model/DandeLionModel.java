@@ -73,7 +73,7 @@ public class DandeLionModel extends AgeableModel<DandeLionEntity> {
 
     @Override
     public void setRotationAngles(DandeLionEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (entityIn.isSitting()) {
+        if (entityIn.isEntitySleeping()) {
             this.head.rotationPointY = -2;
             this.head.rotationPointZ = -7;
             this.head.rotateAngleX = 0.785f;

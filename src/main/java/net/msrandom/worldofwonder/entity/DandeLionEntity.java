@@ -154,7 +154,7 @@ public class DandeLionEntity extends TameableEntity {
                 }
 
                 if (this.isOwner(player) && !this.isBreedingItem(stack)) {
-                    this.func_233687_w_(!this.isSitting());
+                    this.func_233687_w_(!this.isEntitySleeping());
                     this.isJumping = false;
                     this.navigator.clearPath();
                     this.setAttackTarget(null);
