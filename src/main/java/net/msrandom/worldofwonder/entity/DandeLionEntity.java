@@ -41,12 +41,12 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class DandeLionEntity extends TameableEntity {
-    private static final DataParameter<Boolean> SHEARED = EntityDataManager.createKey(DandeLionEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SHEARED = EntityDataManager.defineId(DandeLionEntity.class, DataSerializers.BOOLEAN);
     private boolean madeChild;
     private int shearedTicks;
 
-    public DandeLionEntity(EntityType<? extends DandeLionEntity> type, World worldIn) {
-        super(type, worldIn);
+    public DandeLionEntity(EntityType<? extends DandeLionEntity> type, World levelIn) {
+        super(type, levelIn);
     }
 
     @Override
@@ -62,66 +62,66 @@ public class DandeLionEntity extends TameableEntity {
         this.goalSelector.addGoal(10, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, new HurtByTargetGoal(this).setCallsForHelp());
+        this.targetSelector.addGoal(3, new HurtByTargetGoal(this).setAlertOthers());
         this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, AnimalEntity.class, false, entity -> !(entity instanceof DandeLionEntity)));
 
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
-        return func_233666_p_()
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25)
-                .createMutableAttribute(Attributes.MAX_HEALTH, 30)
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 6)
-                .createMutableAttribute(Attributes.ATTACK_KNOCKBACK, 0.2);
+        return createMobAttributes()
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
+                .add(Attributes.MAX_HEALTH, 30)
+                .add(Attributes.ATTACK_DAMAGE, 6)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.2);
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(SHEARED, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(SHEARED, false);
     }
 
     @Override
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        if (rand.nextBoolean()) shear();
-        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    public ILivingEntityData finalizeSpawn(IServerWorld levelIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        if (random.nextBoolean()) shear();
+        return super.finalizeSpawn(levelIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     @Override
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
         compound.putBoolean("Angry", this.isAngry());
     }
 
     @Override
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
         this.setAngry(compound.getBoolean("Angry"));
     }
 
     @Override
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
-        if (!world.isRemote) {
-            ItemStack stack = player.getHeldItem(hand);
+    public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
+        if (!level.isClientSide) {
+            ItemStack stack = player.getItemInHand(hand);
             Item item = stack.getItem();
 
-            if (item instanceof SpawnEggItem && ((SpawnEggItem) item).hasType(stack.getTag(), this.getType())) {
-                DandeLionEntity child = WonderEntities.DANDE_LION.create(world);
+            if (item instanceof SpawnEggItem && ((SpawnEggItem) item).spawnsEntity(stack.getTag(), this.getType())) {
+                DandeLionEntity child = WonderEntities.DANDE_LION.create(level);
                 if (child != null) {
-                    UUID id = getOwnerId();
+                    UUID id = getOwnerUUID();
                     if (id != null) {
-                        child.setOwnerId(id);
-                        child.setTamed(true);
+                        child.setOwnerUUID(id);
+                        child.setTame(true);
                     }
-                    child.setGrowingAge(-24000);
-                    child.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
-                    this.world.addEntity(child);
-                    if (stack.hasDisplayName()) {
+                    child.setAge(-24000);
+                    child.setPos(this.getX(), this.getY(), this.getZ());
+                    this.level.addFreshEntity(child);
+                    if (stack.hasCustomHoverName()) {
                         child.setCustomName(stack.getDisplayName());
                     }
 
-                    this.onChildSpawnFromEgg(player, child);
-                    if (!player.abilities.isCreativeMode) {
+                    this.onOffspringSpawnedFromEgg(player, child);
+                    if (!player.abilities.instabuild) {
                         stack.shrink(1);
                     }
                 }
@@ -131,14 +131,14 @@ public class DandeLionEntity extends TameableEntity {
 
             if (!isSheared() && item == Items.SHEARS) {
                 shear();
-                this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, getSoundVolume(), 1);
-                entityDropItem(new ItemStack(WonderBlocks.DANDELION_FLUFF, rand.nextInt(2) + 1));
+                this.playSound(SoundEvents.SHEEP_SHEAR, getSoundVolume(), 1);
+                spawnAtLocation(new ItemStack(WonderBlocks.DANDELION_FLUFF, random.nextInt(2) + 1));
                 return ActionResultType.SUCCESS;
             }
 
-            if (this.isTamed()) {
+            if (this.isTame()) {
                 if (item == Items.BONE_MEAL) {
-                    if (!player.abilities.isCreativeMode) {
+                    if (!player.abilities.instabuild) {
                         stack.shrink(1);
                     }
 
@@ -153,44 +153,44 @@ public class DandeLionEntity extends TameableEntity {
                     return ActionResultType.SUCCESS;
                 }
 
-                if (this.isOwner(player) && !this.isBreedingItem(stack)) {
-                    this.func_233687_w_(!this.isEntitySleeping());
-                    this.isJumping = false;
-                    this.navigator.clearPath();
-                    this.setAttackTarget(null);
+                if (this.isOwnedBy(player) && !this.isFood(stack)) {
+                    this.setOrderedToSit(!this.isSleeping());
+                    this.jumping = false;
+                    this.navigation.stop();
+                    this.setTarget(null);
                 }
-            } else if (Block.getBlockFromItem(item).isIn(BlockTags.SMALL_FLOWERS) && !this.isAngry()) {
-                if (!player.abilities.isCreativeMode) {
+            } else if (Block.byItem(item).is(BlockTags.SMALL_FLOWERS) && !this.isAngry()) {
+                if (!player.abilities.instabuild) {
                     stack.shrink(1);
                 }
 
-                if (this.rand.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player)) {
-                    this.setTamedBy(player);
-                    this.navigator.clearPath();
-                    this.setAttackTarget(null);
-                    this.func_233687_w_(true);
-                    this.world.setEntityState(this, (byte) 7);
+                if (this.random.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player)) {
+                    this.tame(player);
+                    this.navigation.stop();
+                    this.setTarget(null);
+                    this.setOrderedToSit(true);
+                    this.level.broadcastEntityEvent(this, (byte) 7);
                 } else {
-                    this.world.setEntityState(this, (byte) 6);
+                    this.level.broadcastEntityEvent(this, (byte) 6);
                 }
 
                 return ActionResultType.SUCCESS;
             }
-            if (this.isBreedingItem(stack)) {
-                if (this.getGrowingAge() == 0 && this.canBreed()) {
+            if (this.isFood(stack)) {
+                if (this.getAge() == 0 && this.canBreed()) {
                     if (flowersAround()) {
-                        this.consumeItemFromStack(player, stack);
+                        this.usePlayerItem(player, stack);
                         this.setInLove(player);
                         player.swing(hand, true);
                     } else {
-                        world.setEntityState(this, (byte) 5);
+                        level.broadcastEntityEvent(this, (byte) 5);
                     }
                     return ActionResultType.SUCCESS;
                 }
 
-                if (this.isChild()) {
-                    this.consumeItemFromStack(player, stack);
-                    this.ageUp((int) (this.getGrowingAge() / -20.0 * 0.1), true);
+                if (this.isBaby()) {
+                    this.usePlayerItem(player, stack);
+                    this.ageUp((int) (this.getAge() / -20.0 * 0.1), true);
                     return ActionResultType.SUCCESS;
                 }
             }
@@ -199,63 +199,63 @@ public class DandeLionEntity extends TameableEntity {
     }
 
     @Override
-    public void handleStatusUpdate(byte id) {
+    public void handleEntityEvent(byte id) {
         if (id == 5) {
             for(int i = 0; i <= 6; ++i) {
-                double d0 = this.rand.nextGaussian() * 0.02D;
-                double d1 = this.rand.nextGaussian() * 0.02D;
-                double d2 = this.rand.nextGaussian() * 0.02D;
-                this.world.addParticle(ParticleTypes.ANGRY_VILLAGER, this.getPosXRandom(1.0D), this.getPosYRandom() + 0.5D, this.getPosZRandom(1.0D), d0, d1, d2);
+                double d0 = this.random.nextGaussian() * 0.02D;
+                double d1 = this.random.nextGaussian() * 0.02D;
+                double d2 = this.random.nextGaussian() * 0.02D;
+                this.level.addParticle(ParticleTypes.ANGRY_VILLAGER, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
             }
         } else{
-            super.handleStatusUpdate(id);
+            super.handleEntityEvent(id);
         }
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack) {
-        return Block.getBlockFromItem(stack.getItem()).isIn(BlockTags.TALL_FLOWERS);
+    public boolean isFood(ItemStack stack) {
+        return Block.byItem(stack.getItem()).is(BlockTags.TALL_FLOWERS);
     }
 
     @Override
-    public boolean canMateWith(AnimalEntity otherAnimal) {
-        if (otherAnimal != this && this.isTamed() && otherAnimal instanceof DandeLionEntity) {
+    public boolean canMate(AnimalEntity otherAnimal) {
+        if (otherAnimal != this && this.isTame() && otherAnimal instanceof DandeLionEntity) {
             DandeLionEntity dandeLion = (DandeLionEntity) otherAnimal;
-            return dandeLion.isTamed() && !dandeLion.isSitting() && this.isInLove() && dandeLion.isInLove();
+            return dandeLion.isTame() && !dandeLion.isInSittingPose() && this.isInLove() && dandeLion.isInLove();
         }
         return false;
     }
 
     public boolean isAngry() {
-        return (this.dataManager.get(TAMED) & 2) != 0;
+        return (this.entityData.get(DATA_FLAGS_ID) & 2) != 0;
     }
 
     public void setAngry(boolean angry) {
-        byte b0 = this.dataManager.get(TAMED);
-        this.dataManager.set(TAMED, angry ? (byte) (b0 | 2) : (byte) (b0 & -3));
+        byte b0 = this.entityData.get(DATA_FLAGS_ID);
+        this.entityData.set(DATA_FLAGS_ID, angry ? (byte) (b0 | 2) : (byte) (b0 & -3));
     }
 
     @Override
-    public void setAttackTarget(@Nullable LivingEntity entitylivingbaseIn) {
-        super.setAttackTarget(entitylivingbaseIn);
+    public void setTarget(@Nullable LivingEntity entitylivingbaseIn) {
+        super.setTarget(entitylivingbaseIn);
         if (entitylivingbaseIn == null) {
             this.setAngry(false);
-        } else if (!this.isTamed()) {
+        } else if (!this.isTame()) {
             this.setAngry(true);
         }
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource source, float amount) {
-        this.func_233687_w_(false);
-        return super.attackEntityFrom(source, amount);
+    public boolean hurt(DamageSource source, float amount) {
+        this.setOrderedToSit(false);
+        return super.hurt(source, amount);
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
-        if (!this.world.isRemote) {
-            if (this.getAttackTarget() == null && this.isAngry()) {
+    public void tick() {
+        super.tick();
+        if (!this.level.isClientSide) {
+            if (this.getTarget() == null && this.isAngry()) {
                 this.setAngry(false);
             }
             if (shearedTicks > 0 && --shearedTicks == 0) {
@@ -265,15 +265,15 @@ public class DandeLionEntity extends TameableEntity {
     }
 
     @Override
-    protected void dropSpecialItems(DamageSource source, int looting, boolean recentlyHitIn) {
-        super.dropSpecialItems(source, looting, recentlyHitIn);
-        entityDropItem(new ItemStack(isSheared() ? WonderBlocks.DANDELION_PETALS : WonderBlocks.DANDELION_FLUFF, rand.nextInt(2) + 1));
+    protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHitIn) {
+        super.dropCustomDeathLoot(source, looting, recentlyHitIn);
+        spawnAtLocation(new ItemStack(isSheared() ? WonderBlocks.DANDELION_PETALS : WonderBlocks.DANDELION_FLUFF, random.nextInt(2) + 1));
     }
 
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return isTamed() ? WonderSounds.DANDE_LION_PUR : WonderSounds.DANDE_LION_AMBIENT;
+        return isTame() ? WonderSounds.DANDE_LION_PUR : WonderSounds.DANDE_LION_AMBIENT;
     }
 
     @Nullable
@@ -289,38 +289,38 @@ public class DandeLionEntity extends TameableEntity {
     }
 
     public boolean isSheared() {
-        return this.dataManager.get(SHEARED);
+        return this.entityData.get(SHEARED);
     }
 
     private void setSheared(boolean sheared) {
-        this.dataManager.set(SHEARED, sheared);
+        this.entityData.set(SHEARED, sheared);
     }
 
     public void shear() {
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             shearedTicks = 12000;
             setSheared(true);
         }
     }
 
-    public boolean canBeLeashedTo(PlayerEntity player) {
-        return !this.isAngry() && super.canBeLeashedTo(player);
+    public boolean canBeLeashed(PlayerEntity player) {
+        return !this.isAngry() && super.canBeLeashed(player);
     }
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageable) {
+    public AgeableEntity getBreedOffspring(ServerWorld serverWorld, AgeableEntity ageable) {
         if (ageable instanceof DandeLionEntity) {
             if (((DandeLionEntity) ageable).madeChild) ((DandeLionEntity) ageable).madeChild = false;
             else {
                 madeChild = true;
-                for (int i = 0; i < rand.nextInt(2) + 3; i++) {
-                    DandeLionSeedEntity seed = WonderEntities.DANDE_LION_SEED.create(world);
+                for (int i = 0; i < random.nextInt(2) + 3; i++) {
+                    DandeLionSeedEntity seed = WonderEntities.DANDE_LION_SEED.create(level);
                     if (seed != null) {
-                        double rotation = Math.toRadians(rand.nextInt(360));
-                        seed.setPosition(getPosX(), getPosY(), getPosZ());
-                        seed.setTarget(getPosX() + Math.sin(rotation) * 16.0, getPosZ() + Math.cos(-rotation) * 16.0);
-                        world.addEntity(seed);
+                        double rotation = Math.toRadians(random.nextInt(360));
+                        seed.setPos(getX(), getY(), getZ());
+                        seed.setTarget(getX() + Math.sin(rotation) * 16.0, getZ() + Math.cos(-rotation) * 16.0);
+                        level.addFreshEntity(seed);
                     }
                 }
 
@@ -330,19 +330,19 @@ public class DandeLionEntity extends TameableEntity {
                 }
 
                 if (serverplayerentity != null) {
-                    serverplayerentity.addStat(Stats.ANIMALS_BRED);
+                    serverplayerentity.awardStat(Stats.ANIMALS_BRED);
                     CriteriaTriggers.BRED_ANIMALS.trigger(serverplayerentity, this, (AnimalEntity) ageable, null);
                 }
 
-                setGrowingAge(6000);
-                ageable.setGrowingAge(6000);
-                resetInLove();
-                ((AnimalEntity) ageable).resetInLove();
+                setAge(6000);
+                ageable.setAge(6000);
+                resetLove();
+                ((AnimalEntity) ageable).resetLove();
 
-                this.world.setEntityState(this, (byte)18);
-                this.world.setEntityState(ageable, (byte)18);
-                if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
-                    this.world.addEntity(new ExperienceOrbEntity(this.world, getPosX(), getPosY(), getPosZ(), rand.nextInt(7) + 1));
+                this.level.broadcastEntityEvent(this, (byte)18);
+                this.level.broadcastEntityEvent(ageable, (byte)18);
+                if (this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
+                    this.level.addFreshEntity(new ExperienceOrbEntity(this.level, getX(), getY(), getZ(), random.nextInt(7) + 1));
                 }
             }
         }
@@ -350,15 +350,15 @@ public class DandeLionEntity extends TameableEntity {
     }
 
     private boolean flowersAround() {
-        BlockPos p = getPosition();
+        BlockPos p = getOnPos();
         int flowers = 0;
         for (int i = -16; i <= 16; i++) {
             for (int j = -16; j <= 16; j++) {
-                BlockPos pos = p.add(i, 0, j);
-                BlockState current = world.getBlockState(pos);
-                BlockState down = world.getBlockState(pos.down());
-                if (!down.isSolid()) current = down;
-                if (current.isIn(BlockTags.FLOWERS) && ++flowers >= 6) {
+                BlockPos pos = p.offset(i, 0, j);
+                BlockState current = level.getBlockState(pos);
+                BlockState down = level.getBlockState(pos.below());
+                if (!down.canOcclude()) current = down;
+                if (current.is(BlockTags.FLOWERS) && ++flowers >= 6) {
                     return true;
                 }
             }
@@ -367,19 +367,19 @@ public class DandeLionEntity extends TameableEntity {
     }
 
     @Override
-    public boolean shouldAttackEntity(LivingEntity target, LivingEntity owner) {
+    public boolean wantsToAttack(LivingEntity target, LivingEntity owner) {
         if (target instanceof CreeperEntity || target instanceof GhastEntity) {
             return false;
         } else {
             if (target instanceof DandeLionEntity) {
                 DandeLionEntity dandeLion = (DandeLionEntity)target;
-                return !dandeLion.isTamed() || dandeLion.getOwner() != owner;
-            } else if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).canAttackPlayer((PlayerEntity)target)) {
+                return !dandeLion.isTame() || dandeLion.getOwner() != owner;
+            } else if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).canHarmPlayer((PlayerEntity)target)) {
                 return false;
-            } else if (target instanceof AbstractHorseEntity && ((AbstractHorseEntity)target).isTame()) {
+            } else if (target instanceof AbstractHorseEntity && ((AbstractHorseEntity)target).isTamed()) {
                 return false;
             } else {
-                return !(target instanceof TameableEntity) || !((TameableEntity)target).isTamed();
+                return !(target instanceof TameableEntity) || !((TameableEntity)target).isTame();
             }
         }
     }

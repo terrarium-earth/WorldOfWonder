@@ -17,13 +17,13 @@ public class DandeLionRenderer extends MobRenderer<DandeLionEntity, DandeLionMod
     }
 
     @Override
-    protected void preRenderCallback(DandeLionEntity entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
-        super.preRenderCallback(entitylivingbaseIn, matrixStackIn, partialTickTime);
-        if (entitylivingbaseIn.isEntitySleeping()) matrixStackIn.translate(0, entitylivingbaseIn.isChild() ? 0.175 : 0.35, 0);
+    protected void scale(DandeLionEntity entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
+        super.scale(entitylivingbaseIn, matrixStackIn, partialTickTime);
+        if (entitylivingbaseIn.isSleeping()) matrixStackIn.translate(0, entitylivingbaseIn.isBaby() ? 0.175 : 0.35, 0);
     }
 
     @Override
-    public ResourceLocation getEntityTexture(DandeLionEntity entity) {
+    public ResourceLocation getTextureLocation(DandeLionEntity entity) {
         return entity.isSheared() ? NORMAL : FLUFF;
     }
 }

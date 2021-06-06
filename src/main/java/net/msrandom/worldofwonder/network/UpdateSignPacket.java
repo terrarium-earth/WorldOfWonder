@@ -32,7 +32,7 @@ public class UpdateSignPacket implements INetworkPacket {
         this.lines = new String[4];
 
         for (int i = 0; i < 4; ++i) {
-            this.lines[i] = buffer.readString(384);
+            this.lines[i] = buffer.readUtf(384);
         }
     }
 
@@ -41,17 +41,17 @@ public class UpdateSignPacket implements INetworkPacket {
         buffer.writeBlockPos(this.pos);
 
         for (int i = 0; i < 4; ++i) {
-            buffer.writeString(this.lines[i]);
+            buffer.writeUtf(this.lines[i]);
         }
     }
 
     @Override
     public void handle(PlayerEntity player) {
-        ((ServerPlayerEntity) player).markPlayerActive();
-        ServerWorld serverworld = (ServerWorld) player.world;
+        ((ServerPlayerEntity) player).resetLastActionTime();
+        ServerWorld serverworld = (ServerWorld) player.level;
         if (serverworld.isAreaLoaded(pos, 16)) {
             BlockState blockstate = serverworld.getBlockState(pos);
-            TileEntity tileentity = serverworld.getTileEntity(pos);
+            TileEntity tileentity = serverworld.getBlockEntity(pos);
             if (!(tileentity instanceof StemSignTileEntity)) {
                 return;
             }
@@ -61,11 +61,11 @@ public class UpdateSignPacket implements INetworkPacket {
                 String[] astring = lines;
 
                 for (int i = 0; i < astring.length; ++i) {
-                    signtileentity.setText(i, new StringTextComponent(TextFormatting.getTextWithoutFormattingCodes(astring[i])));
+                    signtileentity.setText(i, new StringTextComponent(TextFormatting.stripFormatting(astring[i])));
                 }
 
-                signtileentity.markDirty();
-                serverworld.notifyBlockUpdate(pos, blockstate, blockstate, 3);
+                signtileentity.setChanged();
+                serverworld.sendBlockUpdated(pos, blockstate, blockstate, 3);
             }
         }
     }

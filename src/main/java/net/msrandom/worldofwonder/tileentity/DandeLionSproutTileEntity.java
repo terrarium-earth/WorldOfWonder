@@ -18,26 +18,26 @@ public class DandeLionSproutTileEntity extends TileEntity implements ITickableTi
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT compound) {
+    public void load(BlockState state, CompoundNBT compound) {
         age = compound.getInt("Age");
-        super.read(state, compound);
+        super.load(state, compound);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundNBT save(CompoundNBT compound) {
         compound.putInt("Age", age);
-        return super.write(compound);
+        return super.save(compound);
     }
 
     @Override
     public void tick() {
-        if (hasWorld() && !Objects.requireNonNull(world).isRemote && ++age >= (maxAge == -1 ? maxAge = 48000 + world.rand.nextInt(12000) : maxAge)) {
-            DandeLionEntity entity = WonderEntities.DANDE_LION.create(this.world);
+        if (hasLevel() && !Objects.requireNonNull(level).isClientSide && ++age >= (maxAge == -1 ? maxAge = 48000 + level.random.nextInt(12000) : maxAge)) {
+            DandeLionEntity entity = WonderEntities.DANDE_LION.create(this.level);
             if (entity != null) {
-                entity.setGrowingAge(-24000);
-                entity.setLocationAndAngles(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0.0F, 0.0F);
-                world.addEntity(entity);
-                world.destroyBlock(pos, false);
+                entity.setAge(-24000);
+                entity.setPos(getBlockPos().getX() + 0.5, getBlockPos().getY(), getBlockPos().getZ() + 0.5);
+                level.addFreshEntity(entity);
+                level.destroyBlock(getBlockPos(), false);
             }
         }
     }

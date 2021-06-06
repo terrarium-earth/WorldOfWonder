@@ -11,7 +11,7 @@ import java.util.Random;
 public class DandelionFluffTree extends Tree {
     @Nullable
     @Override
-    protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random randomIn, boolean largeHive) {
+    protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getConfiguredFeature(Random p_225546_1_, boolean p_225546_2_) {
         return WonderFeatures.DANDELION_FLUFF;
     }
 }

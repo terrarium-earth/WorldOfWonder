@@ -28,6 +28,6 @@ public class OpenStemSignPacket implements INetworkPacket {
 
     @Override
     public void handle(PlayerEntity player) {
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> WonderClientHandler.openSignEditScreen(player, pos));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> WonderClientHandler.openSignEditScreen(player, pos));
     }
 }

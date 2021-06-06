@@ -21,27 +21,27 @@ public class AbstractStemSignBlock extends AbstractSignBlock {
         super(propertiesIn, null);
     }
 
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public TileEntity newBlockEntity(IBlockReader worldIn) {
         return WonderTileEntities.STEM_SIGN.create();
     }
 
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        ItemStack itemstack = player.getHeldItem(handIn);
-        boolean flag = itemstack.getItem() instanceof DyeItem && player.abilities.allowEdit;
-        if (worldIn.isRemote) {
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        ItemStack itemstack = player.getItemInHand(handIn);
+        boolean flag = itemstack.getItem() instanceof DyeItem && player.abilities.mayBuild;
+        if (worldIn.isClientSide) {
             return flag ? ActionResultType.SUCCESS : ActionResultType.CONSUME;
         } else {
-            TileEntity tileentity = worldIn.getTileEntity(pos);
+            TileEntity tileentity = worldIn.getBlockEntity(pos);
             if (tileentity instanceof StemSignTileEntity) {
-                StemSignTileEntity signtileentity = (StemSignTileEntity)tileentity;
+                StemSignTileEntity sign = (StemSignTileEntity)tileentity;
                 if (flag) {
-                    boolean flag1 = signtileentity.setTextColor(((DyeItem)itemstack.getItem()).getDyeColor());
+                    boolean flag1 = sign.setTextColor(((DyeItem)itemstack.getItem()).getDyeColor());
                     if (flag1 && !player.isCreative()) {
                         itemstack.shrink(1);
                     }
                 }
 
-                return signtileentity.executeCommand(player) ? ActionResultType.SUCCESS : ActionResultType.PASS;
+                return sign.executeCommand(player) ? ActionResultType.SUCCESS : ActionResultType.PASS;
             } else {
                 return ActionResultType.PASS;
             }

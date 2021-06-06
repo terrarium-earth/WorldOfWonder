@@ -1,3 +1,4 @@
+/*
 package net.msrandom.worldofwonder.block;
 
 
@@ -28,34 +29,34 @@ import net.minecraft.world.IWorld;
 
 public class DirectionalVerticalSlabBlock extends Block implements IWaterLoggable {
     public static final EnumProperty<VerticalSlabType> TYPE = EnumProperty.create("type", VerticalSlabType.class);
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+    public static final DirectionProperty FACING = HorizontalBlock.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    protected static final VoxelShape EAST_AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 8.0D, 16.0D, 16.0D);
-    protected static final VoxelShape WEST_AABB = Block.makeCuboidShape(8.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-    protected static final VoxelShape SOUTH_AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 8.0D);
-    protected static final VoxelShape NORTH_AABB = Block.makeCuboidShape(0.0D, 0.0D, 8.0D, 16.0D, 16.0D, 16.0D);
-    protected static final VoxelShape DOUBLE_AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+    protected static final VoxelShape EAST_AABB = Block.box(0.0D, 0.0D, 0.0D, 8.0D, 16.0D, 16.0D);
+    protected static final VoxelShape WEST_AABB = Block.box(8.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+    protected static final VoxelShape SOUTH_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 8.0D);
+    protected static final VoxelShape NORTH_AABB = Block.box(0.0D, 0.0D, 8.0D, 16.0D, 16.0D, 16.0D);
+    protected static final VoxelShape DOUBLE_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
     public DirectionalVerticalSlabBlock(Properties properties) {
         super(properties);
-        this.setDefaultState(getDefaultState().with(FACING, Direction.NORTH).with(WATERLOGGED, false));
+        this.registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(FACING, TYPE, WATERLOGGED);
     }
 
     @Override
-    public boolean isTransparent(BlockState state) {
-        return state.get(TYPE) != VerticalSlabType.DOUBLE;
+    public boolean useShapeForLightOcclusion(BlockState state) {
+        return state.getValue(TYPE) != VerticalSlabType.DOUBLE;
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        if (state.get(TYPE) == VerticalSlabType.HALF) {
-            switch((Direction)state.get(FACING)) {
+        if (state.getValue(TYPE) == VerticalSlabType.HALF) {
+            switch((Direction)state.getValue(FACING)) {
                 default:
                 case NORTH:
                     return NORTH_AABB;
@@ -73,32 +74,32 @@ public class DirectionalVerticalSlabBlock extends Block implements IWaterLoggabl
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        BlockPos blockpos = context.getPos();
-        BlockState blockstate = context.getWorld().getBlockState(blockpos);
+        BlockPos blockpos = context.getClickedPos();
+        BlockState blockstate = context.getLevel().getBlockState(blockpos);
         if(blockstate.getBlock() == this) {
-            return blockstate.with(TYPE, VerticalSlabType.DOUBLE).with(WATERLOGGED, false);
+            return blockstate.setValue(TYPE, VerticalSlabType.DOUBLE).setValue(WATERLOGGED, false);
         }
-        FluidState fluid = context.getWorld().getFluidState(blockpos);
-        BlockState retState = getDefaultState().with(WATERLOGGED, fluid.getFluid() == Fluids.WATER);
+        FluidState fluid = context.getLevel().getFluidState(blockpos);
+        BlockState retState = defaultBlockState().setValue(WATERLOGGED, fluid.getType() == Fluids.WATER);
         Direction direction = getDirectionForPlacement(context);
-        return retState.with(FACING, direction);
+        return retState.setValue(FACING, direction);
     }
 
     private static Direction getDirectionForPlacement(BlockItemUseContext context) {
-        Direction direction = context.getFace();
+        Direction direction = context.getClickedFace();
         if(direction.getAxis() != Direction.Axis.Y) {
             return direction;
         }
-        Vector3d vec = context.getHitVec().subtract(Vector3d.copyCentered(context.getPos())).subtract(0.5, 0, 0.5);
+        Vector3d vec = context.getClickLocation().subtract(Vector3d.atCenterOf(context.getClickedPos())).subtract(0.5, 0, 0.5);
         double angle = Math.atan2(vec.x, vec.z) * -180.0 / Math.PI;
-        return Direction.fromAngle(angle).getOpposite();
+        return Direction.fromYRot(angle).getOpposite();
     }
 
     @Override
-    public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
+    public boolean canBeReplaced(BlockState state, BlockItemUseContext useContext) {
         ItemStack itemstack = useContext.getItem();
-        Direction direction = state.get(FACING);
-        VerticalSlabType slabtype = state.get(TYPE);
+        Direction direction = state.getValue(FACING);
+        VerticalSlabType slabtype = state.getValue(TYPE);
         return slabtype != VerticalSlabType.DOUBLE && itemstack.getItem() == asItem() && useContext.replacingClickedOnBlock() &&
                 (useContext.getFace() == direction && getDirectionForPlacement(useContext) == direction);
     }
@@ -106,30 +107,30 @@ public class DirectionalVerticalSlabBlock extends Block implements IWaterLoggabl
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : Fluids.EMPTY.getDefaultState();
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : Fluids.EMPTY.defaultBlockState();
     }
 
     @Override
     public boolean receiveFluid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn) {
-        return state.get(TYPE) != VerticalSlabType.DOUBLE && IWaterLoggable.super.receiveFluid(worldIn, pos, state, fluidStateIn);
+        return state.getValue(TYPE) != VerticalSlabType.DOUBLE && IWaterLoggable.super.receiveFluid(worldIn, pos, state, fluidStateIn);
     }
 
     @Override
     public boolean canContainFluid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn) {
-        return state.get(TYPE) != VerticalSlabType.DOUBLE && IWaterLoggable.super.canContainFluid(worldIn, pos, state, fluidIn);
+        return state.getValue(TYPE) != VerticalSlabType.DOUBLE && IWaterLoggable.super.canContainFluid(worldIn, pos, state, fluidIn);
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if(stateIn.get(WATERLOGGED)) {
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        if(stateIn.getValue(WATERLOGGED)) {
             worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
         }
-        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override
-    public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+    public boolean isPathfindable(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
         return type == PathType.WATER && worldIn.getFluidState(pos).isTagged(FluidTags.WATER);
     }
 
@@ -144,8 +145,8 @@ public class DirectionalVerticalSlabBlock extends Block implements IWaterLoggabl
         }
 
         @Override
-        public String getString() {
+        public String getSerializedName() {
             return this.name;
         }
     }
-}
+}*/

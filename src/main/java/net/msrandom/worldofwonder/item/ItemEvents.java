@@ -17,6 +17,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -39,43 +40,43 @@ public class ItemEvents {
 
     @SubscribeEvent
     public static void interact(PlayerInteractEvent.RightClickBlock event) {
-        World world = event.getWorld();
+        World level = event.getWorld();
         ItemStack stack = event.getItemStack();
         BlockPos pos = event.getPos();
-        BlockState state = world.getBlockState(pos);
+        BlockState state = level.getBlockState(pos);
 
         if (stack.getItem() instanceof AxeItem) {
             Block stripped = BLOCK_STRIPPING_MAP.get(state.getBlock());
             if (stripped != null) {
                 PlayerEntity player = event.getPlayer();
-                world.playSound(player, pos, SoundEvents.ITEM_AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                if (!world.isRemote) {
-                    world.setBlockState(pos, stripped.getDefaultState().with(RotatedPillarBlock.AXIS, state.get(RotatedPillarBlock.AXIS)), 11);
-                    stack.damageItem(1, player, entity -> entity.sendBreakAnimation(event.getHand()));
+                level.playSound(player, pos, SoundEvents.AXE_STRIP, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                if (!level.isClientSide) {
+                    level.setBlock(pos, stripped.defaultBlockState().setValue(RotatedPillarBlock.AXIS, state.getValue(RotatedPillarBlock.AXIS)), 11);
+                    stack.hurtAndBreak(1, player, entity -> entity.broadcastBreakEvent(event.getHand()));
                     event.setUseItem(Event.Result.DENY);
                 }
             }
         } else if (state.getBlock() == Blocks.FLOWER_POT && stack.getItem() == WonderBlocks.DANDE_LION_SPROUT.asItem()) {
-            world.setBlockState(pos, WonderBlocks.POTTED_DANDE_LION_SPROUT.getDefaultState().with(BlockStateProperties.HORIZONTAL_AXIS, event.getPlayer().getHorizontalFacing().getOpposite().getAxis()), 3);
-            event.getPlayer().addStat(Stats.POT_FLOWER);
-            if (!event.getPlayer().abilities.isCreativeMode) {
+            level.setBlock(pos, WonderBlocks.POTTED_DANDE_LION_SPROUT.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_AXIS, event.getPlayer().getDirection().getOpposite().getAxis()), Constants.BlockFlags.NOTIFY_NEIGHBORS | Constants.BlockFlags.BLOCK_UPDATE);
+            event.getPlayer().awardStat(Stats.POT_FLOWER);
+            if (!event.getPlayer().abilities.instabuild) {
                 stack.shrink(1);
             }
             event.setUseBlock(Event.Result.DENY);
             event.setCancellationResult(ActionResultType.SUCCESS);
             event.setCanceled(true);
-        } else handleBloomMeal(world, stack, pos, event.getPlayer());
+        } else handleBloomMeal(level, stack, pos, event.getPlayer());
     }
 
-    public static boolean handleBloomMeal(World world, ItemStack stack, BlockPos pos, PlayerEntity player) {
-        BlockState state = world.getBlockState(pos);
+    public static boolean handleBloomMeal(World level, ItemStack stack, BlockPos pos, PlayerEntity player) {
+        BlockState state = level.getBlockState(pos);
         if (stack.getItem() == WonderItems.BLOOM_MEAL && state.getBlock() == Blocks.DANDELION) {
-            if (!world.isRemote) {
-                Random rand = world.rand;
-                world.playEvent(2005, pos, 0);
-                if (!player.abilities.isCreativeMode) stack.shrink(1);
-                if (rand.nextInt(3) == 0) {
-                    (rand.nextInt(4) == 0 ? FLUFF_TREE : DANDELION_TREE).attemptGrowTree((ServerWorld) world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), pos, state, rand);
+            if (!level.isClientSide) {
+                Random random = level.random;
+                level.levelEvent(2005, pos, 0);
+                if (!player.abilities.instabuild) stack.shrink(1);
+                if (random.nextInt(3) == 0) {
+                    (random.nextInt(4) == 0 ? FLUFF_TREE : DANDELION_TREE).growTree((ServerWorld) level, ((ServerWorld) level).getChunkSource().getGenerator(), pos, state, random);
                 }
                 return true;
             }
@@ -84,15 +85,16 @@ public class ItemEvents {
     }
 
     private static class BloomMealDispenseBehavior extends OptionalDispenseBehavior {
-        protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-            this.setSuccessful(true);
-            World world = source.getWorld();
-            BlockPos blockpos = source.getBlockPos().offset(source.getBlockState().get(DispenserBlock.FACING));
-            if (!world.isRemote) {
-                if (!handleBloomMeal(world, stack, blockpos, FakePlayerFactory.getMinecraft((ServerWorld) world))) {
-                    this.setSuccessful(false);
+        @Override
+        protected ItemStack execute(IBlockSource source, ItemStack stack) {
+            this.setSuccess(true);
+            ServerWorld level = source.getLevel();
+            BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+            if (!level.isClientSide) {
+                if (!handleBloomMeal(level, stack, blockpos, FakePlayerFactory.getMinecraft(level))) {
+                    this.setSuccess(false);
                 } else {
-                    world.playEvent(2005, blockpos, 0);
+                    level.levelEvent(2005, blockpos, 0);
                 }
             }
 

@@ -16,7 +16,7 @@ public class StemBoatEntity extends BoatEntity {
         super(worldIn, x, y, z);
     }
 
-    public IPacket<?> createSpawnPacket() {
+    public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

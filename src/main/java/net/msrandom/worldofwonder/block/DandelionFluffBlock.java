@@ -9,10 +9,11 @@ import net.minecraft.world.World;
 
 public class DandelionFluffBlock extends DandelionBlock {
     public DandelionFluffBlock() {
-        super(Block.Properties.create(Material.WOOL).hardnessAndResistance(0.2f).sound(SoundType.CLOTH));
+        super(Block.Properties.of(Material.WOOL).strength(0.2f).sound(SoundType.WOOL));
     }
 
-    public void onFallenUpon(World worldIn, BlockPos pos, Entity entityIn, float fallDistance) {
-        super.onFallenUpon(worldIn, pos, entityIn, fallDistance * 0.5f);
+    @Override
+    public void fallOn(World worldIn, BlockPos pos, Entity entityIn, float fallDistance) {
+        super.fallOn(worldIn, pos, entityIn, fallDistance * 0.5f);
     }
 }

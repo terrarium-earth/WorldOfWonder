@@ -37,16 +37,16 @@ public class WonderClientHandler {
         RenderingRegistry.registerEntityRenderingHandler(WonderEntities.DANDE_LION_SEED, DandeLionSeedRenderer::new);
         ClientRegistry.bindTileEntityRenderer(WonderTileEntities.STEM_SIGN, StemSignTileEntityRenderer::new);
 
-        RenderTypeLookup.setRenderLayer(WonderBlocks.STEM_DOOR, RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(WonderBlocks.STEM_TRAPDOOR, RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(WonderBlocks.DANDE_LION_SPROUT, RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(WonderBlocks.POTTED_DANDE_LION_SPROUT, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(WonderBlocks.STEM_DOOR, RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(WonderBlocks.STEM_TRAPDOOR, RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(WonderBlocks.DANDE_LION_SPROUT, RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(WonderBlocks.POTTED_DANDE_LION_SPROUT, RenderType.cutout());
 
         if (WorldOfWonder.quarkLoaded) {
             Function<TileEntityRendererDispatcher, StemChestTileEntityRenderer> chestRenderer = StemChestTileEntityRenderer::new;
             ClientRegistry.bindTileEntityRenderer(WonderQuarkCompat.STEM_CHEST_ENTITY, chestRenderer);
             ClientRegistry.bindTileEntityRenderer(WonderQuarkCompat.STEM_TRAPPED_CHEST_ENTITY, chestRenderer);
-            RenderTypeLookup.setRenderLayer(WonderQuarkCompat.STEM_LADDER, RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(WonderQuarkCompat.STEM_LADDER, RenderType.cutout());
         }
     }
 
@@ -61,6 +61,6 @@ public class WonderClientHandler {
 
     @OnlyIn(Dist.CLIENT)
     public static void openSignEditScreen(PlayerEntity player, BlockPos pos) {
-        Minecraft.getInstance().displayGuiScreen(new EditStemSignScreen((StemSignTileEntity) player.world.getTileEntity(pos)));
+        Minecraft.getInstance().setScreen(new EditStemSignScreen((StemSignTileEntity) player.level.getBlockEntity(pos)));
     }
 }

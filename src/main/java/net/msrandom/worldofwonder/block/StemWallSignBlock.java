@@ -18,65 +18,70 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.Map;
 
 public class StemWallSignBlock extends AbstractStemSignBlock {
-   public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
-   private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(Direction.NORTH, Block.makeCuboidShape(0.0D, 4.5D, 14.0D, 16.0D, 12.5D, 16.0D), Direction.SOUTH, Block.makeCuboidShape(0.0D, 4.5D, 0.0D, 16.0D, 12.5D, 2.0D), Direction.EAST, Block.makeCuboidShape(0.0D, 4.5D, 0.0D, 2.0D, 12.5D, 16.0D), Direction.WEST, Block.makeCuboidShape(14.0D, 4.5D, 0.0D, 16.0D, 12.5D, 16.0D)));
+    public static final DirectionProperty FACING = HorizontalBlock.FACING;
+    private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(Direction.NORTH, Block.box(0.0D, 4.5D, 14.0D, 16.0D, 12.5D, 16.0D), Direction.SOUTH, Block.box(0.0D, 4.5D, 0.0D, 16.0D, 12.5D, 2.0D), Direction.EAST, Block.box(0.0D, 4.5D, 0.0D, 2.0D, 12.5D, 16.0D), Direction.WEST, Block.box(14.0D, 4.5D, 0.0D, 16.0D, 12.5D, 16.0D)));
 
-   public StemWallSignBlock() {
-      super(Block.Properties.create(Material.WOOD).doesNotBlockMovement().hardnessAndResistance(1.0F).sound(SoundType.WOOD).lootFrom(WonderBlocks.STEM_SIGN));
-      this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(WATERLOGGED, Boolean.FALSE));
-   }
+    public StemWallSignBlock() {
+        super(Block.Properties.of(Material.WOOD).noCollission().strength(1.0F).sound(SoundType.WOOD).lootFrom(() -> WonderBlocks.STEM_SIGN));
+        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, Boolean.FALSE));
+    }
 
-   public String getTranslationKey() {
-      return this.asItem().getTranslationKey();
-   }
+    @Override
+    public String getDescriptionId() {
+        return this.asItem().getDescriptionId();
+    }
 
-   public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-      return SHAPES.get(state.get(FACING));
-   }
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return SHAPES.get(state.getValue(FACING));
+    }
 
-   public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-      return worldIn.getBlockState(pos.offset(state.get(FACING).getOpposite())).getMaterial().isSolid();
-   }
+    @Override
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+        return worldIn.getBlockState(pos.relative(state.getValue(FACING).getOpposite())).getMaterial().isSolid();
+    }
 
-   @Nullable
-   public BlockState getStateForPlacement(BlockItemUseContext context) {
-      BlockState blockstate = this.getDefaultState();
-      FluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
-      IWorldReader iworldreader = context.getWorld();
-      BlockPos blockpos = context.getPos();
-      Direction[] adirection = context.getNearestLookingDirections();
+    @Override
+    @Nullable
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        BlockState state = this.defaultBlockState();
+        World level = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        FluidState fluidState = level.getFluidState(pos);
+        Direction[] directions = context.getNearestLookingDirections();
 
-      for(Direction direction : adirection) {
-         if (direction.getAxis().isHorizontal()) {
-            Direction direction1 = direction.getOpposite();
-            blockstate = blockstate.with(FACING, direction1);
-            if (blockstate.isValidPosition(iworldreader, blockpos)) {
-               return blockstate.with(WATERLOGGED, ifluidstate.getFluid() == Fluids.WATER);
+        for (Direction direction : directions) {
+            if (direction.getAxis().isHorizontal()) {
+                Direction direction1 = direction.getOpposite();
+                state = state.setValue(FACING, direction1);
+                if (state.canSurvive(level, pos)) {
+                    return state.setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+                }
             }
-         }
-      }
+        }
 
-      return null;
-   }
+        return null;
+    }
 
-   public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-      return facing.getOpposite() == stateIn.get(FACING) && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-   }
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        return facing.getOpposite() == stateIn.getValue(FACING) && !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+    }
 
-   public BlockState rotate(BlockState state, Rotation rot) {
-      return state.with(FACING, rot.rotate(state.get(FACING)));
-   }
+    public BlockState rotate(BlockState state, Rotation rot) {
+        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+    }
 
-   public BlockState mirror(BlockState state, Mirror mirrorIn) {
-      return state.rotate(mirrorIn.toRotation(state.get(FACING)));
-   }
+    public BlockState mirror(BlockState state, Mirror mirrorIn) {
+        return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
+    }
 
-   protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-      builder.add(FACING, WATERLOGGED);
-   }
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING, WATERLOGGED);
+    }
 }

@@ -16,7 +16,7 @@ public class WonderTileEntities {
     public static final TileEntityType<DandeLionSproutTileEntity> DANDE_LION_SPROUT = add("dande_lion_sprout", DandeLionSproutTileEntity::new, WonderBlocks.DANDE_LION_SPROUT, WonderBlocks.POTTED_DANDE_LION_SPROUT);
 
     public static <T extends TileEntity> TileEntityType<T> add(String name, Supplier<T> factory, Block... blocks) {
-        @SuppressWarnings("ConstantConditions") TileEntityType<T> type = TileEntityType.Builder.create(factory, blocks).build(null);
+        @SuppressWarnings("ConstantConditions") TileEntityType<T> type = TileEntityType.Builder.of(factory, blocks).build(null);
         REGISTRY.register(name, () -> type);
         return type;
     }

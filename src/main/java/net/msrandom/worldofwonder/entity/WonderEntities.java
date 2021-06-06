@@ -20,17 +20,17 @@ public class WonderEntities {
     public static final EntityType<DandeLionSeedEntity> DANDE_LION_SEED = add("dande_lion_seed", DandeLionSeedEntity::new, EntityClassification.MISC, 1f, 1f);
 
     public static void init(RegistryEvent.Register<EntityType<?>> event) {
-        GlobalEntityTypeAttributes.put(DANDE_LION, DandeLionEntity.registerAttributes().create());
+        GlobalEntityTypeAttributes.put(DANDE_LION, DandeLionEntity.registerAttributes().build());
     }
 
     private static <T extends Entity> EntityType<T> add(String name, EntityType.IFactory<T> factory, EntityClassification classification, float width, float height, int eggPrimary, int eggSecondary) {
         EntityType<T> type = add(name, factory, classification, width, height);
-        WonderItems.REGISTRY.register(name + "_spawn_egg", () -> new SpawnEggItem(type, eggPrimary, eggSecondary, new Item.Properties().group(ItemGroup.MISC)));
+        WonderItems.REGISTRY.register(name + "_spawn_egg", () -> new SpawnEggItem(type, eggPrimary, eggSecondary, new Item.Properties().tab(ItemGroup.TAB_MISC)));
         return type;
     }
 
     private static <T extends Entity> EntityType<T> add(String name, EntityType.IFactory<T> factory, EntityClassification classification, float width, float height) {
-        EntityType<T> type = EntityType.Builder.create(factory, classification).size(width, height).build(name);
+        EntityType<T> type = EntityType.Builder.of(factory, classification).sized(width, height).build(name);
         REGISTRY.register(name, () -> type);
         return type;
     }

@@ -21,41 +21,41 @@ public class StemBoatRenderer extends EntityRenderer<StemBoatEntity> {
 
     public StemBoatRenderer(EntityRendererManager renderManagerIn) {
         super(renderManagerIn);
-        this.shadowSize = 0.8f;
+        this.shadowRadius = 0.8f;
     }
 
     @Override
     public void render(StemBoatEntity entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer bufferIn, int packedLight) {
-        matrixStack.push();
+        matrixStack.pushPose();
         matrixStack.translate(0.0D, 0.375D, 0.0D);
-        matrixStack.rotate(Vector3f.YP.rotationDegrees(180.0F - partialTicks));
-        float f = (float)entity.getTimeSinceHit() - partialTicks;
-        float f1 = entity.getDamageTaken() - partialTicks;
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - partialTicks));
+        float f = (float)entity.getHurtTime() - partialTicks;
+        float f1 = entity.getDamage() - partialTicks;
         if (f1 < 0.0F) {
             f1 = 0.0F;
         }
 
         if (f > 0.0F) {
-            matrixStack.rotate(Vector3f.XP.rotationDegrees(MathHelper.sin(f) * f * f1 / 10.0F * (float)entity.getForwardDirection()));
+            matrixStack.mulPose(Vector3f.XP.rotationDegrees(MathHelper.sin(f) * f * f1 / 10.0F * (float)entity.getHurtDir()));
         }
 
-        float f2 = entity.getRockingAngle(partialTicks);
-        if (!MathHelper.epsilonEquals(f2, 0.0F)) {
-            matrixStack.rotate(new Quaternion(new Vector3f(1.0F, 0.0F, 1.0F), entity.getRockingAngle(partialTicks), true));
+        float f2 = entity.getBubbleAngle(partialTicks);
+        if (!MathHelper.equal(f2, 0.0F)) {
+            matrixStack.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 1.0F), entity.getBubbleAngle(partialTicks), true));
         }
 
         matrixStack.scale(-1.0F, -1.0F, 1.0F);
-        matrixStack.rotate(Vector3f.YP.rotationDegrees(90.0F));
-        this.model.setRotationAngles(entity, partialTicks, 0.0F, -0.1F, 0.0F, 0.0F);
-        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(this.model.getRenderType(this.getEntityTexture(entity)));
-        this.model.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-        IVertexBuilder ivertexbuilder1 = bufferIn.getBuffer(RenderType.getWaterMask());
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+        this.model.setupAnim(entity, partialTicks, 0.0F, -0.1F, 0.0F, 0.0F);
+        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(this.model.renderType(this.getTextureLocation(entity)));
+        this.model.renderToBuffer(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        IVertexBuilder ivertexbuilder1 = bufferIn.getBuffer(RenderType.waterMask());
         this.model.getNoWater().render(matrixStack, ivertexbuilder1, packedLight, OverlayTexture.NO_OVERLAY);
-        matrixStack.pop();
+        matrixStack.popPose();
         super.render(entity, entityYaw, partialTicks, matrixStack, bufferIn, packedLight);
     }
 
-    public ResourceLocation getEntityTexture(StemBoatEntity entity) {
+    public ResourceLocation getTextureLocation(StemBoatEntity entity) {
         return TEXTURE;
     }
 }

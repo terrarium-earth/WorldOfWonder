@@ -19,11 +19,11 @@ public class StemChestBlock extends ChestBlock {
     }
 
     public StemChestBlock(Supplier<TileEntityType<? extends ChestTileEntity>> tileEntityTypeIn) {
-        super(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.5F).sound(SoundType.WOOD), tileEntityTypeIn);
+        super(Block.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD), tileEntityTypeIn);
     }
 
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return tileEntityType.get().create();
+        return blockEntityType.get().create();
     }
 }

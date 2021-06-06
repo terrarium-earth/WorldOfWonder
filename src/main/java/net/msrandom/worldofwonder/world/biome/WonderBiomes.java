@@ -20,17 +20,17 @@ public class WonderBiomes {
     @SuppressWarnings("deprecation")
     public static void init(RegistryEvent.Register<Biome> event) {
         //I'm sure there is a better way to get the key, but I can't figure out how..
-        WorldGenRegistries.BIOME.getOptionalKey(DANDELION_FIELDS).ifPresent(key -> {
+        WorldGenRegistries.BIOME.getResourceKey(DANDELION_FIELDS).ifPresent(key -> {
             BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(key, 3));
             addSpawnBiome(key);
         });
     }
 
     private static void addSpawnBiome(RegistryKey<Biome> biomeKey) {
-        if (OverworldBiomeProvider.biomes instanceof ImmutableList<?>) {
-            OverworldBiomeProvider.biomes = new ArrayList<>(OverworldBiomeProvider.biomes);
+        if (OverworldBiomeProvider.POSSIBLE_BIOMES instanceof ImmutableList<?>) {
+            OverworldBiomeProvider.POSSIBLE_BIOMES = new ArrayList<>(OverworldBiomeProvider.POSSIBLE_BIOMES);
         }
-        OverworldBiomeProvider.biomes.add(biomeKey);
+        OverworldBiomeProvider.POSSIBLE_BIOMES.add(biomeKey);
     }
 
     private static Biome add(String name, Biome biome) {

@@ -19,13 +19,13 @@ import net.msrandom.worldofwonder.item.WonderItems;
 public class WonderVanillaCompat {
     public static void init(FMLCommonSetupEvent event) {
         ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(new ResourceLocation(WorldOfWonder.MOD_ID, "dande_lion_sprout"), () -> WonderBlocks.POTTED_DANDE_LION_SPROUT);
-        DispenserBlock.registerDispenseBehavior(WonderItems.BLOOM_MEAL, ItemEvents.BLOOM_MEAL_DISPENSE);
-        EntitySpawnPlacementRegistry.register(WonderEntities.DANDE_LION, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, AnimalEntity::canAnimalSpawn);
+        DispenserBlock.registerBehavior(WonderItems.BLOOM_MEAL, ItemEvents.BLOOM_MEAL_DISPENSE);
+        EntitySpawnPlacementRegistry.register(WonderEntities.DANDE_LION, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, AnimalEntity::checkAnimalSpawnRules);
         registerCompostable(WonderBlocks.DANDELION_PETALS.asItem(), 0.3F);
         registerCompostable(WonderBlocks.DANDELION_FLUFF.asItem(), 0.3F);
     }
 
     public static void registerCompostable(IItemProvider itemIn, float chance) {
-        ComposterBlock.CHANCES.put(itemIn, chance);
+        ComposterBlock.COMPOSTABLES.put(itemIn, chance);
     }
 }

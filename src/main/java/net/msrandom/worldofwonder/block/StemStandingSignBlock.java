@@ -20,35 +20,35 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 
 public class StemStandingSignBlock extends AbstractStemSignBlock {
-   public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_0_15;
+   public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
 
    public StemStandingSignBlock() {
-      super(Block.Properties.create(Material.WOOD).doesNotBlockMovement().hardnessAndResistance(1.0F).sound(SoundType.WOOD));
-      this.setDefaultState(this.stateContainer.getBaseState().with(ROTATION, 0).with(WATERLOGGED, Boolean.FALSE));
+      super(Block.Properties.of(Material.WOOD).noCollission().strength(1.0F).sound(SoundType.WOOD));
+      this.registerDefaultState(this.getStateDefinition().any().setValue(ROTATION, 0).setValue(WATERLOGGED, Boolean.FALSE));
    }
 
-   public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-      return worldIn.getBlockState(pos.down()).getMaterial().isSolid();
+   public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+      return worldIn.getBlockState(pos.below()).getMaterial().isSolid();
    }
 
    public BlockState getStateForPlacement(BlockItemUseContext context) {
-      FluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
-      return this.getDefaultState().with(ROTATION, MathHelper.floor((double) ((180.0F + context.getPlacementYaw()) * 16.0F / 360.0F) + 0.5D) & 15).with(WATERLOGGED, ifluidstate.getFluid() == Fluids.WATER);
+      FluidState ifluidstate = context.getLevel().getFluidState(context.getClickedPos());
+      return this.defaultBlockState().setValue(ROTATION, MathHelper.floor((double) ((180.0F + context.getRotation()) * 16.0F / 360.0F) + 0.5D) & 15).setValue(WATERLOGGED, ifluidstate.getType() == Fluids.WATER);
    }
 
-   public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-      return facing == Direction.DOWN && !this.isValidPosition(stateIn, worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+   public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+      return facing == Direction.DOWN && !this.canSurvive(stateIn, worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
    }
 
    public BlockState rotate(BlockState state, Rotation rot) {
-      return state.with(ROTATION, rot.rotate(state.get(ROTATION), 16));
+      return state.setValue(ROTATION, rot.rotate(state.getValue(ROTATION), 16));
    }
 
    public BlockState mirror(BlockState state, Mirror mirrorIn) {
-      return state.with(ROTATION, mirrorIn.mirrorRotation(state.get(ROTATION), 16));
+      return state.setValue(ROTATION, mirrorIn.mirror(state.getValue(ROTATION), 16));
    }
 
-   protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+   protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
       builder.add(ROTATION, WATERLOGGED);
    }
 }

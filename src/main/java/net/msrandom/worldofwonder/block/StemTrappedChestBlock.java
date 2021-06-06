@@ -16,19 +16,20 @@ public class StemTrappedChestBlock extends StemChestBlock {
       super(() -> WonderQuarkCompat.STEM_TRAPPED_CHEST_ENTITY);
    }
 
-   protected Stat<ResourceLocation> getOpenStat() {
+   protected Stat<ResourceLocation> getOpenChestStat() {
       return Stats.CUSTOM.get(Stats.TRIGGER_TRAPPED_CHEST);
    }
 
-   public boolean canProvidePower(BlockState state) {
+   public boolean isSignalSource(BlockState state) {
       return true;
    }
 
-   public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-      return MathHelper.clamp(ChestTileEntity.getPlayersUsing(blockAccess, pos), 0, 15);
+   public int getSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+      return MathHelper.clamp(ChestTileEntity.getOpenCount(blockAccess, pos), 0, 15);
    }
 
-   public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-      return side == Direction.UP ? blockState.getWeakPower(blockAccess, pos, side) : 0;
+   @Override
+   public int getDirectSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+      return side == Direction.UP ? blockState.getSignal(blockAccess, pos, side) : 0;
    }
 }

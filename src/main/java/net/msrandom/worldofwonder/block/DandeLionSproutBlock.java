@@ -18,33 +18,34 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.util.Constants;
 import net.msrandom.worldofwonder.tileentity.WonderTileEntities;
 
 import javax.annotation.Nullable;
 
 public class DandeLionSproutBlock extends ContainerBlock implements IPlantable {
     private static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
-    private static final VoxelShape SHAPE = VoxelShapes.create(0.25, 0, 0.25, 0.75, 0.5, 0.75);
+    private static final VoxelShape SHAPE = VoxelShapes.box(0.25, 0, 0.25, 0.75, 0.5, 0.75);
 
     public DandeLionSproutBlock() {
-        super(Properties.create(Material.PLANTS).notSolid().sound(SoundType.PLANT).doesNotBlockMovement());
-        setDefaultState(getDefaultState().with(AXIS, Direction.Axis.X));
+        super(Properties.of(Material.PLANT).noOcclusion().sound(SoundType.GRASS).noCollission());
+        registerDefaultState(defaultBlockState().setValue(AXIS, Direction.Axis.X));
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-        if (placer != null) worldIn.setBlockState(pos, state.with(AXIS, placer.getHorizontalFacing().getOpposite().getAxis()));
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(worldIn, pos, state, placer, stack);
+        if (placer != null) worldIn.setBlock(pos, state.setValue(AXIS, placer.getDirection().getOpposite().getAxis()), Constants.BlockFlags.NOTIFY_NEIGHBORS | Constants.BlockFlags.BLOCK_UPDATE);
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        return !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        return !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override
-    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-        BlockPos blockpos = pos.down();
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+        BlockPos blockpos = pos.below();
         if (state.getBlock() == this) return worldIn.getBlockState(blockpos).canSustainPlant(worldIn, blockpos, Direction.UP, this);
 
         Block block = worldIn.getBlockState(blockpos).getBlock();
@@ -57,25 +58,25 @@ public class DandeLionSproutBlock extends ContainerBlock implements IPlantable {
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
+    public BlockRenderType getRenderShape(BlockState state) {
         return BlockRenderType.MODEL;
     }
 
     @Override
     public BlockState getPlant(IBlockReader world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
-        if (state.getBlock() != this) return getDefaultState();
+        if (state.getBlock() != this) return defaultBlockState();
         return state;
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public TileEntity newBlockEntity(IBlockReader worldIn) {
         return WonderTileEntities.DANDE_LION_SPROUT.create();
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(AXIS);
     }
 }

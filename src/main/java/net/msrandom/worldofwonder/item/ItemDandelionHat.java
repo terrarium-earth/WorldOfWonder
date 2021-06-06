@@ -18,19 +18,18 @@ import net.msrandom.worldofwonder.client.renderer.entity.model.DandelionHatModel
 import javax.annotation.Nullable;
 
 public class ItemDandelionHat extends ArmorItem {
-    public static final IArmorMaterial MATERIAL = new WonderArmorMaterial(WorldOfWonder.MOD_ID + ":dandelion", 1, new int[]{1, 2, 3, 1}, 3, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0, () -> Ingredient.fromTag(WorldOfWonder.DANDELION));
+    public static final IArmorMaterial MATERIAL = new WonderArmorMaterial(WorldOfWonder.MOD_ID + ":dandelion", 1, new int[]{1, 2, 3, 1}, 3, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0, () -> Ingredient.of(WorldOfWonder.DANDELION));
 
     public ItemDandelionHat() {
-        super(MATERIAL, EquipmentSlotType.HEAD, new Item.Properties().group(ItemGroup.COMBAT));
+        super(MATERIAL, EquipmentSlotType.HEAD, new Item.Properties().tab(ItemGroup.TAB_COMBAT));
     }
 
     @Override
     public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
         if (player.isAlive() && player.isOnGround()) {
-            player.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 130, 0, false, false, true));
+            player.addEffect(new EffectInstance(Effects.SLOW_FALLING, 130, 0, false, false, true));
         }
     }
-
 
     @SuppressWarnings("unchecked")
     @Nullable
