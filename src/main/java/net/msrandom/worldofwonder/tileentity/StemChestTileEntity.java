@@ -6,7 +6,7 @@ import net.msrandom.worldofwonder.compat.WonderQuarkCompat;
 
 public class StemChestTileEntity extends ChestTileEntity {
    public StemChestTileEntity() {
-      this(WonderQuarkCompat.STEM_CHEST_ENTITY);
+      this(WonderQuarkCompat.STEM_CHEST_ENTITY.get());
    }
 
    public StemChestTileEntity(TileEntityType<?> type) {

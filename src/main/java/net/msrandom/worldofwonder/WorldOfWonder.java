@@ -2,13 +2,11 @@ package net.msrandom.worldofwonder;
 
 import com.google.common.collect.Sets;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.Tags;
@@ -47,7 +45,10 @@ public class WorldOfWonder {
 
     public WorldOfWonder() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        if (quarkLoaded = ModList.get().isLoaded("quark")) WonderQuarkCompat.REGISTRY.register(bus);
+        if (quarkLoaded = ModList.get().isLoaded("quark")) {
+            WonderQuarkCompat.BLOCK_REGISTER.register(bus);
+            WonderQuarkCompat.ENTITY_REGISTER.register(bus);
+        }
         WonderBlocks.REGISTRY.register(bus);
         WonderItems.REGISTRY.register(bus);
         WonderBiomes.REGISTRY.register(bus);
@@ -55,8 +56,7 @@ public class WorldOfWonder {
         WonderTileEntities.REGISTRY.register(bus);
         WonderFoliagePlacers.REGISTRY.register(bus);
 
-        bus.addGenericListener(Biome.class, WonderBiomes::init);
-        bus.addGenericListener(EntityType.class, WonderEntities::init);
+        bus.addListener(WonderEntities::setupAttributes);
         bus.addListener(WonderVanillaCompat::init);
         bus.addListener(WonderClientHandler::init);
 

@@ -15,7 +15,7 @@ import net.msrandom.worldofwonder.tileentity.StemSignTileEntity;
 
 public class StemSignItem extends WallOrFloorItem {
    public StemSignItem(Block floorBlockIn, Item.Properties propertiesIn) {
-      super(floorBlockIn, WonderBlocks.STEM_WALL_SIGN, propertiesIn);
+      super(floorBlockIn, WonderBlocks.STEM_WALL_SIGN.get(), propertiesIn);
    }
 
     @Override

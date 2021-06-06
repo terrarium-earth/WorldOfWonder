@@ -14,7 +14,7 @@ public class DandeLionSproutTileEntity extends TileEntity implements ITickableTi
     private int age;
 
     public DandeLionSproutTileEntity() {
-        super(WonderTileEntities.DANDE_LION_SPROUT);
+        super(WonderTileEntities.DANDE_LION_SPROUT.get());
     }
 
     @Override
@@ -32,7 +32,7 @@ public class DandeLionSproutTileEntity extends TileEntity implements ITickableTi
     @Override
     public void tick() {
         if (hasLevel() && !Objects.requireNonNull(level).isClientSide && ++age >= (maxAge == -1 ? maxAge = 48000 + level.random.nextInt(12000) : maxAge)) {
-            DandeLionEntity entity = WonderEntities.DANDE_LION.create(this.level);
+            DandeLionEntity entity = WonderEntities.DANDE_LION.get().create(this.level);
             if (entity != null) {
                 entity.setAge(-24000);
                 entity.setPos(getBlockPos().getX() + 0.5, getBlockPos().getY(), getBlockPos().getZ() + 0.5);

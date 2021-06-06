@@ -23,7 +23,7 @@ public class DandelionFluffFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected FoliagePlacerType<?> type() {
-        return WonderFoliagePlacers.DANDELION_FLUFF;
+        return WonderFoliagePlacers.DANDELION_FLUFF.get();
     }
 
     @Override

@@ -22,7 +22,7 @@ public class DandelionFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected FoliagePlacerType<?> type() {
-        return WonderFoliagePlacers.DANDELION;
+        return WonderFoliagePlacers.DANDELION.get();
     }
 
     @Override

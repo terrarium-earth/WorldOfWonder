@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 
 public class StemChestBlock extends ChestBlock {
     public StemChestBlock() {
-        this(() -> WonderQuarkCompat.STEM_CHEST_ENTITY);
+        this(WonderQuarkCompat.STEM_CHEST_ENTITY::get);
     }
 
     public StemChestBlock(Supplier<TileEntityType<? extends ChestTileEntity>> tileEntityTypeIn) {

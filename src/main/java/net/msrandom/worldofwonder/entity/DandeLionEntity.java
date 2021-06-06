@@ -106,7 +106,7 @@ public class DandeLionEntity extends TameableEntity {
             Item item = stack.getItem();
 
             if (item instanceof SpawnEggItem && ((SpawnEggItem) item).spawnsEntity(stack.getTag(), this.getType())) {
-                DandeLionEntity child = WonderEntities.DANDE_LION.create(level);
+                DandeLionEntity child = WonderEntities.DANDE_LION.get().create(level);
                 if (child != null) {
                     UUID id = getOwnerUUID();
                     if (id != null) {
@@ -132,7 +132,7 @@ public class DandeLionEntity extends TameableEntity {
             if (!isSheared() && item == Items.SHEARS) {
                 shear();
                 this.playSound(SoundEvents.SHEEP_SHEAR, getSoundVolume(), 1);
-                spawnAtLocation(new ItemStack(WonderBlocks.DANDELION_FLUFF, random.nextInt(2) + 1));
+                spawnAtLocation(new ItemStack(WonderBlocks.DANDELION_FLUFF.get(), random.nextInt(2) + 1));
                 return ActionResultType.SUCCESS;
             }
 
@@ -267,25 +267,25 @@ public class DandeLionEntity extends TameableEntity {
     @Override
     protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHitIn) {
         super.dropCustomDeathLoot(source, looting, recentlyHitIn);
-        spawnAtLocation(new ItemStack(isSheared() ? WonderBlocks.DANDELION_PETALS : WonderBlocks.DANDELION_FLUFF, random.nextInt(2) + 1));
+        spawnAtLocation(new ItemStack(isSheared() ? WonderBlocks.DANDELION_PETALS.get() : WonderBlocks.DANDELION_FLUFF.get(), random.nextInt(2) + 1));
     }
 
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return isTame() ? WonderSounds.DANDE_LION_PUR : WonderSounds.DANDE_LION_AMBIENT;
+        return isTame() ? WonderSounds.DANDE_LION_PUR.get() : WonderSounds.DANDE_LION_AMBIENT.get();
     }
 
     @Nullable
     @Override
     protected SoundEvent getDeathSound() {
-        return WonderSounds.DANDE_LION_DEATH;
+        return WonderSounds.DANDE_LION_DEATH.get();
     }
 
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return WonderSounds.DANDE_LION_HURT;
+        return WonderSounds.DANDE_LION_HURT.get();
     }
 
     public boolean isSheared() {
@@ -315,7 +315,7 @@ public class DandeLionEntity extends TameableEntity {
             else {
                 madeChild = true;
                 for (int i = 0; i < random.nextInt(2) + 3; i++) {
-                    DandeLionSeedEntity seed = WonderEntities.DANDE_LION_SEED.create(level);
+                    DandeLionSeedEntity seed = WonderEntities.DANDE_LION_SEED.get().create(level);
                     if (seed != null) {
                         double rotation = Math.toRadians(random.nextInt(360));
                         seed.setPos(getX(), getY(), getZ());

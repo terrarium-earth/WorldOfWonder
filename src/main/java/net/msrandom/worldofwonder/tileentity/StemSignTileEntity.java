@@ -33,7 +33,7 @@ public class StemSignTileEntity extends TileEntity {
     private DyeColor textColor = DyeColor.BLACK;
 
     public StemSignTileEntity() {
-        super(WonderTileEntities.STEM_SIGN);
+        super(WonderTileEntities.STEM_SIGN.get());
     }
 
     @Override

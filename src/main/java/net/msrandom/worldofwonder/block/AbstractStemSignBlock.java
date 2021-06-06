@@ -22,7 +22,7 @@ public class AbstractStemSignBlock extends AbstractSignBlock {
     }
 
     public TileEntity newBlockEntity(IBlockReader worldIn) {
-        return WonderTileEntities.STEM_SIGN.create();
+        return WonderTileEntities.STEM_SIGN.get().create();
     }
 
     public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {

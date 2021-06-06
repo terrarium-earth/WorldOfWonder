@@ -32,21 +32,21 @@ import java.util.function.Supplier;
 
 public class WonderClientHandler {
     public static void init(FMLClientSetupEvent event) {
-        RenderingRegistry.registerEntityRenderingHandler(WonderEntities.STEM_BOAT, StemBoatRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(WonderEntities.DANDE_LION, DandeLionRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(WonderEntities.DANDE_LION_SEED, DandeLionSeedRenderer::new);
-        ClientRegistry.bindTileEntityRenderer(WonderTileEntities.STEM_SIGN, StemSignTileEntityRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(WonderEntities.STEM_BOAT.get(), StemBoatRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(WonderEntities.DANDE_LION.get(), DandeLionRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(WonderEntities.DANDE_LION_SEED.get(), DandeLionSeedRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(WonderTileEntities.STEM_SIGN.get(), StemSignTileEntityRenderer::new);
 
-        RenderTypeLookup.setRenderLayer(WonderBlocks.STEM_DOOR, RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(WonderBlocks.STEM_TRAPDOOR, RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(WonderBlocks.DANDE_LION_SPROUT, RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(WonderBlocks.POTTED_DANDE_LION_SPROUT, RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(WonderBlocks.STEM_DOOR.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(WonderBlocks.STEM_TRAPDOOR.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(WonderBlocks.DANDE_LION_SPROUT.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(WonderBlocks.POTTED_DANDE_LION_SPROUT.get(), RenderType.cutout());
 
         if (WorldOfWonder.quarkLoaded) {
             Function<TileEntityRendererDispatcher, StemChestTileEntityRenderer> chestRenderer = StemChestTileEntityRenderer::new;
-            ClientRegistry.bindTileEntityRenderer(WonderQuarkCompat.STEM_CHEST_ENTITY, chestRenderer);
-            ClientRegistry.bindTileEntityRenderer(WonderQuarkCompat.STEM_TRAPPED_CHEST_ENTITY, chestRenderer);
-            RenderTypeLookup.setRenderLayer(WonderQuarkCompat.STEM_LADDER, RenderType.cutout());
+            ClientRegistry.bindTileEntityRenderer(WonderQuarkCompat.STEM_CHEST_ENTITY.get(), chestRenderer);
+            ClientRegistry.bindTileEntityRenderer(WonderQuarkCompat.STEM_TRAPPED_CHEST_ENTITY.get(), chestRenderer);
+            RenderTypeLookup.setRenderLayer(WonderQuarkCompat.STEM_LADDER.get(), RenderType.cutout());
         }
     }
 

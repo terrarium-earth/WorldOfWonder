@@ -4,7 +4,7 @@ import net.msrandom.worldofwonder.compat.WonderQuarkCompat;
 
 public class StemTrappedChestTileEntity extends StemChestTileEntity {
    public StemTrappedChestTileEntity() {
-      super(WonderQuarkCompat.STEM_TRAPPED_CHEST_ENTITY);
+      super(WonderQuarkCompat.STEM_TRAPPED_CHEST_ENTITY.get());
    }
 
     @Override

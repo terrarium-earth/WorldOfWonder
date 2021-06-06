@@ -72,7 +72,7 @@ public class DandeLionSproutBlock extends ContainerBlock implements IPlantable {
     @Nullable
     @Override
     public TileEntity newBlockEntity(IBlockReader worldIn) {
-        return WonderTileEntities.DANDE_LION_SPROUT.create();
+        return WonderTileEntities.DANDE_LION_SPROUT.get().create();
     }
 
     @Override

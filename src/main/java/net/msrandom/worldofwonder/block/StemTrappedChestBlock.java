@@ -13,7 +13,7 @@ import net.msrandom.worldofwonder.compat.WonderQuarkCompat;
 
 public class StemTrappedChestBlock extends StemChestBlock {
    public StemTrappedChestBlock() {
-      super(() -> WonderQuarkCompat.STEM_TRAPPED_CHEST_ENTITY);
+      super(WonderQuarkCompat.STEM_TRAPPED_CHEST_ENTITY::get);
    }
 
    protected Stat<ResourceLocation> getOpenChestStat() {
