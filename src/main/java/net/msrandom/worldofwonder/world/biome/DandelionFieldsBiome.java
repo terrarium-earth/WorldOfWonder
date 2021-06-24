@@ -12,6 +12,7 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.feature.structure.StructureFeatures;
 import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
+import net.minecraft.world.gen.placement.NoiseDependant;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
 import net.msrandom.worldofwonder.entity.WonderEntities;
@@ -24,7 +25,7 @@ public class DandelionFieldsBiome {
         generationSettings.addStructureStart(StructureFeatures.VILLAGE_PLAINS).addStructureStart(StructureFeatures.PILLAGER_OUTPOST);
 
         generationSettings.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, WonderFeatures.DANDELION
-                .decorated(Features.Placements.HEIGHTMAP_SQUARE)
+                .decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE)
                 .decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(1, 0.05F, 1)))
         );
         generationSettings.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, WonderFeatures.DANDELION_FLUFF
@@ -32,7 +33,15 @@ public class DandelionFieldsBiome {
                 .decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(1, 0.01F, 1)))
         );
 
-        generationSettings.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.FLOWER.configured(new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(Blocks.DANDELION.defaultBlockState()), new SimpleBlockPlacer()).build()).decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(1, 0.5F, 3))));
+        generationSettings.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.FLOWER
+                .configured(new BlockClusterFeatureConfig.Builder(
+                        new SimpleBlockStateProvider(Blocks.DANDELION.defaultBlockState()),
+                        new SimpleBlockPlacer()
+                ).build())
+                .decorated(Features.Placements.ADD_32)
+                .decorated(Features.Placements.HEIGHTMAP).squared()
+                .decorated(Placement.COUNT_NOISE.configured(new NoiseDependant(-0.8D, 15, 4)))
+        );
         DefaultBiomeFeatures.addDefaultOverworldLandStructures(generationSettings);
         DefaultBiomeFeatures.addDefaultCarvers(generationSettings);
         DefaultBiomeFeatures.addDefaultUndergroundVariety(generationSettings);
