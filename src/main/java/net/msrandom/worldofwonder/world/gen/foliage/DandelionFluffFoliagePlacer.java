@@ -27,7 +27,7 @@ public class DandelionFluffFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected void createFoliage(IWorldGenerationReader world, Random random, BaseTreeFeatureConfig config, int p_230372_4_, Foliage p_230372_5_, int p_230372_6_, int p_230372_7_, Set<BlockPos> leafPositions, int p_230372_9_, MutableBoundingBox box) {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             placeLeavesRow(world, random, config, p_230372_5_.foliagePos(), 2, leafPositions, i, p_230372_5_.doubleTrunk(), box);
         }
     }
@@ -45,7 +45,7 @@ public class DandelionFluffFoliagePlacer extends FoliagePlacer {
         switch (layer) {
             case 0: {
                 //First and last layer, simply a block on each side
-                if (x == 0 && x == z) {
+                if (y != 0 && x == 0 && x == z) {
                     skip = false;
                     break;
                 }
@@ -54,7 +54,7 @@ public class DandelionFluffFoliagePlacer extends FoliagePlacer {
                 break;
             }
             case 1: {
-                //2nd layer, edges should spawn, so if both x and z are equal to 2, additionally if both are 0, we allow the center to spawn
+                //2nd and 4th layer, edges should spawn, so if both x and z are equal to 2, additionally if both are 0, we allow the center to spawn
                 int absX = Math.abs(x);
                 if ((absX == 2 || x == 0) && absX == Math.abs(z)) {
                     skip = false;
@@ -76,7 +76,7 @@ public class DandelionFluffFoliagePlacer extends FoliagePlacer {
         return skip;
     }
 
-    private boolean isNotCenterEdge(int x, int z, int distance) {
+    public static boolean isNotCenterEdge(int x, int z, int distance) {
         if (x == 0) {
             return Math.abs(z) != distance;
         } else if (z == 0) {
