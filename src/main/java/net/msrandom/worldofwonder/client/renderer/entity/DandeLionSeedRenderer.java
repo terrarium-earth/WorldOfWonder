@@ -32,7 +32,7 @@ public class DandeLionSeedRenderer extends EntityRenderer<DandeLionSeedEntity> {
         RenderSystem.enableDepthTest();
         RenderSystem.depthMask(true);
         float scale = 0.4267f;
-        matrixStackIn.scale(scale, -scale, -scale);
+        matrixStackIn.scale(-scale, -scale, scale);
         part.render(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(entityIn))), packedLightIn, OverlayTexture.NO_OVERLAY);
         RenderSystem.depthMask(true);
         matrixStackIn.popPose();

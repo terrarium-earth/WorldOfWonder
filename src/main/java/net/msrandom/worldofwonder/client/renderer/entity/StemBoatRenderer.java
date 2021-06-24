@@ -28,7 +28,7 @@ public class StemBoatRenderer extends EntityRenderer<StemBoatEntity> {
     public void render(StemBoatEntity entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer bufferIn, int packedLight) {
         matrixStack.pushPose();
         matrixStack.translate(0.0D, 0.375D, 0.0D);
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - partialTicks));
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - entityYaw));
         float f = (float)entity.getHurtTime() - partialTicks;
         float f1 = entity.getDamage() - partialTicks;
         if (f1 < 0.0F) {
