@@ -21,8 +21,7 @@ public class StemSignItem extends WallOrFloorItem {
     @Override
     protected boolean placeBlock(BlockItemUseContext context, BlockState state) {
       boolean flag = super.placeBlock(context, state);
-
-      if (!context.getLevel().isClientSide && !flag && context.getPlayer() != null) {
+      if (!context.getLevel().isClientSide && flag && context.getPlayer() != null) {
           TileEntity tileEntity = context.getLevel().getBlockEntity(context.getClickedPos());
           if (tileEntity instanceof StemSignTileEntity) {
               ((StemSignTileEntity) tileEntity).setPlayer(context.getPlayer());

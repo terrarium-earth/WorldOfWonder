@@ -52,18 +52,19 @@ public class EditStemSignScreen extends Screen {
         }, TextInputUtil.createClipboardGetter(this.minecraft), TextInputUtil.createClipboardSetter(this.minecraft), text -> this.minecraft.font.width(text) <= 90);
     }
 
-    public void onClose() {
+    @Override
+    public void removed() {
         this.minecraft.keyboardHandler.setSendRepeatsToGui(false);
         WorldOfWonder.NETWORK.sendToServer(new UpdateSignPacket(this.tileSign.getBlockPos(), this.tileSign.signText));
         this.tileSign.setEditable(true);
     }
 
+    @Override
     public void tick() {
         ++this.updateCounter;
         if (!this.tileSign.getType().isValid(this.tileSign.getBlockState().getBlock())) {
             this.close();
         }
-
     }
 
     private void close() {
@@ -71,12 +72,14 @@ public class EditStemSignScreen extends Screen {
         this.minecraft.setScreen(null);
     }
 
+    @Override
     public boolean charTyped(char p_charTyped_1_, int p_charTyped_2_) {
         this.textInputUtil.charTyped(p_charTyped_1_);
         return true;
     }
 
-    public void closeScreen() {
+    @Override
+    public void onClose() {
         this.close();
     }
 
@@ -162,9 +165,9 @@ public class EditStemSignScreen extends Screen {
                     fill(matrixStack, i4, l - 1, i4 + 1, l + 9, -16777216 | i);
                 }
 
-                if (l != k) {
-                    int j4 = Math.min(k, l);
-                    int j2 = Math.max(k, l);
+                if (j != k) {
+                    int j4 = Math.min(k, j);
+                    int j2 = Math.max(k, j);
                     int k2 = this.minecraft.font.width(s1.substring(0, j4)) - this.minecraft.font.width(s1) / 2;
                     int l2 = this.minecraft.font.width(s1.substring(0, j2)) - this.minecraft.font.width(s1) / 2;
                     int i3 = Math.min(k2, l2);
