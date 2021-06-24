@@ -74,7 +74,7 @@ public class DandeLionModel extends AgeableModel<DandeLionEntity> {
 
     @Override
     public void setupAnim(DandeLionEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (entityIn.isSleeping()) {
+        if (entityIn.isInSittingPose()) {
             this.head.y = -2;
             this.head.z = -7;
             this.head.xRot = 0.785f;

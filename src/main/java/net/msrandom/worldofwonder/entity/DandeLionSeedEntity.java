@@ -62,7 +62,7 @@ public class DandeLionSeedEntity extends Entity {
             setPos(getX() + getDeltaMovement().x(), getY() + getDeltaMovement().y(), getZ() + getDeltaMovement().z());
 
             if (tickCount > 20 && level.getBlockState(new BlockPos(getX(), getY() - 1, getZ())).canOcclude()) {
-                level.setBlock(getOnPos(), WonderBlocks.DANDE_LION_SPROUT.get().defaultBlockState(), Constants.BlockFlags.NOTIFY_NEIGHBORS | Constants.BlockFlags.BLOCK_UPDATE);
+                level.setBlock(blockPosition(), WonderBlocks.DANDE_LION_SPROUT.get().defaultBlockState(), Constants.BlockFlags.NOTIFY_NEIGHBORS | Constants.BlockFlags.BLOCK_UPDATE);
                 remove();
             }
         }

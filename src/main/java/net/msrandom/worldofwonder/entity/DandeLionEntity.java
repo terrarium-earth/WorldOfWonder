@@ -26,6 +26,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
@@ -154,12 +155,12 @@ public class DandeLionEntity extends TameableEntity {
                 }
 
                 if (this.isOwnedBy(player) && !this.isFood(stack)) {
-                    this.setOrderedToSit(!this.isSleeping());
+                    this.setOrderedToSit(!this.isInSittingPose());
                     this.jumping = false;
                     this.navigation.stop();
                     this.setTarget(null);
                 }
-            } else if (Block.byItem(item).is(BlockTags.SMALL_FLOWERS) && !this.isAngry()) {
+            } else if (item.is(ItemTags.SMALL_FLOWERS) && !this.isAngry()) {
                 if (!player.abilities.instabuild) {
                     stack.shrink(1);
                 }
@@ -177,7 +178,7 @@ public class DandeLionEntity extends TameableEntity {
                 return ActionResultType.SUCCESS;
             }
             if (this.isFood(stack)) {
-                if (this.getAge() == 0 && this.canBreed()) {
+                if (this.getAge() == 0 && this.canFallInLove()) {
                     if (flowersAround()) {
                         this.usePlayerItem(player, stack);
                         this.setInLove(player);
@@ -214,7 +215,7 @@ public class DandeLionEntity extends TameableEntity {
 
     @Override
     public boolean isFood(ItemStack stack) {
-        return Block.byItem(stack.getItem()).is(BlockTags.TALL_FLOWERS);
+        return stack.getItem().is(ItemTags.TALL_FLOWERS);
     }
 
     @Override
@@ -350,13 +351,14 @@ public class DandeLionEntity extends TameableEntity {
     }
 
     private boolean flowersAround() {
-        BlockPos p = getOnPos();
+        BlockPos p = blockPosition();
+        BlockPos.Mutable mutable = p.mutable();
         int flowers = 0;
         for (int i = -16; i <= 16; i++) {
             for (int j = -16; j <= 16; j++) {
-                BlockPos pos = p.offset(i, 0, j);
-                BlockState current = level.getBlockState(pos);
-                BlockState down = level.getBlockState(pos.below());
+                mutable.setWithOffset(p, i, 0, j);
+                BlockState current = level.getBlockState(mutable);
+                BlockState down = level.getBlockState(mutable.move(Direction.DOWN));
                 if (!down.canOcclude()) current = down;
                 if (current.is(BlockTags.FLOWERS) && ++flowers >= 6) {
                     return true;
