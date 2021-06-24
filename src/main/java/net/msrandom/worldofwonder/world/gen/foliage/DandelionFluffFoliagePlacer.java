@@ -90,12 +90,12 @@ public class DandelionFluffFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    public int foliageHeight(Random p_230374_1_, int p_230374_2_, BaseTreeFeatureConfig p_230374_3_) {
-        return p_230374_2_ - 1;
+    public int foliageHeight(Random random, int height, BaseTreeFeatureConfig config) {
+        return height - 1;
     }
 
     @Override
-    protected boolean shouldSkipLocation(Random p_230373_1_, int p_230373_2_, int p_230373_3_, int p_230373_4_, int p_230373_5_, boolean p_230373_6_) {
-        return true;
+    protected boolean shouldSkipLocation(Random random, int x, int y, int z, int radius, boolean doubleTrunk) {
+        return false;
     }
 }

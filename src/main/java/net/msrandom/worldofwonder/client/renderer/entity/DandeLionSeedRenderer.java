@@ -29,7 +29,6 @@ public class DandeLionSeedRenderer extends EntityRenderer<DandeLionSeedEntity> {
         RenderSystem.defaultAlphaFunc();
         RenderSystem.enableDepthTest();
         RenderSystem.enableFog();
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuilder();
         IParticleRenderType renderType = IParticleRenderType.PARTICLE_SHEET_OPAQUE;
@@ -37,10 +36,10 @@ public class DandeLionSeedRenderer extends EntityRenderer<DandeLionSeedEntity> {
         renderType.begin(buffer, textureManager);
         textureManager.bind(getTextureLocation(entityIn));
         RenderSystem.scalef(0.16f, 0.16f, 0.16f);
-        buffer.vertex(-1, -1, 0).uv(1, 1).color(255, 255, 255, 255).overlayCoords(packedLightIn).endVertex();
-        buffer.vertex(-1, 1, 0).uv(1, 0).color(255, 255, 255, 255).overlayCoords(packedLightIn).endVertex();
-        buffer.vertex(1, 1, 0).uv(0, 0).color(255, 255, 255, 255).overlayCoords(packedLightIn).endVertex();
-        buffer.vertex(1, -1, 0).uv(0, 1).color(255, 255, 255, 255).overlayCoords(packedLightIn).endVertex();
+        buffer.vertex(-1, -1, 0).uv(1, 1).color(255, 255, 255, 255).uv2(packedLightIn).endVertex();
+        buffer.vertex(-1, 1, 0).uv(1, 0).color(255, 255, 255, 255).uv2(packedLightIn).endVertex();
+        buffer.vertex(1, 1, 0).uv(0, 0).color(255, 255, 255, 255).uv2(packedLightIn).endVertex();
+        buffer.vertex(1, -1, 0).uv(0, 1).color(255, 255, 255, 255).uv2(packedLightIn).endVertex();
         renderType.end(tessellator);
         RenderSystem.popMatrix();
         RenderSystem.depthMask(true);
