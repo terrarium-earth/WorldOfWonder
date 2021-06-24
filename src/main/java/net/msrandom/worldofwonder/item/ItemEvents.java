@@ -85,7 +85,7 @@ public class ItemEvents {
                 level.levelEvent(2005, pos, 0);
                 if (!player.abilities.instabuild) stack.shrink(1);
                 if (random.nextInt(3) == 0) {
-                    (random.nextInt(4) == 0 ? FLUFF_TREE : DANDELION_TREE).growTree((ServerWorld) level, ((ServerWorld) level).getChunkSource().getGenerator(), pos, state, random);
+                    (random.nextInt(4) != 0 ? FLUFF_TREE : DANDELION_TREE).growTree((ServerWorld) level, ((ServerWorld) level).getChunkSource().getGenerator(), pos, state, random);
                 }
                 return true;
             }

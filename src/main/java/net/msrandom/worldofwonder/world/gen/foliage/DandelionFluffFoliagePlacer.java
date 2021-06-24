@@ -2,7 +2,6 @@ package net.msrandom.worldofwonder.world.gen.foliage;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.IWorldGenerationReader;
@@ -28,65 +27,9 @@ public class DandelionFluffFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected void createFoliage(IWorldGenerationReader world, Random random, BaseTreeFeatureConfig config, int p_230372_4_, Foliage p_230372_5_, int p_230372_6_, int p_230372_7_, Set<BlockPos> leafPositions, int p_230372_9_, MutableBoundingBox box) {
-        placeLeavesRow(world, random, config, p_230372_5_.foliagePos(), p_230372_4_, leafPositions, 0, false, box);
-        BlockPos pos = p_230372_5_.foliagePos();
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                for (int k = -1; k <= 1; k++) {
-                    setLeaves(world, box, config, leafPositions, pos.offset(i, j, k), random, false);
-                }
-            }
+        for (int i = 0; i < 4; i++) {
+            placeLeavesRow(world, random, config, p_230372_5_.foliagePos(), 2, leafPositions, i, p_230372_5_.doubleTrunk(), box);
         }
-
-        removeLeaves(world, leafPositions, pos.offset(-1, -1, -1));
-        removeLeaves(world, leafPositions, pos.offset(1, -1, 1));
-        removeLeaves(world, leafPositions, pos.offset(-1, -1, 1));
-        removeLeaves(world, leafPositions, pos.offset(1, -1, -1));
-        removeLeaves(world, leafPositions, pos.offset(-1, 1, -1));
-        removeLeaves(world, leafPositions, pos.offset(1, 1, 1));
-        removeLeaves(world, leafPositions, pos.offset(-1, 1, 1));
-        removeLeaves(world, leafPositions, pos.offset(1, 1, -1));
-
-        setLeaves(world, box, config, leafPositions, pos.offset(-2, -1, -2), random);
-        setLeaves(world, box, config, leafPositions, pos.offset(2, -1, -2), random);
-        setLeaves(world, box, config, leafPositions, pos.offset(-2, -1, 2), random);
-        setLeaves(world, box, config, leafPositions, pos.offset(2, -1, 2), random);
-        setLeaves(world, box, config, leafPositions, pos.offset(-2, 1, -2), random);
-        setLeaves(world, box, config, leafPositions, pos.offset(2, 1, -2), random);
-        setLeaves(world, box, config, leafPositions, pos.offset(-2, 1, 2), random);
-        setLeaves(world, box, config, leafPositions, pos.offset(2, 1, 2), random);
-
-        setLeaves(world, box, config, leafPositions, pos.offset(0, -2, 2), random);
-        setLeaves(world, box, config, leafPositions, pos.offset(0, -2, -2), random);
-        setLeaves(world, box, config, leafPositions, pos.offset(2, -2, 0), random);
-        setLeaves(world, box, config, leafPositions, pos.offset(-2, -2, 0), random);
-
-        setLeaves(world, box, config, leafPositions, pos.south(2), random);
-        setLeaves(world, box, config, leafPositions, pos.north(2), random);
-        setLeaves(world, box, config, leafPositions, pos.east(2), random);
-        setLeaves(world, box, config, leafPositions, pos.west(2), random);
-
-        setLeaves(world, box, config, leafPositions, pos.offset(0, 2, 2), random);
-        setLeaves(world, box, config, leafPositions, pos.offset(0, 2, -2), random);
-        setLeaves(world, box, config, leafPositions, pos.offset(2, 2, 0), random);
-        setLeaves(world, box, config, leafPositions, pos.offset(-2, 2, 0), random);
-    }
-
-    private void setLeaves(IWorldGenerationReader world, MutableBoundingBox box, BaseTreeFeatureConfig config, Set<BlockPos> leafPositions, BlockPos pos, Random random) {
-        setLeaves(world, box, config, leafPositions, pos, random, true);
-    }
-
-    private void setLeaves(IWorldGenerationReader world, MutableBoundingBox box, BaseTreeFeatureConfig config, Set<BlockPos> leafPositions, BlockPos pos, Random random, boolean decay) {
-        if (!decay || random.nextInt(6) != 0) {
-            world.setBlock(pos, config.leavesProvider.getState(random, pos), 19);
-            box.expand(new MutableBoundingBox(pos, pos));
-            leafPositions.add(pos);
-        }
-    }
-
-    private void removeLeaves(IWorldGenerationReader world, Set<BlockPos> leafPositions, BlockPos pos) {
-        world.setBlock(pos, Blocks.AIR.defaultBlockState(), 19);
-        leafPositions.remove(pos);
     }
 
     @Override
@@ -96,6 +39,49 @@ public class DandelionFluffFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected boolean shouldSkipLocation(Random random, int x, int y, int z, int radius, boolean doubleTrunk) {
-        return false;
+        boolean skip = true;
+        boolean potentialDecay = false;
+        int layer = 2 - Math.abs(y - 2);
+        switch (layer) {
+            case 0: {
+                //First and last layer, simply a block on each side
+                if (x == 0 && x == z) {
+                    skip = false;
+                    break;
+                }
+                skip = isNotCenterEdge(x, z, 2);
+                potentialDecay = true;
+                break;
+            }
+            case 1: {
+                //2nd layer, edges should spawn, so if both x and z are equal to 2, additionally if both are 0, we allow the center to spawn
+                int absX = Math.abs(x);
+                if ((absX == 2 || x == 0) && absX == Math.abs(z)) {
+                    skip = false;
+                    break;
+                }
+                skip = isNotCenterEdge(x, z, 1);
+                break;
+            }
+            case 2: {
+                int distance = x * x + z * z;
+                skip = distance > 4; //The center layer, simply a star shape so we just if the distance from center is too far
+                potentialDecay = distance > 3;
+                break;
+            }
+        }
+        if (!skip && potentialDecay) {
+            skip = random.nextInt(6) == 0;
+        }
+        return skip;
+    }
+
+    private boolean isNotCenterEdge(int x, int z, int distance) {
+        if (x == 0) {
+            return Math.abs(z) != distance;
+        } else if (z == 0) {
+            return Math.abs(x) != distance;
+        }
+        return true;
     }
 }
