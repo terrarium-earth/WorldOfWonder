@@ -9,6 +9,7 @@ import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.feature.BlockClusterFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.feature.structure.StructureFeatures;
 import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
 import net.minecraft.world.gen.placement.Placement;
@@ -21,8 +22,16 @@ public class DandelionFieldsBiome {
         MobSpawnInfo.Builder mobInfo = new MobSpawnInfo.Builder();
         BiomeGenerationSettings.Builder generationSettings = new BiomeGenerationSettings.Builder().surfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
         generationSettings.addStructureStart(StructureFeatures.VILLAGE_PLAINS).addStructureStart(StructureFeatures.PILLAGER_OUTPOST);
-        generationSettings.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, WonderFeatures.DANDELION.decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(1, 0.05F, 1))));
-        generationSettings.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, WonderFeatures.DANDELION_FLUFF.decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(1, 0.01F, 1))));
+
+        generationSettings.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, WonderFeatures.DANDELION
+                .decorated(Features.Placements.HEIGHTMAP_SQUARE)
+                .decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(1, 0.05F, 1)))
+        );
+        generationSettings.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, WonderFeatures.DANDELION_FLUFF
+                .decorated(Features.Placements.HEIGHTMAP_SQUARE)
+                .decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(1, 0.01F, 1)))
+        );
+
         generationSettings.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.FLOWER.configured(new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(Blocks.DANDELION.defaultBlockState()), new SimpleBlockPlacer()).build()).decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(1, 0.5F, 3))));
         DefaultBiomeFeatures.addDefaultOverworldLandStructures(generationSettings);
         DefaultBiomeFeatures.addDefaultCarvers(generationSettings);

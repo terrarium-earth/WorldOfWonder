@@ -52,6 +52,7 @@ public class WorldOfWonder {
         WonderBlocks.REGISTRY.register(bus);
         WonderItems.REGISTRY.register(bus);
         WonderBiomes.REGISTRY.register(bus);
+        WonderSounds.REGISTRY.register(bus);
         WonderEntities.REGISTRY.register(bus);
         WonderTileEntities.REGISTRY.register(bus);
         WonderFoliagePlacers.REGISTRY.register(bus);
