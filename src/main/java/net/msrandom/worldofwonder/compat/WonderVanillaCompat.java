@@ -16,6 +16,8 @@ import net.minecraft.world.biome.provider.OverworldBiomeProvider;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistry;
 import net.msrandom.worldofwonder.WorldOfWonder;
 import net.msrandom.worldofwonder.block.WonderBlocks;
 import net.msrandom.worldofwonder.entity.WonderEntities;
@@ -26,7 +28,6 @@ import net.msrandom.worldofwonder.world.biome.WonderBiomes;
 import java.util.ArrayList;
 
 public class WonderVanillaCompat {
-    @SuppressWarnings("deprecation")
     public static void init(FMLCommonSetupEvent event) {
         ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(new ResourceLocation(WorldOfWonder.MOD_ID, "dande_lion_sprout"), WonderBlocks.POTTED_DANDE_LION_SPROUT);
         DispenserBlock.registerBehavior(WonderItems.BLOOM_MEAL.get(), ItemEvents.BLOOM_MEAL_DISPENSE);
@@ -34,11 +35,11 @@ public class WonderVanillaCompat {
         registerCompostable(WonderBlocks.DANDELION_PETALS.get().asItem(), 0.3F);
         registerCompostable(WonderBlocks.DANDELION_FLUFF.get().asItem(), 0.3F);
 
-        //I'm sure there is a better way to get the key, but I can't figure out how..
-        WorldGenRegistries.BIOME.getResourceKey(WonderBiomes.DANDELION_FIELDS.get()).ifPresent(key -> {
-            BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(key, 3));
-            addSpawnBiome(key);
-        });
+        //Thanks forge
+        ForgeRegistry<Biome> biomeRegistry = (ForgeRegistry<Biome>) ForgeRegistries.BIOMES;
+        RegistryKey<Biome> key = biomeRegistry.getKey(biomeRegistry.getID(WonderBiomes.DANDELION_FIELDS.get()));
+        BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(key, 3));
+        addSpawnBiome(key);
     }
 
     private static void addSpawnBiome(RegistryKey<Biome> biomeKey) {
