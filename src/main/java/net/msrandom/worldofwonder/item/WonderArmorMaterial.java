@@ -55,7 +55,6 @@ public class WonderArmorMaterial implements IArmorMaterial {
         return this.repairMaterial.get();
     }
 
-    @OnlyIn(Dist.CLIENT)
     public String getName() {
         return this.name;
     }

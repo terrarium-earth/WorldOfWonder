@@ -70,7 +70,6 @@ public class StemSignTileEntity extends TileEntity {
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
     public ITextComponent getText(int line) {
         return this.signText[line];
     }
@@ -81,7 +80,6 @@ public class StemSignTileEntity extends TileEntity {
     }
 
     @Nullable
-    @OnlyIn(Dist.CLIENT)
     public IReorderingProcessor getRenderText(int line, Function<ITextComponent, IReorderingProcessor> p_212364_2_) {
         if (this.renderText[line] == null && this.signText[line] != null) {
             this.renderText[line] = p_212364_2_.apply(this.signText[line]);
@@ -109,7 +107,6 @@ public class StemSignTileEntity extends TileEntity {
         return this.isEditable;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public void setEditable(boolean isEditableIn) {
         this.isEditable = isEditableIn;
         if (!isEditableIn) {

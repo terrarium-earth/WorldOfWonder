@@ -1,5 +1,6 @@
 package net.msrandom.worldofwonder.client.renderer.tileentity;
 
+import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -11,16 +12,19 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
-public class WonderItemRenderer extends ItemStackTileEntityRenderer {
-    private final TileEntity entity;
+import java.util.function.Supplier;
 
-    public WonderItemRenderer(TileEntityType<?> type) {
-        entity = type.create();
+public class WonderItemRenderer extends ItemStackTileEntityRenderer {
+    private final Supplier<? extends TileEntityType<?>> entitySupplier;
+    private final Supplier<TileEntity> entity;
+
+    public WonderItemRenderer(Supplier<? extends TileEntityType<?>> type) {
+        entitySupplier = type;
+        entity = Suppliers.memoize(() -> entitySupplier.get().create());
     }
 
     @Override
     public void renderByItem(ItemStack itemStackIn, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
-        TileEntityRendererDispatcher.instance.renderItem(entity, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+        TileEntityRendererDispatcher.instance.renderItem(entity.get(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
     }
 }

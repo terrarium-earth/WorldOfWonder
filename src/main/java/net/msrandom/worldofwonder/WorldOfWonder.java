@@ -47,6 +47,7 @@ public class WorldOfWonder {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         if (quarkLoaded = ModList.get().isLoaded("quark")) {
             WonderQuarkCompat.BLOCK_REGISTER.register(bus);
+            WonderQuarkCompat.ITEM_REGISTER.register(bus);
             WonderQuarkCompat.ENTITY_REGISTER.register(bus);
         }
         WonderBlocks.REGISTRY.register(bus);

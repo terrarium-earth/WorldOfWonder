@@ -26,7 +26,6 @@ import net.msrandom.worldofwonder.tileentity.StemSignTileEntity;
 
 import java.util.stream.IntStream;
 
-@OnlyIn(Dist.CLIENT)
 public class EditStemSignScreen extends Screen {
     private final SignTileEntityRenderer.SignModel signModel = new SignTileEntityRenderer.SignModel();
     private final StemSignTileEntity tileSign;

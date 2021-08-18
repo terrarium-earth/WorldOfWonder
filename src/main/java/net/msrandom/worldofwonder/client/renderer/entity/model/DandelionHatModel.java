@@ -6,7 +6,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class DandelionHatModel extends BipedModel<LivingEntity> {
     public static final DandelionHatModel INSTANCE = new DandelionHatModel();
 
