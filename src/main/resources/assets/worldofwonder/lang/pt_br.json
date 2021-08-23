@@ -1,0 +1,39 @@
+{
+  "language.name": "Português",
+  "language.region": "Brasil",
+  "language.code": "pt_br",
+
+  "itemGroup.worldofwonder": "World of Wonder",
+
+  "block.worldofwonder.dandelion_fluff": "Papilhos de dente-de-leão",
+  "block.worldofwonder.dandelion_petals": "Pétalas de dente-de-leão",
+  "block.worldofwonder.stem_log": "Caule de dente-de-leão",
+  "block.worldofwonder.stripped_stem_log": "Caule de dente-de-leão descascado",
+  "block.worldofwonder.stem_wood": "Madeira de dente-de-leão",
+  "block.worldofwonder.stripped_stem_wood": "Madeira de dente-de-leão descascada",
+  "block.worldofwonder.stem_planks": "Tábuas de dente-de-leão",
+  "block.worldofwonder.stem_door": "Porta de dente-de-leão",
+  "block.worldofwonder.stem_trapdoor": "Alçapão de dente-de-leão",
+  "block.worldofwonder.stem_fence": "Cerca de dente-de-leão",
+  "block.worldofwonder.stem_button": "Botão de dente-de-leão",
+  "block.worldofwonder.stem_slab": "Laje de dente-de-leão",
+  "block.worldofwonder.stem_vertical_slab": "Laje vertical de dente-de-leão",
+  "block.worldofwonder.stem_fence_gate": "Portão de dente-de-leão",
+  "block.worldofwonder.stem_pressure_plate": "Placa de pressão de dente-de-leão",
+  "block.worldofwonder.stem_stairs": "Escadas de dente-de-leão",
+  "block.worldofwonder.stem_bookshelf": "Estante de livros de dente-de-leão",
+  "block.worldofwonder.stem_ladder": "Escada de mão de dente-de-leão",
+  "block.worldofwonder.dande_lion_sprout": "Broto de dande-lion",
+  "block.worldofwonder.stem_sign": "Placa de dente-de-leão",
+  "block.worldofwonder.stem_chest": "Baú de dente-de-leão",
+  "block.worldofwonder.stem_trapped_chest": "Baú de dente-de-leão com armadilha",
+
+  "item.worldofwonder.bloom_meal": "Farinha-florida",
+  "item.worldofwonder.dande_lion_spawn_egg": "Ovo gerador de dande-lion",
+  "item.worldofwonder.dandelion_hat": "Chapéu de dente-de-leão",
+  "item.worldofwonder.stem_boat": "Bote de dente-de-leão",
+
+  "entity.worldofwonder.dande_lion": "Dande-lion",
+
+  "biome.worldofwonder.dandelion_fields": "Campos de dente-de-leão"
+}
