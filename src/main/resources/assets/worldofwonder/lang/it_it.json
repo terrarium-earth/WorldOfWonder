@@ -1,0 +1,39 @@
+{
+  "language.name": "Italiano",
+  "language.region": "Italia",
+  "language.code": "it_it",
+
+  "itemGroup.worldofwonder": "World of Wonder",
+
+  "block.worldofwonder.dandelion_fluff": "Lanugine del dente di leone",
+  "block.worldofwonder.dandelion_petals": "Petali di dente di leone",
+  "block.worldofwonder.stem_log": "Gambo di dente di leone",
+  "block.worldofwonder.stripped_stem_log": "Gambo di dente di leone scortecciato",
+  "block.worldofwonder.stem_wood": "Legno di dente di leone",
+  "block.worldofwonder.stripped_stem_wood": "Legno di dente di leone scortecciato",
+  "block.worldofwonder.stem_planks": "Assi di gambo",
+  "block.worldofwonder.stem_door": "Porta di gambo",
+  "block.worldofwonder.stem_trapdoor": "Botola di gambo",
+  "block.worldofwonder.stem_fence": "Staccionata di gambo",
+  "block.worldofwonder.stem_button": "Pulsante di gambo",
+  "block.worldofwonder.stem_slab": "Lastra di gambo",
+  "block.worldofwonder.stem_vertical_slab": "Lastra verticale di gambo",
+  "block.worldofwonder.stem_fence_gate": "Cancelletto di gambo",
+  "block.worldofwonder.stem_pressure_plate": "Pedana a pressione di gambo",
+  "block.worldofwonder.stem_stairs": "Scalini di gambo",
+  "block.worldofwonder.stem_bookshelf": "Libreria di gambo",
+  "block.worldofwonder.stem_ladder": "Scala a pioli di gambo",
+  "block.worldofwonder.dande_lion_sprout": "Germoglio di dente-leone",
+  "block.worldofwonder.stem_sign": "Cartello di gambo",
+  "block.worldofwonder.stem_chest": "Baule di gambo",
+  "block.worldofwonder.stem_trapped_chest": "Baule trappola di gambo",
+
+  "item.worldofwonder.bloom_meal": "Farina fiorita",
+  "item.worldofwonder.dande_lion_spawn_egg": "Uovo generatore di dente-leone",
+  "item.worldofwonder.dandelion_hat": "Cappello di dente di leone",
+  "item.worldofwonder.stem_boat": "Barca di gambo",
+
+  "entity.worldofwonder.dande_lion": "Dente-leone",
+
+  "biome.worldofwonder.dandelion_fields": "Campi di dente di leone"
+}
