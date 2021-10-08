@@ -50,11 +50,11 @@ public class DandelionFoliagePlacer extends FoliagePlacer {
                 break;
             }
             case 1: {
-                int absX = Math.abs(x);
-                int absZ = Math.abs(z);
+                int distanceX = Math.abs(x);
+                int distanceZ = Math.abs(z);
                 skip = distance > 9;
-                potentialDecay = (absX > 1 || absZ > 1) && distance > 2;
-                if (absX == 2 && absZ == 2) skip = true;
+                potentialDecay = (distanceX > 1 || distanceZ > 1) && distance > 2;
+                if (distanceX == 2 && distanceZ == 2) skip = true;
                 break;
             }
             case 3: {

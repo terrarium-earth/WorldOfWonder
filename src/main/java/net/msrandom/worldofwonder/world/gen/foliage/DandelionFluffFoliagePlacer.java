@@ -27,8 +27,9 @@ public class DandelionFluffFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected void createFoliage(IWorldGenerationReader world, Random random, BaseTreeFeatureConfig config, int p_230372_4_, Foliage p_230372_5_, int p_230372_6_, int p_230372_7_, Set<BlockPos> leafPositions, int p_230372_9_, MutableBoundingBox box) {
+        BlockPos position = p_230372_5_.foliagePos().below();
         for (int i = 0; i < 5; i++) {
-            placeLeavesRow(world, random, config, p_230372_5_.foliagePos(), 2, leafPositions, i, p_230372_5_.doubleTrunk(), box);
+            placeLeavesRow(world, random, config, position, 2, leafPositions, i, p_230372_5_.doubleTrunk(), box);
         }
     }
 
@@ -45,7 +46,7 @@ public class DandelionFluffFoliagePlacer extends FoliagePlacer {
         switch (layer) {
             case 0: {
                 //First and last layer, simply a block on each side
-                if (y != 0 && x == 0 && x == z) {
+                if (y != 0 && x == 0 && z == 0) {
                     skip = false;
                     break;
                 }
