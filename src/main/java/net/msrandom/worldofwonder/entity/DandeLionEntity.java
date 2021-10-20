@@ -138,7 +138,7 @@ public class DandeLionEntity extends TameableEntity {
             }
 
             if (this.isTame()) {
-                if (item == Items.BONE_MEAL) {
+                if (item == Items.BONE_MEAL && (getHealth() < getMaxHealth() || shearedTicks != 0)) {
                     if (!player.abilities.instabuild) {
                         stack.shrink(1);
                     }
@@ -154,7 +154,7 @@ public class DandeLionEntity extends TameableEntity {
                     return ActionResultType.SUCCESS;
                 }
 
-                if (this.isOwnedBy(player) && !this.isFood(stack)) {
+                else if (this.isOwnedBy(player) && !this.isFood(stack)) {
                     this.setOrderedToSit(!this.isInSittingPose());
                     this.jumping = false;
                     this.navigation.stop();
