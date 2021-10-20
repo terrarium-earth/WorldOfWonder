@@ -14,52 +14,65 @@ public class DandeLionModel extends AgeableModel<DandeLionEntity> {
     public ModelRenderer armRight;
     public ModelRenderer legLeft;
     public ModelRenderer legRight;
-    public ModelRenderer tail;
     public ModelRenderer head;
-    public ModelRenderer mane;
+    public ModelRenderer tail;
     public ModelRenderer snout;
+    public ModelRenderer earRight;
+    public ModelRenderer earLeft;
+    public ModelRenderer mane;
+    public ModelRenderer maneExtra;
 
     public DandeLionModel() {
         this.texWidth = 64;
         this.texHeight = 64;
-        this.armRight = new ModelRenderer(this, 0, 0);
-        this.armRight.mirror = true;
-        this.armRight.setPos(-3.0F, 6.0F, -5.5F);
-        this.armRight.addBox(-2.0F, 0.0F, -2.5F, 4, 10, 5, 0.0F);
-        this.tail = new ModelRenderer(this, 38, 0);
-        this.tail.setPos(0.0F, -4.0F, 9.5F);
-        this.tail.addBox(-1.0F, 0.0F, -2.0F, 2, 12, 2, 0.0F);
-        this.tail.xRot = 0.17453292519943295F;
-        this.legLeft = new ModelRenderer(this, 0, 0);
-        this.legLeft.setPos(3.0F, 6.0F, 6.5F);
-        this.legLeft.addBox(-2.0F, 0.0F, -2.5F, 4, 10, 5, 0.0F);
-        this.snout = new ModelRenderer(this, 23, 47);
-        this.snout.setPos(0.0F, 2.0F, -7.0F);
-        this.snout.addBox(-2.0F, -2.0F, -3.0F, 4, 4, 3, 0.0F);
+        this.maneExtra = new ModelRenderer(this, 0, 40);
+        this.maneExtra.setPos(0.0F, 9.0F, 3.5F);
+        this.maneExtra.addBox(-4.5F, 0.0F, -3.5F, 9.0F, 2.0F, 7.0F, 0.0F, 0.0F, 0.0F);
+        this.earRight = new ModelRenderer(this, 25, 22);
+        this.earRight.setPos(-2.5F, -2.0F, -2.5F);
+        this.earRight.addBox(-2.0F, -2.0F, -0.5F, 3.0F, 2.0F, 1.0F, 0.0F, 0.0F, 0.0F);
         this.legRight = new ModelRenderer(this, 0, 0);
-        this.legRight.mirror = true;
-        this.legRight.setPos(-3.0F, 6.0F, 6.5F);
-        this.legRight.addBox(-2.0F, 0.0F, -2.5F, 4, 10, 5, 0.0F);
-        this.armLeft = new ModelRenderer(this, 0, 0);
-        this.armLeft.setPos(3.0F, 6.0F, -5.5F);
-        this.armLeft.addBox(-2.0F, 0.0F, -2.5F, 4, 10, 5, 0.0F);
-        this.head = new ModelRenderer(this, 0, 47);
+        this.legRight.setPos(-2.5F, 4.0F, 5.0F);
+        this.legRight.addBox(-1.5F, 0.0F, -2.0F, 3.0F, 8.0F, 4.0F, 0.0F, 0.0F, 0.0F);
+        this.head = new ModelRenderer(this, 0, 49);
         this.head.setPos(0.0F, -3.0F, -7.0F);
-        this.head.addBox(-4.0F, -4.0F, -7.0F, 8, 8, 7, 0.0F);
-        this.mane = new ModelRenderer(this, 0, 28);
-        this.mane.setPos(0.0F, 0.0F, -0.5F);
-        this.mane.addBox(-6.0F, -6.0F, -3.5F, 12, 12, 7, 0.0F);
+        this.head.addBox(-3.5F, -3.0F, -5.0F, 7.0F, 6.0F, 5.0F, 0.0F, 0.0F, 0.0F);
+        this.snout = new ModelRenderer(this, 24, 49);
+        this.snout.setPos(0.0F, 2.0F, -5.0F);
+        this.snout.addBox(-2.5F, -1.0F, -2.0F, 5.0F, 3.0F, 4.0F, 0.0F, 0.0F, 0.0F);
+        this.legLeft = new ModelRenderer(this, 0, 0);
+        this.legLeft.setPos(2.5F, 4.0F, 5.0F);
+        this.legLeft.addBox(-1.5F, 0.0F, -2.0F, 3.0F, 8.0F, 4.0F, 0.0F, 0.0F, 0.0F);
+        this.mane = new ModelRenderer(this, 0, 22);
+        this.mane.setPos(0.0F, -3.0F, -2.0F);
+        this.mane.addBox(-4.5F, -2.0F, 0.0F, 9.0F, 11.0F, 7.0F, 0.0F, 0.0F, 0.0F);
+        this.armLeft = new ModelRenderer(this, 0, 0);
+        this.armLeft.setPos(2.5F, 4.0F, -5.0F);
+        this.armLeft.addBox(-1.5F, 0.0F, -2.0F, 3.0F, 8.0F, 4.0F, 0.0F, 0.0F, 0.0F);
+        this.tail = new ModelRenderer(this, 30, 0);
+        this.tail.setPos(0.0F, -3.0F, 7.5F);
+        this.tail.addBox(-1.0F, 0.0F, -2.0F, 2.0F, 11.0F, 2.0F, 0.0F, 0.0F, 0.0F);
+        this.setRotateAngle(tail, 0.17453292519943295F, 0.0F, 0.0F);
         this.body = new ModelRenderer(this, 0, 0);
-        this.body.setPos(0.0F, 8.0F, 0.0F);
-        this.body.addBox(-5.0F, -4.0F, -9.0F, 10, 10, 18, 0.0F);
-        this.body.addChild(this.armRight);
-        this.body.addChild(this.tail);
-        this.body.addChild(this.legLeft);
-        this.head.addChild(this.snout);
+        this.body.setPos(0.0F, 12.0F, 0.0F);
+        this.body.addBox(-4.0F, -4.0F, -7.0F, 8.0F, 8.0F, 14.0F, 0.0F, 0.0F, 0.0F);
+        this.earLeft = new ModelRenderer(this, 25, 22);
+        this.earLeft.setPos(2.5F, -2.0F, -2.5F);
+        this.earLeft.addBox(-1.0F, -2.0F, -0.5F, 3.0F, 2.0F, 1.0F, 0.0F, 0.0F, 0.0F);
+        this.armRight = new ModelRenderer(this, 0, 0);
+        this.armRight.setPos(-2.5F, 4.0F, -5.0F);
+        this.armRight.addBox(-1.5F, 0.0F, -2.0F, 3.0F, 8.0F, 4.0F, 0.0F, 0.0F, 0.0F);
+        this.mane.addChild(this.maneExtra);
+        this.head.addChild(this.earRight);
         this.body.addChild(this.legRight);
-        this.body.addChild(this.armLeft);
         this.body.addChild(this.head);
+        this.head.addChild(this.snout);
+        this.body.addChild(this.legLeft);
         this.head.addChild(this.mane);
+        this.body.addChild(this.armLeft);
+        this.body.addChild(this.tail);
+        this.head.addChild(this.earLeft);
+        this.body.addChild(this.armRight);
     }
 
     @Override
@@ -74,59 +87,65 @@ public class DandeLionModel extends AgeableModel<DandeLionEntity> {
 
     @Override
     public void setupAnim(DandeLionEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (entityIn.isInSittingPose()) {
-            this.head.y = -2;
-            this.head.z = -7;
-            this.head.xRot = 0.785f;
-            this.body.xRot = -0.785f;
-            this.tail.y = -3;
-            this.tail.z = 6;
-            this.tail.xRot = 1.92f;
-            this.armRight.y = 4;
-            this.armRight.z = -4.5f;
-            this.armRight.xRot = 0.785f;
-            this.armRight.yRot = -0.087f;
-            this.armRight.zRot = -0.087f;
-            this.armLeft.y = 4;
-            this.armLeft.z = -4.5f;
-            this.armLeft.xRot = 0.785f;
-            this.armLeft.yRot = 0.087f;
-            this.armLeft.zRot = 0.087f;
-            this.legRight.y = 5;
-            this.legRight.xRot = -0.785f;
-            this.legRight.yRot = 0.349f;
-            this.legRight.zRot = 0.262f;
-            this.legLeft.y = 5;
-            this.legLeft.xRot = -0.785f;
-            this.legLeft.yRot = -0.349f;
-            this.legLeft.zRot = -0.262f;
-        } else {
-            this.head.y = -3;
-            this.head.z = -6;
-            this.head.xRot = 0;
-            this.body.xRot = 0;
-            this.tail.y = -4;
-            this.tail.z = 9.5f;
-            this.armRight.y = 6;
-            this.armRight.z = -5.5f;
-            this.armRight.yRot = 0;
-            this.armRight.zRot = 0;
-            this.armLeft.y = 6;
-            this.armLeft.z = -5.5f;
-            this.armLeft.yRot = 0;
-            this.armLeft.zRot = 0;
-            this.legRight.y = 6;
-            this.legRight.yRot = 0;
-            this.legRight.zRot = 0;
-            this.legLeft.y = 6;
-            this.legLeft.yRot = 0;
-            this.legLeft.zRot = 0;
+        float speed = 1.0f;
+        float degree = 1.0f;
 
-            this.legRight.xRot = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-            this.legLeft.xRot = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-            this.armRight.xRot = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-            this.armLeft.xRot = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-            this.tail.xRot = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 0.2F * limbSwingAmount + 0.17453292519943295F;
+        if (entityIn.isInSittingPose()) {
+            this.legRight.y = 2.0F;
+            this.legRight.xRot = 1.5708F;
+            this.legRight.yRot = -0.4363F;
+
+            this.legLeft.y = 2.0F;
+            this.legLeft.xRot = 1.5708F;
+            this.legLeft.yRot = 0.4363F;
+
+            this.armRight.y = 2.0F;
+            this.armRight.xRot = -1.5708F;
+            this.armRight.yRot = 0.4363F;
+
+            this.armLeft.y = 2.0F;
+            this.armLeft.xRot = -1.5708F;
+            this.armLeft.yRot = -0.4363F;
+
+            this.body.y = 14.5F;
+            this.body.xRot = 0.0F;
+
+            this.head.y = -5.0F;
+
+            this.tail.xRot = 1.0471975511965976F;
+
+        } else {
+            this.body.y = MathHelper.cos(limbSwing * speed * 0.4F) * degree * 0.1F * limbSwingAmount + 12.02F;
+            this.body.xRot = MathHelper.cos(-1.0F + limbSwing * speed * 0.4F) * degree * 0.1F * limbSwingAmount;
+            this.head.y = MathHelper.cos(1.0F + limbSwing * speed * 0.4F) * degree * -0.05F * limbSwingAmount - 3.05F;
+            this.armLeft.xRot = MathHelper.cos(-2.0F + limbSwing * speed * 0.4F) * degree * 1.2F * limbSwingAmount;
+            this.armRight.xRot = MathHelper.cos(3.0F + limbSwing * speed * 0.4F) * degree * 1.2F * limbSwingAmount;
+            this.legLeft.xRot = MathHelper.cos(-1.0F + limbSwing * speed * 0.4F) * degree * 1.2F * limbSwingAmount;
+            this.legRight.xRot = MathHelper.cos(2.0F + limbSwing * speed * 0.4F) * degree * 1.2F * limbSwingAmount;
+            this.tail.xRot = MathHelper.cos(-1.0F + limbSwing * speed * 0.4F) * degree * 0.8F * limbSwingAmount + 0.4F;
+
+            this.armLeft.yRot = 0.0F;
+            this.armRight.yRot = 0.0F;
+            this.legLeft.yRot = 0.0F;
+            this.legRight.yRot = 0.0F;
+
+            this.armLeft.y = 4.0F;
+            this.armRight.y = 4.0F;
+            this.legLeft.y = 4.0F;
+            this.legRight.y = 4.0F;
+
         }
+
+        this.earRight.zRot = MathHelper.cos(-1.0F + ageInTicks * speed * 0.15F) * degree * 0.2F - 0.1F;
+        this.earLeft.zRot = MathHelper.cos(-1.0F + ageInTicks * speed * 0.15F) * degree * -0.2F + 0.1F;
+        this.tail.zRot = MathHelper.cos(ageInTicks * 0.25F) * 0.25F;
+        this.head.xRot = headPitch * ((float)Math.PI / 180F);
+        this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
+    }
+
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+        modelRenderer.xRot = x;
+        modelRenderer.yRot = y;
+        modelRenderer.zRot = z;
     }
 }

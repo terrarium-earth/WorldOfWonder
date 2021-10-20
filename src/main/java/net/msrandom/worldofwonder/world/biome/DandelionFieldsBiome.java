@@ -54,6 +54,7 @@ public class DandelionFieldsBiome {
         DefaultBiomeFeatures.addDefaultExtraVegetation(generationSettings);
         DefaultBiomeFeatures.addDefaultSprings(generationSettings);
         DefaultBiomeFeatures.addSurfaceFreezing(generationSettings);
+        DefaultBiomeFeatures.addForestGrass(generationSettings);
         mobInfo.setPlayerCanSpawn();
         mobInfo.addSpawn(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.SHEEP, 12, 4, 4));
         mobInfo.addSpawn(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.PIG, 10, 4, 4));
