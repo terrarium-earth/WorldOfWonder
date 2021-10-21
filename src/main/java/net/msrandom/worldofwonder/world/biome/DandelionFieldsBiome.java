@@ -43,6 +43,16 @@ public class DandelionFieldsBiome {
                 .decorated(Placement.COUNT_NOISE.configured(new NoiseDependant(-0.8D, 15, 4)))
         );
 
+        generationSettings.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH
+                .configured(new BlockClusterFeatureConfig.Builder(
+                        new SimpleBlockStateProvider(Blocks.GRASS.defaultBlockState()),
+                        new SimpleBlockPlacer()
+                ).build())
+                .decorated(Features.Placements.ADD_32)
+                .decorated(Features.Placements.HEIGHTMAP).squared()
+                .decorated(Placement.COUNT_NOISE.configured(new NoiseDependant(-0.8D, 15, 4)))
+        );
+
         DefaultBiomeFeatures.addDefaultOverworldLandStructures(generationSettings);
         DefaultBiomeFeatures.addDefaultCarvers(generationSettings);
         DefaultBiomeFeatures.addDefaultUndergroundVariety(generationSettings);
