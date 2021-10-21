@@ -42,11 +42,12 @@ public class DandelionFieldsBiome {
                 .decorated(Features.Placements.HEIGHTMAP).squared()
                 .decorated(Placement.COUNT_NOISE.configured(new NoiseDependant(-0.8D, 15, 4)))
         );
+
         DefaultBiomeFeatures.addDefaultOverworldLandStructures(generationSettings);
         DefaultBiomeFeatures.addDefaultCarvers(generationSettings);
         DefaultBiomeFeatures.addDefaultUndergroundVariety(generationSettings);
         DefaultBiomeFeatures.addDefaultMonsterRoom(generationSettings);
-        DefaultBiomeFeatures.addDefaultGrass(generationSettings);
+        DefaultBiomeFeatures.addPlainGrass(generationSettings);
         DefaultBiomeFeatures.addDefaultOres(generationSettings);
         DefaultBiomeFeatures.addDefaultSoftDisks(generationSettings);
         DefaultBiomeFeatures.addDefaultFlowers(generationSettings);
@@ -54,7 +55,6 @@ public class DandelionFieldsBiome {
         DefaultBiomeFeatures.addDefaultExtraVegetation(generationSettings);
         DefaultBiomeFeatures.addDefaultSprings(generationSettings);
         DefaultBiomeFeatures.addSurfaceFreezing(generationSettings);
-        DefaultBiomeFeatures.addForestGrass(generationSettings);
         mobInfo.setPlayerCanSpawn();
         mobInfo.addSpawn(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.SHEEP, 12, 4, 4));
         mobInfo.addSpawn(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.PIG, 10, 4, 4));
