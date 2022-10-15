@@ -49,13 +49,13 @@ public class StemBoatItem extends Item {
           }
 
           StemBoatEntity boatentity = new StemBoatEntity(worldIn, raytraceresult.getLocation().x, raytraceresult.getLocation().y, raytraceresult.getLocation().z);
-          boatentity.yRot = playerIn.yRot;
+          boatentity.setYRot(playerIn.getYRot());
           if (!worldIn.noCollision(boatentity, boatentity.getBoundingBox().deflate(0.1D))) {
               return InteractionResultHolder.fail(stack);
           } else {
               if (!worldIn.isClientSide) {
                   worldIn.addFreshEntity(boatentity);
-                  if (!playerIn.abilities.instabuild) {
+                  if (!playerIn.getAbilities().instabuild) {
                       stack.shrink(1);
                   }
               }

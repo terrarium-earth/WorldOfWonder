@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import earth.terrarium.worldofwonder.WorldOfWonder;
 import earth.terrarium.worldofwonder.client.renderer.entity.model.DandeLionModel;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import earth.terrarium.worldofwonder.entity.DandeLionEntity;
@@ -12,8 +13,8 @@ public class DandeLionRenderer extends MobRenderer<DandeLionEntity, DandeLionMod
     private static final ResourceLocation FLUFF = new ResourceLocation(WorldOfWonder.MOD_ID, "textures/entity/dande_lion/fluff.png");
     private static final ResourceLocation NORMAL = new ResourceLocation(WorldOfWonder.MOD_ID, "textures/entity/dande_lion/normal.png");
 
-    public DandeLionRenderer(EntityRenderDispatcher manager) {
-        super(manager, new DandeLionModel(), 0.4f);
+    public DandeLionRenderer(EntityRendererProvider.Context context) {
+        super(context, new DandeLionModel(), 0.4f);
     }
 
     @Override

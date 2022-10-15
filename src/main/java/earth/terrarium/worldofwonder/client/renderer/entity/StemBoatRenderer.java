@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -19,8 +20,8 @@ public class StemBoatRenderer extends EntityRenderer<StemBoatEntity> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(WorldOfWonder.MOD_ID, "textures/entity/stem/boat.png");
     protected final StemBoatModel model = new StemBoatModel();
 
-    public StemBoatRenderer(EntityRenderDispatcher renderManagerIn) {
-        super(renderManagerIn);
+    public StemBoatRenderer(EntityRendererProvider.Context context) {
+        super(context);
         this.shadowRadius = 0.8f;
     }
 

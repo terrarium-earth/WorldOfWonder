@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import earth.terrarium.worldofwonder.entity.DandeLionSeedEntity;
@@ -15,8 +16,8 @@ public class DandeLionSeedRenderer extends EntityRenderer<DandeLionSeedEntity> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(WorldOfWonder.MOD_ID, "textures/entity/dande_lion/seed.png");
     private final ModelPart part = new ModelPart(6, 6, 0, 0);
 
-    public DandeLionSeedRenderer(EntityRenderDispatcher renderManager) {
-        super(renderManager);
+    public DandeLionSeedRenderer(EntityRendererProvider.Context context) {
+        super(context);
         part.addBox(0, 0, 0, 6, 6, 0f);
     }
 

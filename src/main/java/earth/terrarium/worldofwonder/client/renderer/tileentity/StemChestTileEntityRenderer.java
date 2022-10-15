@@ -7,6 +7,7 @@ import earth.terrarium.worldofwonder.tileentity.StemChestTileEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.BrightnessCombiner;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
@@ -26,7 +27,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class StemChestTileEntityRenderer extends BlockEntityRenderer<StemChestTileEntity> {
+public class StemChestTileEntityRenderer implements BlockEntityRenderer<StemChestTileEntity> {
     private static final ResourceLocation CHEST_XMAS = getChestTexture("christmas");
     private static final ResourceLocation CHEST_XMAS_LEFT = getChestTexture("christmas_left");
     private static final ResourceLocation CHEST_XMAS_RIGHT = getChestTexture("christmas_right");
@@ -48,8 +49,8 @@ public class StemChestTileEntityRenderer extends BlockEntityRenderer<StemChestTi
     private final ModelPart leftLatch;
     private boolean isChristmas;
 
-    public StemChestTileEntityRenderer(BlockEntityRenderDispatcher rendererDispatcherIn) {
-        super(rendererDispatcherIn);
+    public StemChestTileEntityRenderer(BlockEntityRendererProvider.Context context) {
+        super();
         Calendar calendar = Calendar.getInstance();
         if (calendar.get(Calendar.MONTH) + 1 == 12 && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26) {
             this.isChristmas = true;

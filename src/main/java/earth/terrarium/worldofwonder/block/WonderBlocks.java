@@ -3,6 +3,7 @@ package earth.terrarium.worldofwonder.block;
 import earth.terrarium.worldofwonder.WorldOfWonder;
 import earth.terrarium.worldofwonder.item.StemSignItem;
 import earth.terrarium.worldofwonder.item.WonderItems;
+import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.material.Material;
@@ -37,7 +38,7 @@ public class WonderBlocks {
     public static final RegistryObject<Block> STRIPPED_STEM_WOOD = add("stripped_stem_wood", () -> new WonderWoodBlock(Block.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.0F).sound(SoundType.WOOD)), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS));
     public static final RegistryObject<Block> DANDELION_PETALS = add("dandelion_petals", () -> new DandelionBlock(Block.Properties.of(Material.LEAVES).strength(0.2F).sound(SoundType.GRASS)), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS));
     public static final RegistryObject<Block> STEM_STAIRS = add("stem_stairs", () -> new FlammableStairsBlock(() -> STEM_PLANKS.get().defaultBlockState(), Block.Properties.copy(STEM_PLANKS.get())), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS));
-    public static final RegistryObject<Block> STEM_SIGN = add("stem_sign", () -> new StandingSignBlock(BlockBehaviour.Properties.of(Material.WOOD), WorldOfWonder.STEM_WOOD_TYPE), new Item.Properties().stacksTo(16).tab(CreativeModeTab.TAB_DECORATIONS), StemSignItem::new);
+    public static final RegistryObject<Block> STEM_SIGN = add("stem_sign", () -> new StandingSignBlock(BlockBehaviour.Properties.of(Material.WOOD), WorldOfWonder.STEM_WOOD_TYPE), new Item.Properties().stacksTo(16).tab(CreativeModeTab.TAB_DECORATIONS), (block, properties) -> new SignItem(properties, block, WonderBlocks.STEM_WALL_SIGN.get()));
     public static final RegistryObject<Block> STEM_DOOR = add("stem_door", () -> new DoorBlock(Block.Properties.of(Material.WOOD, MaterialColor.COLOR_GREEN).strength(3.0F).sound(SoundType.WOOD).noOcclusion()), new Item.Properties().tab(CreativeModeTab.TAB_REDSTONE));
     public static final RegistryObject<Block> STEM_WALL_SIGN = add("stem_wall_sign", () -> new WallSignBlock(BlockBehaviour.Properties.of(Material.WOOD), WorldOfWonder.STEM_WOOD_TYPE));
     public static final RegistryObject<Block> STEM_PRESSURE_PLATE = add("stem_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.of(Material.WOOD, MaterialColor.COLOR_GREEN).noCollission().strength(0.5F).sound(SoundType.WOOD)), new Item.Properties().tab(CreativeModeTab.TAB_REDSTONE));
