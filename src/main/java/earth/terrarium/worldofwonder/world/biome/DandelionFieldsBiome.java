@@ -2,6 +2,7 @@ package earth.terrarium.worldofwonder.world.biome;
 
 import earth.terrarium.worldofwonder.entity.WonderEntities;
 import earth.terrarium.worldofwonder.world.gen.WonderFeatures;
+import net.minecraft.data.worldgen.Structures;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.EntityType;
@@ -10,12 +11,6 @@ import net.minecraft.world.level.levelgen.feature.blockplacers.SimpleBlockPlacer
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.data.worldgen.Features;
-import net.minecraft.data.worldgen.StructureFeatures;
-import net.minecraft.world.level.levelgen.placement.FrequencyWithExtraChanceDecoratorConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.NoiseDependantDecoratorConfiguration;
-import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
-import net.minecraft.data.worldgen.SurfaceBuilders;
 
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.world.level.biome.AmbientMoodSettings;
@@ -28,7 +23,7 @@ public class DandelionFieldsBiome {
     public static Biome make() {
         MobSpawnSettings.Builder mobInfo = new MobSpawnSettings.Builder();
         BiomeGenerationSettings.Builder generationSettings = new BiomeGenerationSettings.Builder().surfaceBuilder(SurfaceBuilders.GRASS);
-        generationSettings.addStructureStart(StructureFeatures.VILLAGE_PLAINS).addStructureStart(StructureFeatures.PILLAGER_OUTPOST);
+        generationSettings.addStructureStart(Structures.VILLAGE_PLAINS).addStructureStart(Structures.PILLAGER_OUTPOST);
 
         generationSettings.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, WonderFeatures.DANDELION
                 .decorated(Features.Decorators.HEIGHTMAP_DOUBLE_SQUARE)

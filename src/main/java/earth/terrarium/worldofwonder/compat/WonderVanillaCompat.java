@@ -14,7 +14,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.OverworldBiomeSource;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -38,6 +38,9 @@ public class WonderVanillaCompat {
         ForgeRegistry<Biome> biomeRegistry = (ForgeRegistry<Biome>) ForgeRegistries.BIOMES;
         ResourceKey<Biome> key = biomeRegistry.getKey(biomeRegistry.getID(WonderBiomes.DANDELION_FIELDS.get()));
         BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(key, 3));
+
+        WoodType.register(WorldOfWonder.STEM_WOOD_TYPE);
+
         addSpawnBiome(key);
     }
 

@@ -21,7 +21,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
@@ -142,7 +142,7 @@ public class DandeLionEntity extends TamableAnimal {
                     }
 
                     this.onOffspringSpawnedFromEgg(player, child);
-                    if (!player.abilities.instabuild) {
+                    if (!player.getAbilities().instabuild) {
                         stack.shrink(1);
                     }
                 }
@@ -159,7 +159,7 @@ public class DandeLionEntity extends TamableAnimal {
 
             if (this.isTame()) {
                 if (item == Items.BONE_MEAL && (getHealth() < getMaxHealth() || shearedTicks != 0)) {
-                    if (!player.abilities.instabuild) {
+                    if (!player.getAbilities().instabuild) {
                         stack.shrink(1);
                     }
 
@@ -178,8 +178,8 @@ public class DandeLionEntity extends TamableAnimal {
                     this.navigation.stop();
                     this.setTarget(null);
                 }
-            } else if (item.is(ItemTags.SMALL_FLOWERS) && !this.isAngry()) {
-                if (!player.abilities.instabuild) {
+            } else if (stack.is(ItemTags.SMALL_FLOWERS) && !this.isAngry()) {
+                if (!player.getAbilities().instabuild) {
                     stack.shrink(1);
                 }
 
@@ -198,7 +198,7 @@ public class DandeLionEntity extends TamableAnimal {
             if (this.isFood(stack)) {
                 if (this.getAge() == 0 && this.canFallInLove()) {
                     if (flowersAround()) {
-                        this.usePlayerItem(player, stack);
+                        this.usePlayerItem(player, hand, stack);
                         this.setInLove(player);
                         player.swing(hand, true);
                     } else {
@@ -208,7 +208,7 @@ public class DandeLionEntity extends TamableAnimal {
                 }
 
                 if (this.isBaby()) {
-                    this.usePlayerItem(player, stack);
+                    this.usePlayerItem(player, hand, stack);
                     this.ageUp((int) (this.getAge() / -20.0 * 0.1), true);
                     return InteractionResult.SUCCESS;
                 }
@@ -233,7 +233,7 @@ public class DandeLionEntity extends TamableAnimal {
 
     @Override
     public boolean isFood(ItemStack stack) {
-        return stack.getItem().is(ItemTags.TALL_FLOWERS);
+        return stack.is(ItemTags.TALL_FLOWERS);
     }
 
     @Override
@@ -329,7 +329,7 @@ public class DandeLionEntity extends TamableAnimal {
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageable) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
         if (ageable instanceof DandeLionEntity) {
             if (((DandeLionEntity) ageable).madeChild) ((DandeLionEntity) ageable).madeChild = false;
             else {

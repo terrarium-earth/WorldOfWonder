@@ -1,69 +1,68 @@
 package earth.terrarium.worldofwonder.tileentity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.CommandSource;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.DyeColor;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.ComponentUtils;
-import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.function.Function;
 
 public class StemSignTileEntity extends BlockEntity {
-    public final Component[] signText = new Component[] {new TextComponent(""), new TextComponent(""), new TextComponent(""), new TextComponent("")};
+    public final Component[] signText = new Component[] {Component.literal(""), Component.literal(""), Component.literal(""), Component.literal("")};
     private boolean isEditable = true;
     private Player player;
     private final FormattedCharSequence[] renderText = new FormattedCharSequence[4];
     private DyeColor textColor = DyeColor.BLACK;
 
-    public StemSignTileEntity() {
-        super(WonderTileEntities.STEM_SIGN.get());
+    public StemSignTileEntity(BlockPos pos, BlockState state) {
+        super(WonderTileEntities.STEM_SIGN.get(), pos, state);
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        for(int i = 0; i < 4; ++i) {
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+
+        for (int i = 0; i < 4; ++i) {
             String s = Component.Serializer.toJson(this.signText[i]);
-            compound.putString("Text" + (i + 1), s);
+            tag.putString("Text" + (i + 1), s);
         }
 
-        compound.putString("Color", this.textColor.getName());
-        return super.save(compound);
+        tag.putString("Color", this.textColor.getName());
     }
 
     @Override
-    public void load(BlockState state, CompoundTag compound) {
+    public void load(CompoundTag tag) {
         this.isEditable = false;
-        super.load(state, compound);
-        this.textColor = DyeColor.byName(compound.getString("Color"), DyeColor.BLACK);
+        super.load(tag);
+        this.textColor = DyeColor.byName(tag.getString("Color"), DyeColor.BLACK);
 
-        for(int i = 0; i < 4; ++i) {
-            String s = compound.getString("Text" + (i + 1));
-            Component itextcomponent = Component.Serializer.fromJson(s.isEmpty() ? "\"\"" : s);
+        for (int i = 0; i < 4; ++i) {
+            String s = tag.getString("Text" + (i + 1));
+            Component component = Component.Serializer.fromJson(s.isEmpty() ? "\"\"" : s);
             if (this.level instanceof ServerLevel) {
                 try {
-                    this.signText[i] = ComponentUtils.updateForEntity(this.getCommandSource(null), itextcomponent, null, 0);
+                    this.signText[i] = ComponentUtils.updateForEntity(this.getCommandSource(null), component, null, 0);
                 } catch (CommandSyntaxException var6) {
-                    this.signText[i] = itextcomponent;
+                    this.signText[i] = component;
                 }
             } else {
-                this.signText[i] = itextcomponent;
+                this.signText[i] = component;
             }
 
             this.renderText[i] = null;
@@ -90,12 +89,12 @@ public class StemSignTileEntity extends BlockEntity {
 
     @Nullable
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return new ClientboundBlockEntityDataPacket(this.worldPosition, -1, this.getUpdateTag());
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
     public CompoundTag getUpdateTag() {
-        return this.save(new CompoundTag());
+        return saveWithoutMetadata();
     }
 
     @Override
@@ -123,12 +122,12 @@ public class StemSignTileEntity extends BlockEntity {
     }
 
     public boolean executeCommand(Player playerIn) {
-        for(Component itextcomponent : this.signText) {
+        for (Component itextcomponent : this.signText) {
             Style style = itextcomponent == null ? null : itextcomponent.getStyle();
             if (style != null && style.getClickEvent() != null) {
                 ClickEvent clickevent = style.getClickEvent();
                 if (clickevent.getAction() == ClickEvent.Action.RUN_COMMAND) {
-                    playerIn.getServer().getCommands().performCommand(this.getCommandSource((ServerPlayer)playerIn), clickevent.getValue());
+                    playerIn.getServer().getCommands().performPrefixedCommand(this.getCommandSource((ServerPlayer) playerIn), clickevent.getValue());
                 }
             }
         }
@@ -138,8 +137,8 @@ public class StemSignTileEntity extends BlockEntity {
 
     public CommandSourceStack getCommandSource(@Nullable ServerPlayer playerIn) {
         String s = playerIn == null ? "Sign" : playerIn.getName().getString();
-        Component itextcomponent = playerIn == null ? new TextComponent("Sign") : playerIn.getDisplayName();
-        return new CommandSourceStack(CommandSource.NULL, new Vec3((double)this.worldPosition.getX() + 0.5D, (double)this.worldPosition.getY() + 0.5D, (double)this.worldPosition.getZ() + 0.5D), Vec2.ZERO, (ServerLevel)this.level, 2, s, itextcomponent, this.level.getServer(), playerIn);
+        Component itextcomponent = playerIn == null ? Component.literal("Sign") : playerIn.getDisplayName();
+        return new CommandSourceStack(CommandSource.NULL, new Vec3((double) this.worldPosition.getX() + 0.5D, (double) this.worldPosition.getY() + 0.5D, (double) this.worldPosition.getZ() + 0.5D), Vec2.ZERO, (ServerLevel) this.level, 2, s, itextcomponent, this.level.getServer(), playerIn);
     }
 
     public DyeColor getTextColor() {

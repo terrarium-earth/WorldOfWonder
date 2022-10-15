@@ -2,9 +2,9 @@ package earth.terrarium.worldofwonder;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class WonderSounds {
     public static final DeferredRegister<SoundEvent> REGISTRY = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, WorldOfWonder.MOD_ID);
@@ -14,6 +14,6 @@ public class WonderSounds {
     public static final RegistryObject<SoundEvent> DANDE_LION_DEATH = add("dande_lion.death");
 
     private static RegistryObject<SoundEvent> add(String name) {
-        return REGISTRY.register(name.replace('.', '_'), () -> new SoundEvent(new ResourceLocation(WorldOfWonder.MOD_ID, name)));
+        return REGISTRY.register(name, () -> new SoundEvent(new ResourceLocation(WorldOfWonder.MOD_ID, name)));
     }
 }

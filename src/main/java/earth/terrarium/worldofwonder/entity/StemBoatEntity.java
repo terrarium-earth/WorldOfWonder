@@ -2,6 +2,7 @@
 package earth.terrarium.worldofwonder.entity;
 
 import earth.terrarium.worldofwonder.item.WonderItems;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.vehicle.Boat;
@@ -13,8 +14,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.network.NetworkHooks;
 import earth.terrarium.worldofwonder.block.WonderBlocks;
+import net.minecraftforge.network.NetworkHooks;
 
 public class StemBoatEntity extends Boat {
     public StemBoatEntity(EntityType<? extends Boat> p_i50129_1_, Level p_i50129_2_) {
@@ -46,9 +47,9 @@ public class StemBoatEntity extends Boat {
                         return;
                     }
 
-                    this.causeFallDamage(this.fallDistance, 1.0F);
+                    this.causeFallDamage(this.fallDistance, 1.0F, DamageSource.FALL);
                     if (!this.level.isClientSide && isAlive()) {
-                        this.remove();
+                        this.kill();
                         if (this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
                             for(int i = 0; i < 3; ++i) {
                                 this.spawnAtLocation(WonderBlocks.STEM_PLANKS.get());

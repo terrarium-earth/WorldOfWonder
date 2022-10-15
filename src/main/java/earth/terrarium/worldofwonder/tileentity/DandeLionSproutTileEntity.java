@@ -1,11 +1,12 @@
 package earth.terrarium.worldofwonder.tileentity;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import earth.terrarium.worldofwonder.entity.DandeLionEntity;
 import earth.terrarium.worldofwonder.entity.WonderEntities;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Objects;
 
@@ -13,20 +14,20 @@ public class DandeLionSproutTileEntity extends BlockEntity implements TickableBl
     private int maxAge = -1;
     private int age;
 
-    public DandeLionSproutTileEntity() {
-        super(WonderTileEntities.DANDE_LION_SPROUT.get());
+    public DandeLionSproutTileEntity(BlockPos pos, BlockState state) {
+        super(WonderTileEntities.DANDE_LION_SPROUT.get(), pos, state);
     }
 
     @Override
-    public void load(BlockState state, CompoundTag compound) {
-        age = compound.getInt("Age");
-        super.load(state, compound);
+    public void load(CompoundTag tag) {
+        age = tag.getInt("Age");
+        super.load(tag);
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        compound.putInt("Age", age);
-        return super.save(compound);
+    protected void saveAdditional(CompoundTag tag) {
+        tag.putInt("Age", age);
+        super.saveAdditional(tag);
     }
 
     @Override

@@ -10,9 +10,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.network.NetworkHooks;
 import earth.terrarium.worldofwonder.block.WonderBlocks;
+import net.minecraftforge.network.NetworkHooks;
 
 public class DandeLionSeedEntity extends Entity {
     private static final EntityDataAccessor<Float> X = SynchedEntityData.defineId(DandeLionSeedEntity.class, EntityDataSerializers.FLOAT);
@@ -62,8 +61,8 @@ public class DandeLionSeedEntity extends Entity {
             setPos(getX() + getDeltaMovement().x(), getY() + getDeltaMovement().y(), getZ() + getDeltaMovement().z());
 
             if (tickCount > 20 && level.getBlockState(new BlockPos(getX(), getY() - 1, getZ())).canOcclude()) {
-                level.setBlock(blockPosition(), WonderBlocks.DANDE_LION_SPROUT.get().defaultBlockState(), Constants.BlockFlags.NOTIFY_NEIGHBORS | Constants.BlockFlags.BLOCK_UPDATE);
-                remove();
+                level.setBlock(blockPosition(), WonderBlocks.DANDE_LION_SPROUT.get().defaultBlockState(), 3);
+                kill();
             }
         }
     }
