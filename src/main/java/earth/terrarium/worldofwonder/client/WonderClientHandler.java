@@ -42,12 +42,10 @@ public class WonderClientHandler {
         ItemBlockRenderTypes.setRenderLayer(WonderBlocks.DANDE_LION_SPROUT.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(WonderBlocks.POTTED_DANDE_LION_SPROUT.get(), RenderType.cutout());
 
-        if (WorldOfWonder.quarkLoaded) {
-            Function<BlockEntityRenderDispatcher, StemChestTileEntityRenderer> chestRenderer = StemChestTileEntityRenderer::new;
-            ClientRegistry.bindTileEntityRenderer(WonderQuarkCompat.STEM_CHEST_ENTITY.get(), chestRenderer);
-            ClientRegistry.bindTileEntityRenderer(WonderQuarkCompat.STEM_TRAPPED_CHEST_ENTITY.get(), chestRenderer);
-            ItemBlockRenderTypes.setRenderLayer(WonderQuarkCompat.STEM_LADDER.get(), RenderType.cutout());
-        }
+        Function<BlockEntityRenderDispatcher, StemChestTileEntityRenderer> chestRenderer = StemChestTileEntityRenderer::new;
+        ClientRegistry.bindTileEntityRenderer(WonderQuarkCompat.STEM_CHEST_ENTITY.get(), chestRenderer);
+        ClientRegistry.bindTileEntityRenderer(WonderQuarkCompat.STEM_TRAPPED_CHEST_ENTITY.get(), chestRenderer);
+        ItemBlockRenderTypes.setRenderLayer(WonderQuarkCompat.STEM_LADDER.get(), RenderType.cutout());
     }
 
     public static Item.Properties getWithRenderer(Item.Properties properties, Supplier<Callable<Object>> ister) {

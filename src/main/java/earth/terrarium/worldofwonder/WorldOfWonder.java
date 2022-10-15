@@ -40,17 +40,15 @@ public class WorldOfWonder {
     public static final Tags.IOptionalNamedTag<Item> DANDELION = ItemTags.createOptional(new ResourceLocation("dandelion"), Sets.newHashSet(() -> Items.DANDELION));
     public static final String MOD_ID = "worldofwonder";
     public static final SimpleChannel NETWORK = INetworkPacket.makeChannel("network", "1");
-    public static boolean quarkLoaded;
     private static int currentNetworkId;
 
     public WorldOfWonder() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        quarkLoaded = ModList.get().isLoaded("quark");
-        if (quarkLoaded) {
-            WonderQuarkCompat.BLOCK_REGISTER.register(bus);
-            WonderQuarkCompat.ITEM_REGISTER.register(bus);
-            WonderQuarkCompat.ENTITY_REGISTER.register(bus);
-        }
+
+        WonderQuarkCompat.BLOCK_REGISTER.register(bus);
+        WonderQuarkCompat.ITEM_REGISTER.register(bus);
+        WonderQuarkCompat.ENTITY_REGISTER.register(bus);
+
         WonderBlocks.REGISTRY.register(bus);
         WonderItems.REGISTRY.register(bus);
         WonderBiomes.REGISTRY.register(bus);
