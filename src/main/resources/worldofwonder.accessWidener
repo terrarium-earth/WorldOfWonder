@@ -1,0 +1,7 @@
+accessWidener v2 named
+
+accessible field net/minecraft/world/level/biome/OverworldBiomeSource POSSIBLE_BIOMES Ljava/util/List;
+mutable field net/minecraft/world/level/biome/OverworldBiomeSource POSSIBLE_BIOMES Ljava/util/List;
+
+accessible field net/minecraft/world/entity/vehicle/Boat lastYd D
+accessible field net/minecraft/world/entity/vehicle/Boat status Lnet/minecraft/world/entity/vehicle/Boat$Status;
