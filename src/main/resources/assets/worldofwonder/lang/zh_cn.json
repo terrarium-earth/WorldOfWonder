@@ -1,0 +1,39 @@
+{
+  "language.name": "简体中文",
+  "language.region": "中国",
+  "language.code": "zh_cn",
+
+  "itemGroup.worldofwonder": "珍奇世界",
+
+  "block.worldofwonder.dandelion_fluff": "蒲公英绒毛",
+  "block.worldofwonder.dandelion_petals": "蒲公英花瓣",
+  "block.worldofwonder.stem_log": "蒲公英茎",
+  "block.worldofwonder.stripped_stem_log": "去皮蒲公英茎",
+  "block.worldofwonder.stem_wood": "蒲公英木",
+  "block.worldofwonder.stripped_stem_wood": "去皮蒲公英木",
+  "block.worldofwonder.stem_planks": "蒲公英茎木板",
+  "block.worldofwonder.stem_door": "蒲公英茎木门",
+  "block.worldofwonder.stem_trapdoor": "蒲公英茎活板门",
+  "block.worldofwonder.stem_fence": "蒲公英茎栅栏",
+  "block.worldofwonder.stem_button": "蒲公英茎按钮",
+  "block.worldofwonder.stem_slab": "蒲公英茎台阶",
+  "block.worldofwonder.stem_vertical_slab": "蒲公英茎竖直台阶",
+  "block.worldofwonder.stem_fence_gate": "蒲公英茎栅栏门",
+  "block.worldofwonder.stem_pressure_plate": "蒲公英茎压力板",
+  "block.worldofwonder.stem_stairs": "蒲公英茎楼梯",
+  "block.worldofwonder.stem_bookshelf": "蒲公英茎书架",
+  "block.worldofwonder.stem_ladder": "蒲公英茎楼梯",
+  "block.worldofwonder.dande_lion_sprout": "蒲公英狮芽",
+  "block.worldofwonder.stem_sign": "蒲公英茎告示牌",
+  "block.worldofwonder.stem_chest": "蒲公英茎箱子",
+  "block.worldofwonder.stem_trapped_chest": "蒲公英茎陷阱箱",
+
+  "item.worldofwonder.bloom_meal": "花食",
+  "item.worldofwonder.dande_lion_spawn_egg": "蒲公英狮刷怪蛋",
+  "item.worldofwonder.dandelion_hat": "蒲公英狮帽字",
+  "item.worldofwonder.stem_boat": "蒲公英茎船",
+
+  "entity.worldofwonder.dande_lion": "蒲公英狮",
+
+  "biome.worldofwonder.dandelion_fields": "蒲公英花田"
+}
